@@ -12,8 +12,8 @@ export function extractClassesFromFiles() {
     const allClasses = new Set();
 
     // Belirtilen dosya yollarını tara
-    config.paths.forEach(path => {
-        const files = glob.sync(path);
+    config.contents.forEach(content => {
+        const files = glob.sync(content);
         files.forEach(filePath => {
             const fileContent = fs.readFileSync(filePath, 'utf8');
             let match;

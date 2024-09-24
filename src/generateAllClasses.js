@@ -3,7 +3,7 @@ import { generateSpacingClasses } from './properties/spacing.js';
 import { generatePositionClasses } from './properties/position.js';
 
 // Tüm class'ları birleştiren fonksiyon
-export function generateAllBaseClasses() {
+export function generateAllClasses() {
     return {
         ...generateSpacingClasses(),    // Statik margin/padding class'ları
         ...generatePositionClasses(),   // Statik position class'ları
