@@ -20,11 +20,12 @@ export function generateSelectorCss(extractedClasses, allClasses) {
         'selection:',
     ];
 
-    // Her selector için extractedClasses'i kontrol et
-    selectorList.forEach(selector => {
-        const selectedClasses = extractedClasses.filter(className => className.startsWith(selector));
+    const filteredClasses = extractedClasses.filter(className => selectorList.some(selector => className.startsWith(selector)));
 
-        selectedClasses.forEach(className => {
+    // Tüm selector'ler için dön
+    selectorList.forEach(selector => {
+        // Filtrelenmiş class'lar içinde dön
+        filteredClasses.forEach(className => {
             // Selector prefix'ini kaldırıp statik class'ı elde et
             const cleanClass = className.replace(selector, '');
 
