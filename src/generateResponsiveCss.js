@@ -1,4 +1,4 @@
-import { breakpoints } from './breakpoints.js';
+import { generateBreakpointsClasses } from './properties/breakpoints.js';
 import { escapeClassName } from './escapeClassName.js';
 
 // Media query'leri gruplayarak toplamak için bir yapı
@@ -9,7 +9,7 @@ export function generateResponsiveCss(classes, baseClasses) {
     classes.forEach(className => {
         if (className.includes(':')) {
             const [breakpointPrefix, baseClassName] = className.split(':'); // Örneğin: "sm:flex" => ["sm", "flex"]
-            const breakpointMedia = breakpoints[breakpointPrefix];
+            const breakpointMedia = generateBreakpointsClasses()[breakpointPrefix];
 
             // Base class'ın içeriğini al
             const baseClassContent = baseClasses[baseClassName];

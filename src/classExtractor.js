@@ -8,8 +8,8 @@ import config from './eglador.config.js';
 const classRegex = /['"`]([\w:-\s]+)['"`]/g; // Class isimlerini yakalayan regex
 
 // Class'ları tarayıp toplama
-export function extractClassesFromFiles() {
-    const allClasses = new Set();
+export function extractClassesFromFiles(allClasses) {
+    const classesFound = new Set();
 
     // Belirtilen dosya yollarını tara
     config.contents.forEach(content => {
@@ -21,13 +21,20 @@ export function extractClassesFromFiles() {
                 const classNames = match[1].split(/\s+/); // Class isimlerini boşluklardan ayır
                 classNames.forEach(className => {
                     if (className) {
-                        allClasses.add(className); // Her bir class'ı set'e ekle
+                        classesFound.add(className); // Her bir class'ı set'e ekle
                     }
                 });
             }
         });
     });
-    console.log(allClasses);
+    console.log('classesFound', classesFound);
 
-    return [...allClasses];
+    // allClasses'ta olmayan class'ları ayıkla
+    const filteredClasses = [...classesFound].filter(className =>
+        Object.keys(allClasses).some(prefix => className.startsWith(prefix))
+    );
+
+    console.log('filteredClasses', filteredClasses);
+
+    return [...classesFound];
 }

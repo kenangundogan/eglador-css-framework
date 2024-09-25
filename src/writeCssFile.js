@@ -5,19 +5,20 @@ import { extractClassesFromFiles } from './classExtractor.js';
 import { generateResetCss } from './generateResetCss.js';
 import { generateAllClasses } from './generateAllClasses.js';
 import { generateBaseCss } from './baseCss.js';
-import { generateResponsiveCss } from './responsiveCss.js';
+import { generateResponsiveCss } from './generateResponsiveCss.js';
 import { generateSelectorCss } from './selectorCss.js';
 
 // Tüm class'ları toplayıp CSS dosyasına yazan fonksiyon
 export function writeCssFile() {
-    // Dosyalardan kullanılan class'ları topla
-    const extractedClasses = extractClassesFromFiles();
 
     // CSS reset dosyasını oluştur
     const resetCss = generateResetCss();
 
     // Tüm base class'ları al
     const allClasses = generateAllClasses();
+
+    // Dosyalardan kullanılan class'ları topla
+    const extractedClasses = extractClassesFromFiles(allClasses);
 
     // Statik class'ları işleyelim
     const baseCss = generateBaseCss(extractedClasses, allClasses);
