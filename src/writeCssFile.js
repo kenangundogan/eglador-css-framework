@@ -6,6 +6,7 @@ import { generateResetCss } from './generateResetCss.js';
 import { generateAllClasses } from './generateAllClasses.js';
 import { generateBaseCss } from './baseCss.js';
 import { generateResponsiveCss } from './responsiveCss.js';
+import { generateSelectorCss } from './selectorCss.js';
 
 // Tüm class'ları toplayıp CSS dosyasına yazan fonksiyon
 export function writeCssFile() {
@@ -24,10 +25,13 @@ export function writeCssFile() {
     // Media query class'larını işleyelim
     const responsiveCss = generateResponsiveCss(extractedClasses, allClasses);
 
+    // Tüm selector class'ları işleyelim
+    const selectorCss = generateSelectorCss(extractedClasses, allClasses);
+
     // CSS dosyasını belirtilen input dosyasını oku ve içeriğini al
     const inputCssContent = readCssFile();
 
     // CSS dosyasını belirlenen output dosyasına yaz
-    fs.writeFileSync(config.output, `${resetCss}\n${baseCss}\n${responsiveCss}\n${inputCssContent}`);
+    fs.writeFileSync(config.output, `${resetCss}\n${baseCss}\n${selectorCss}\n${responsiveCss}\n${inputCssContent}`);
     console.log(`CSS file generated successfully at ${config.output}`);
 }
