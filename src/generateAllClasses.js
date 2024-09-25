@@ -4,7 +4,9 @@ import { generateDisplayClasses } from './properties/display.js';
 import { generateJustifyContentClasses } from './properties/justifyContent.js';
 import { generateAlignItemsClasses } from './properties/alignItems.js';
 import { generateFlexDirectionClasses } from './properties/flexDirection.js';
+import { generateAppearanceClasses } from './properties/appearance.js';
 import { generateSpacingClasses } from './properties/spacing.js';
+import { generateColorClasses } from './properties/color.js';
 
 // Tüm class'ları birleştiren fonksiyon
 export function generateAllClasses() {
@@ -15,6 +17,8 @@ export function generateAllClasses() {
         ...generateJustifyContentClasses(), // Statik justify-content class'ları
         ...generateAlignItemsClasses(), // Statik align-items class'ları
         ...generateFlexDirectionClasses(), // Statik flex-direction class'ları
+        ...generateAppearanceClasses(),   // Statik appearance class'ları
         ...generateSpacingClasses(),    // Statik margin/padding class'ları
+        ...generateColorClasses(),     // Statik background-color class'ları
     };
 }

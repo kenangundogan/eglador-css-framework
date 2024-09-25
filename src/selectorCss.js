@@ -13,6 +13,11 @@ export function generateSelectorCss(extractedClasses, allClasses) {
         'invalid:',
         'before:',
         'after:',
+        'checked:',
+        'default:',
+        'disabled:',
+        'enabled:',
+        'selection:',
     ];
 
     // Her selector için extractedClasses'i kontrol et
