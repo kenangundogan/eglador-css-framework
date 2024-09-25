@@ -40,6 +40,9 @@ export function generateColorClasses() {
 
             // text-color class'ı için CSS kuralı oluşturalım
             colorClasses[`text-${colorName}-${value}`] = `color: ${darkenedColor};`;
+
+            // border-color class'ı için CSS kuralı oluşturalım
+            colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor};`;
         });
     });
 
