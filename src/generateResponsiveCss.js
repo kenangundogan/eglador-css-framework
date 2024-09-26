@@ -1,75 +1,77 @@
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
-import { generateSelectorsClasses } from './properties/selectors.js';
-import { escapeClassName } from './escapeClassName.js';
+import { generatePseudoClasses } from './properties/pseudoClasses.js';
+import { generatePseudoElements } from './properties/pseudoElements.js';
 
-// Media query'leri gruplayarak toplamak için bir yapı
-const mediaQueryGroups = {};
+export function generateResponsiveCss(extractedClasses, allClasses) {
+    const breakpoints = generateBreakpointsClasses();  // Breakpoint'leri alıyoruz
+    const pseudoClasses = generatePseudoClasses();  // Pseudo class'ları alıyoruz
+    const pseudoElements = generatePseudoElements();  // Pseudo element'leri alıyoruz
 
-// Breakpoint ile media query oluşturma
-export function generateResponsiveCss(classes, baseClasses) {
-    const breakpoints = generateBreakpointsClasses();
-    const selectors = generateSelectorsClasses();
+    // Media query'leri toplamak için bir yapı
+    const mediaQueryGroups = {};
 
-    // Breakpoints ve selectors'a göre sınıfları ayır
-    const breakpointClasses = classes.reduce((acc, className) => {
-        const breakpointPrefix = Object.keys(breakpoints).find(breakpoint => className.startsWith(breakpoint + ':'));
-        if (breakpointPrefix) {
-            let restClass = className.replace(breakpointPrefix + ':', ''); // Breakpoint'i kaldır
-            let selectorPrefix = '';
+    extractedClasses.forEach(className => {
+        const breakpoint = Object.keys(breakpoints).find(bp => className.startsWith(`${bp}:`));
 
-            // Birden fazla selector varsa, her birini sırayla işle
-            Object.keys(selectors).forEach(selector => {
-                if (restClass.startsWith(selector)) {
-                    selectorPrefix += selector;
-                    restClass = restClass.replace(selector, ''); // Selector'ü kaldır ve sıradaki base class'ı al
+        if (breakpoint) {
+            let restClass = className.replace(`${breakpoint}:`, '');  // Breakpoint'i çıkarıyoruz
+            let pseudoClassPrefix = '';
+            let pseudoElementPrefix = '';
+
+            // Dinamik olarak pseudo-class'ı çıkar
+            Object.keys(pseudoClasses).forEach(pseudoClass => {
+                if (restClass.startsWith(pseudoClass)) {
+                    pseudoClassPrefix = pseudoClasses[pseudoClass];
+                    restClass = restClass.replace(`${pseudoClass}:`, '');  // Pseudo-class'ı çıkar
                 }
             });
 
-            const baseClassName = restClass;
-            acc.push({ className, breakpointPrefix, selectorPrefix, baseClassName });
-        }
-        return acc;
-    }, []);
+            // Dinamik olarak pseudo-element'i çıkar
+            Object.keys(pseudoElements).forEach(pseudoElement => {
+                if (restClass.startsWith(pseudoElement)) {
+                    pseudoElementPrefix = pseudoElements[pseudoElement];
+                    restClass = restClass.replace(`${pseudoElement}:`, '');  // Pseudo-element'i çıkar
+                }
+            });
 
-    // Breakpoint sınıflarını işleme
-    breakpointClasses.forEach(({ className, breakpointPrefix, selectorPrefix, baseClassName }) => {
-        const breakpointMedia = breakpoints[breakpointPrefix]; // Breakpoint'e uygun media query al
-        const baseClassContent = baseClasses[baseClassName];  // Base class'ın içeriğini al
+            // Base class'ı bulalım
+            const baseClassContent = allClasses[restClass];  // Kalan restClass sadece base class olmalı
 
-        if (baseClassContent) {
-            const escapedClassName = escapeClassName(baseClassName); // Base class'ı escape et
-            const fullSelector = buildSelector(breakpointPrefix, selectorPrefix, escapedClassName);
-            groupMediaQuery(breakpointMedia, fullSelector, baseClassContent);
+            // Eğer baseClassContent varsa media query grubuna ekle
+            if (baseClassContent) {
+                const breakpointMedia = breakpoints[breakpoint];
+                if (!mediaQueryGroups[breakpointMedia]) mediaQueryGroups[breakpointMedia] = [];
+
+                // Full selector'ü oluşturuyoruz
+                let fullSelector = "";
+
+                if (breakpoint) {
+                    if (breakpoint && pseudoClassPrefix && pseudoElementPrefix) {
+                        fullSelector = `.${breakpoint}\\:${pseudoClassPrefix}\\:${pseudoElementPrefix}\\:${restClass}\:${pseudoClassPrefix}\::${pseudoElementPrefix}`;
+                    }
+                    else if (breakpoint && pseudoClassPrefix) {
+                        fullSelector = `.${breakpoint}\\:${pseudoClassPrefix}\\:${restClass}\:${pseudoClassPrefix}`;
+                    }
+                    else if (breakpoint && pseudoElementPrefix) {
+                        fullSelector = `.${breakpoint}\\:${pseudoElementPrefix}\\:${restClass}\::${pseudoElementPrefix}`;
+                    }
+                    else {
+                        fullSelector = `.${breakpoint}\\:${restClass}`;
+                    }
+                }
+
+
+                mediaQueryGroups[breakpointMedia].push(`${fullSelector} { ${baseClassContent} }`);
+            }
         }
     });
 
-    // Medya sorguları gruplarını optimize edip çıktıyı döndür
-    return generateMediaQueryCss();
-}
-
-// Media query'yi grupla ve birleştir
-function groupMediaQuery(breakpointMedia, fullSelector, baseClassContent) {
-    if (!mediaQueryGroups[breakpointMedia]) {
-        mediaQueryGroups[breakpointMedia] = []; // Eğer bu breakpoint için bir grup yoksa oluştur
-    }
-    mediaQueryGroups[breakpointMedia].push(`${fullSelector} { ${baseClassContent} }`);
-}
-
-// Media query gruplarını optimize et ve tek bir blokta topla
-function generateMediaQueryCss() {
+    // Media query'leri oluşturan CSS çıktısı
     let mediaQueryCss = '';
     Object.keys(mediaQueryGroups).forEach(breakpoint => {
         mediaQueryCss += `@media (min-width: ${breakpoint}) { ${mediaQueryGroups[breakpoint].join(' ')} } `;
     });
-    return mediaQueryCss;
-}
 
-// Selector'ü oluşturma
-function buildSelector(breakpointPrefix, selectorPrefix, escapedClassName) {
-    let fullSelector = `.${breakpointPrefix}\\:${escapedClassName}`;
-    if (selectorPrefix) {
-        const selectorParts = selectorPrefix.split(':').filter(Boolean); // Boş olmayan selector'leri al
-        fullSelector = `.${breakpointPrefix}\\:${selectorParts.join('\\:')}\\:${escapedClassName}:${selectorParts.join(':')}`;
-    }
-    return fullSelector;
+    console.log('Media Query CSS:', mediaQueryCss);
+    return mediaQueryCss;
 }

@@ -8,7 +8,6 @@ import { generateAppearanceClasses } from './properties/appearance.js';
 import { generateSpacingClasses } from './properties/spacing.js';
 import { generateBorderClasses } from './properties/border.js';
 import { generateColorClasses } from './properties/color.js';
-import { generateSelectorsClasses } from './properties/selectors.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
 // Tüm class'ları birleştiren fonksiyon
@@ -24,7 +23,6 @@ export function generateAllClasses() {
         ...generateSpacingClasses(),    // Statik margin/padding class'ları
         ...generateBorderClasses(),     // Statik border class'ları
         ...generateColorClasses(),     // Statik background-color class'ları
-        ...generateSelectorsClasses(), // Statik selector class'ları
         ...generateBreakpointsClasses(), // Statik breakpoint class'ları
     };
 }
