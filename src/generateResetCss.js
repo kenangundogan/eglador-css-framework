@@ -3,14 +3,9 @@ import { generateResetClasses } from './properties/reset.js';
 
 export function generateResetCss() {
     if (config.cssreset) {
+        // Reset sınıflarını doğrudan al ve döndür
         const resetClasses = generateResetClasses();
-        let cssString = '';
-
-        // Reset sınıflarını CSS stringine çevir
-        for (const selector in resetClasses) {
-            cssString += `${selector} { ${resetClasses[selector]} }\n`;
-        }
-        return cssString;
+        return resetClasses; // CSS stringini doğrudan döndür
     }
     return ''; // Eğer cssreset false ise boş string döndür
 }

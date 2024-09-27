@@ -4,6 +4,7 @@ export function generateColorClasses() {
     const colorClasses = {};
 
     const colors = {
+        slate: '#f8fafc',
         gray: '#f9fafb',
         zinc: '#fafafa',
         neutral: '#fafafa',

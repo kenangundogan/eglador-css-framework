@@ -4,8 +4,8 @@ const require = createRequire(import.meta.url);
 const glob = require('glob');
 import config from './eglador.config.js';
 
-// Herhangi bir yerde geçen kelimeleri yakalayan geniş regex, solunda/sağında ", ', ` zorunlu, boşlukla ayrılan class'lar
-const classRegex = /['"`]([\w:-\s]+)['"`]/g; // Class isimlerini yakalayan regex
+// const classRegex = /['"`]([\w:-\s]+)['"`]/g;
+const classRegex = /class=["'`]([:\w\s\/%.-]+)["'`]/g;
 
 // Class'ları tarayıp toplama
 export function extractClassesFromFiles(allClasses) {
@@ -18,23 +18,16 @@ export function extractClassesFromFiles(allClasses) {
             const fileContent = fs.readFileSync(filePath, 'utf8');
             let match;
             while ((match = classRegex.exec(fileContent)) !== null) {
-                const classNames = match[1].split(/\s+/); // Class isimlerini boşluklardan ayır
+                const classNames = match[1].split(/\s+/);
                 classNames.forEach(className => {
-                    if (className) {
-                        classesFound.add(className); // Her bir class'ı set'e ekle
+                    if (className.trim()) {
+                        classesFound.add(className);
                     }
                 });
             }
         });
     });
     console.log('classesFound', classesFound);
-
-    // allClasses'ta olmayan class'ları ayıkla
-    const filteredClasses = [...classesFound].filter(className =>
-        Object.keys(allClasses).some(prefix => className.startsWith(prefix))
-    );
-
-    console.log('filteredClasses', filteredClasses);
 
     return [...classesFound];
 }
