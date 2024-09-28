@@ -86,6 +86,7 @@ import { generateIsolationClasses } from './properties/isolation.js';
 import { generateColumnsClasses } from './properties/columns.js';
 import { generateBoxSizingClasses } from './properties/boxSizing.js';
 import { generateBoxDecorationBreakClasses } from './properties/boxDecorationBreak.js';
+import { generateBoxShadowClasses } from './properties/boxShadow.js';
 import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
 import { generateOutlineStyleClasses } from './properties/outlineStyle.js';
 import { generateOutlineWidthClasses } from './properties/outlineWidth.js';
@@ -202,6 +203,7 @@ export function generateAllClasses() {
         ...generateColumnsClasses(),
         ...generateBoxSizingClasses(),
         ...generateBoxDecorationBreakClasses(),
+        ...generateBoxShadowClasses(),
         ...generateOutlineOffsetClasses(),
         ...generateOutlineStyleClasses(),
         ...generateOutlineWidthClasses(),
