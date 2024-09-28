@@ -32,23 +32,26 @@ export function generateColorClasses() {
 
     Object.entries(colors).forEach(([colorName, startColor]) => {
         colorValueRange.forEach((value, index) => {
-            // Rengi her adımda biraz karartarak ilerliyoruz
             const darkenedColor = tinycolor(startColor).darken((index / colorValueRange.length) * 100).toRgbString();
 
-            // background-color class'ı için CSS kuralı oluşturalım
+            // background-color
             colorClasses[`bg-${colorName}-${value}`] = `background-color: ${darkenedColor};`;
 
-            // text-color class'ı için CSS kuralı oluşturalım
+            // text-color
             colorClasses[`text-${colorName}-${value}`] = `color: ${darkenedColor};`;
 
-            // border-color class'ı için CSS kuralı oluşturalım
+            // border-color
             colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor};`;
 
-            // text-decoration-color class'ı için CSS kuralı oluşturalım
+            // text-decoration-color
             colorClasses[`decoration-${colorName}-${value}`] = `text-decoration-color: ${darkenedColor};`;
 
-            // outline-color class'ı için CSS kuralı oluşturalım
+            // outline-color
             colorClasses[`outline-${colorName}-${value}`] = `outline-color: ${darkenedColor};`;
+
+            // accent-color
+            colorClasses[`accent-${colorName}-${value}`] = `accent-color: ${darkenedColor};`;
+
         });
     });
 
@@ -81,6 +84,12 @@ export function generateColorClasses() {
     colorClasses['outline-transparent'] = 'outline-color: transparent;';
     colorClasses['outline-black'] = 'outline-color: rgb(0 0 0);';
     colorClasses['outline-white'] = 'outline-color: rgb(255 255 255);';
+
+    colorClasses['accent-inherit'] = 'accent-color: inherit;';
+    colorClasses['accent-current'] = 'accent-color: currentColor;';
+    colorClasses['accent-transparent'] = 'accent-color: transparent;';
+    colorClasses['accent-black'] = 'accent-color: rgb(0 0 0);';
+    colorClasses['accent-white'] = 'accent-color: rgb(255 255 255);';
 
     return colorClasses;
 }
