@@ -30,7 +30,6 @@ export function generateColorClasses() {
 
     const colorValueRange = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
-    // Her renk için background-color ve text-color sınıflarını hesaplayalım
     Object.entries(colors).forEach(([colorName, startColor]) => {
         colorValueRange.forEach((value, index) => {
             // Rengi her adımda biraz karartarak ilerliyoruz
@@ -46,6 +45,24 @@ export function generateColorClasses() {
             colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor};`;
         });
     });
+
+    colorClasses['text-inherit'] = 'color: inherit;';
+    colorClasses['text-current'] = 'color: currentColor;';
+    colorClasses['text-transparent'] = 'color: transparent;';
+    colorClasses['text-black'] = 'color: rgb(0 0 0);';
+    colorClasses['text-white'] = 'color: rgb(255 255 255);';
+
+    colorClasses['bg-inherit'] = 'background-color: inherit;';
+    colorClasses['bg-current'] = 'background-color: currentColor;';
+    colorClasses['bg-transparent'] = 'background-color: transparent;';
+    colorClasses['bg-black'] = 'background-color: rgb(0 0 0);';
+    colorClasses['bg-white'] = 'background-color: rgb(255 255 255);';
+
+    colorClasses['border-inherit'] = 'border-color: inherit;';
+    colorClasses['border-current'] = 'border-color: currentColor;';
+    colorClasses['border-transparent'] = 'border-color: transparent;';
+    colorClasses['border-black'] = 'border-color: rgb(0 0 0);';
+    colorClasses['border-white'] = 'border-color: rgb(255 255 255);';
 
     return colorClasses;
 }

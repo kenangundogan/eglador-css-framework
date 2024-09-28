@@ -42,6 +42,10 @@ import { generateGridAutoRowsClasses } from './properties/gridAutoRows.js';
 import { generateGridRowStartEndClasses } from './properties/gridRowStartEnd.js';
 import { generateGridColumnStartEndClasses } from './properties/gridColumnStartEnd.js';
 import { generateFontSizeClasses } from './properties/fontSize.js';
+import { generateFontStyleClasses } from './properties/fontStyle.js';
+import { generateFontWeightClasses } from './properties/fontWeight.js';
+import { generateFontVariantNumericClasses } from './properties/fontVariantNumeric.js';
+import { generateFontFamilyClasses } from './properties/fontFamily.js';
 import { generateBorderClasses } from './properties/border.js';
 import { generateBorderRadiusClasses } from './properties/borderRadius.js';
 import { generateBackgroundAttachmentClasses } from './properties/backgroundAttachment.js';
@@ -50,6 +54,13 @@ import { generateBackgroundOriginClasses } from './properties/backgroundOrigin.j
 import { generateBackgroundPositionClasses } from './properties/backgroundPosition.js';
 import { generateBackgroundRepeatClasses } from './properties/backgroundRepeat.js';
 import { generateBackgroundSizeClasses } from './properties/backgroundSize.js';
+import { generateTextAlignClasses } from './properties/textAlign.js';
+import { generateTextDecorationClasses } from './properties/textDecoration.js';
+import { generateTextDecorationStyleClasses } from './properties/textDecorationStyle.js';
+import { generateTextIndentClasses } from './properties/textIndent.js';
+import { generateTextTransformClasses } from './properties/textTransform.js';
+import { generateTextUnderlineOffsetClasses } from './properties/textUnderlineOffset.js';
+import { generateTextWrapClasses } from './properties/textWrap.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -100,6 +111,10 @@ export function generateAllClasses() {
         ...generateGridRowStartEndClasses(), // Statik grid-row-start-end class'ları
         ...generateGridColumnStartEndClasses(), // Statik grid-column-start-end class'ları
         ...generateFontSizeClasses(),    // Statik font-size class'ları
+        ...generateFontStyleClasses(),    // Statik font-style class'ları
+        ...generateFontWeightClasses(),   // Statik font-weight class'ları
+        ...generateFontVariantNumericClasses(), // Statik font-variant-numeric class'ları
+        ...generateFontFamilyClasses(),   // Statik font-family class'ları
         ...generateBorderClasses(),     // Statik border class'ları
         ...generateBorderRadiusClasses(), // Statik border-radius class'ları
         ...generateBackgroundAttachmentClasses(), // Statik background-attachment class'ları
@@ -108,6 +123,13 @@ export function generateAllClasses() {
         ...generateBackgroundPositionClasses(), // Statik background-position class'ları
         ...generateBackgroundRepeatClasses(), // Statik background-repeat class'ları
         ...generateBackgroundSizeClasses(),  // Statik background-size class'ları
+        ...generateTextAlignClasses(),    // Statik text-align class'ları
+        ...generateTextDecorationClasses(), // Statik text-decoration class'ları
+        ...generateTextDecorationStyleClasses(), // Statik text-decoration-style class'ları
+        ...generateTextIndentClasses(),   // Statik text-indent class'ları
+        ...generateTextTransformClasses(),  // Statik text-transform class'ları
+        ...generateTextUnderlineOffsetClasses(), // Statik text-underline-offset class'ları
+        ...generateTextWrapClasses(),    // Statik text-wrap class'ları
         ...generateColorClasses(),     // Statik background-color class'ları
         ...generateBreakpointsClasses(), // Statik breakpoint class'ları
     };
