@@ -33,6 +33,9 @@ import { generateSpaceClasses } from './properties/space.js';
 import { generateMarginClasses } from './properties/margin.js';
 import { generatePaddingClasses } from './properties/padding.js';
 import { generateLeadingClasses } from './properties/leading.js';
+import { generateLetterSpacingClasses } from './properties/letterSpacing.js';
+import { generateLineClampClasses } from './properties/lineClamp.js';
+import { generateLineHeightClasses } from './properties/lineHeight.js';
 import { generateGapClasses } from './properties/gap.js';
 import { generateGridTemplateColumnsClasses } from './properties/gridTemplateColumns.js';
 import { generateGridTemplateRowsClasses } from './properties/gridTemplateRows.js';
@@ -42,6 +45,7 @@ import { generateGridAutoRowsClasses } from './properties/gridAutoRows.js';
 import { generateGridRowStartEndClasses } from './properties/gridRowStartEnd.js';
 import { generateGridColumnStartEndClasses } from './properties/gridColumnStartEnd.js';
 import { generateFontSizeClasses } from './properties/fontSize.js';
+import { generateFontSmoothingClasses } from './properties/fontSmoothing.js';
 import { generateFontStyleClasses } from './properties/fontStyle.js';
 import { generateFontWeightClasses } from './properties/fontWeight.js';
 import { generateFontVariantNumericClasses } from './properties/fontVariantNumeric.js';
@@ -111,6 +115,9 @@ export function generateAllClasses() {
         ...generateMarginClasses(),     // Statik margin class'ları
         ...generatePaddingClasses(),    // Statik padding class'ları
         ...generateLeadingClasses(),    // Statik line-height
+        ...generateLetterSpacingClasses(), // Statik letter-spacing class'ları
+        ...generateLineClampClasses(),   // Statik line-clamp class'ları
+        ...generateLineHeightClasses(),   // Statik line-height class'ları
         ...generateGapClasses(),     // Statik gap class'ları
         ...generateGridTemplateColumnsClasses(), // Statik grid-template-columns class'ları
         ...generateGridTemplateRowsClasses(), // Statik grid-template-rows class'ları
@@ -120,6 +127,7 @@ export function generateAllClasses() {
         ...generateGridRowStartEndClasses(), // Statik grid-row-start-end class'ları
         ...generateGridColumnStartEndClasses(), // Statik grid-column-start-end class'ları
         ...generateFontSizeClasses(),    // Statik font-size class'ları
+        ...generateFontSmoothingClasses(),  // Statik font-smoothing class'ları
         ...generateFontStyleClasses(),    // Statik font-style class'ları
         ...generateFontWeightClasses(),   // Statik font-weight class'ları
         ...generateFontVariantNumericClasses(), // Statik font-variant-numeric class'ları
