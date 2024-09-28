@@ -55,6 +55,12 @@ export function generateColorClasses() {
             // caret-color
             colorClasses[`caret-${colorName}-${value}`] = `caret-color: ${darkenedColor};`;
 
+            // fill-color
+            colorClasses[`fill-${colorName}-${value}`] = `fill: ${darkenedColor};`;
+
+            // stroke-color
+            colorClasses[`stroke-${colorName}-${value}`] = `stroke: ${darkenedColor};`;
+
         });
     });
 
@@ -99,6 +105,18 @@ export function generateColorClasses() {
     colorClasses['caret-transparent'] = 'caret-color: transparent;';
     colorClasses['caret-black'] = 'caret-color: rgb(0 0 0);';
     colorClasses['caret-white'] = 'caret-color: rgb(255 255 255);';
+
+    colorClasses['fill-inherit'] = 'fill: inherit;';
+    colorClasses['fill-current'] = 'fill: currentColor;';
+    colorClasses['fill-transparent'] = 'fill: transparent;';
+    colorClasses['fill-black'] = 'fill: rgb(0 0 0);';
+    colorClasses['fill-white'] = 'fill: rgb(255 255 255);';
+
+    colorClasses['stroke-inherit'] = 'stroke: inherit;';
+    colorClasses['stroke-current'] = 'stroke: currentColor;';
+    colorClasses['stroke-transparent'] = 'stroke: transparent;';
+    colorClasses['stroke-black'] = 'stroke: rgb(0 0 0);';
+    colorClasses['stroke-white'] = 'stroke: rgb(255 255 255);';
 
     return colorClasses;
 }
