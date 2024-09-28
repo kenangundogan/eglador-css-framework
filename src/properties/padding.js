@@ -1,17 +1,55 @@
 export function generatePaddingClasses() {
     const classes = {};
-    const paddingScale = ['auto', '0px', '1px', '0.125rem', '0.25rem', '0.375rem', '0.5rem', '0.625rem', '0.75rem', '0.875rem', '1rem', '1.25rem', '1.5rem', '1.75rem', '2rem', '2.25rem', '2.5rem', '2.75rem', '3rem', '3.5rem', '4rem', '5rem', '6rem', '7rem', '8rem', '9rem', '10rem', '11rem', '12rem', '13rem', '14rem', '15rem', '16rem', '18rem', '20rem', '24rem'];
-    const paddingNames = ['auto', '0', 'px', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7', '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40', '44', '48', '52', '56', '60', '64', '72', '80', '96'];
 
-    paddingScale.forEach((value, index) => {
-        const remValue = `${value}`;
-        classes[`p-${paddingNames[index]}`] = `padding: ${remValue};`;
-        classes[`pt-${paddingNames[index]}`] = `padding-top: ${remValue};`;
-        classes[`pr-${paddingNames[index]}`] = `padding-right: ${remValue};`;
-        classes[`pb-${paddingNames[index]}`] = `padding-bottom: ${remValue};`;
-        classes[`pl-${paddingNames[index]}`] = `padding-left: ${remValue};`;
-        classes[`px-${paddingNames[index]}`] = `padding-left: ${remValue}; padding-right: ${remValue};`;
-        classes[`py-${paddingNames[index]}`] = `padding-top: ${remValue}; padding-bottom: ${remValue};`;
+    const paddingValues = {
+        '0': '0px',
+        'px': '1px',
+        '0.5': '0.125rem',  // 2px
+        '1': '0.25rem',     // 4px
+        '1.5': '0.375rem',  // 6px
+        '2': '0.5rem',      // 8px
+        '2.5': '0.625rem',  // 10px
+        '3': '0.75rem',     // 12px
+        '3.5': '0.875rem',  // 14px
+        '4': '1rem',        // 16px
+        '5': '1.25rem',     // 20px
+        '6': '1.5rem',      // 24px
+        '7': '1.75rem',     // 28px
+        '8': '2rem',        // 32px
+        '9': '2.25rem',     // 36px
+        '10': '2.5rem',     // 40px
+        '11': '2.75rem',    // 44px
+        '12': '3rem',       // 48px
+        '14': '3.5rem',     // 56px
+        '16': '4rem',       // 64px
+        '20': '5rem',       // 80px
+        '24': '6rem',       // 96px
+        '28': '7rem',       // 112px
+        '32': '8rem',       // 128px
+        '36': '9rem',       // 144px
+        '40': '10rem',      // 160px
+        '44': '11rem',      // 176px
+        '48': '12rem',      // 192px
+        '52': '13rem',      // 208px
+        '56': '14rem',      // 224px
+        '60': '15rem',      // 240px
+        '64': '16rem',      // 256px
+        '72': '18rem',      // 288px
+        '80': '20rem',      // 320px
+        '96': '24rem'       // 384px
+    };
+
+    Object.keys(paddingValues).forEach(key => {
+        const value = paddingValues[key];
+        classes[`p-${key}`] = `padding: ${value};`;
+        classes[`px-${key}`] = `padding-left: ${value}; padding-right: ${value};`;
+        classes[`py-${key}`] = `padding-top: ${value}; padding-bottom: ${value};`;
+        classes[`ps-${key}`] = `padding-inline-start: ${value};`;
+        classes[`pe-${key}`] = `padding-inline-end: ${value};`;
+        classes[`pt-${key}`] = `padding-top: ${value};`;
+        classes[`pr-${key}`] = `padding-right: ${value};`;
+        classes[`pb-${key}`] = `padding-bottom: ${value};`;
+        classes[`pl-${key}`] = `padding-left: ${value};`;
     });
 
     return classes;

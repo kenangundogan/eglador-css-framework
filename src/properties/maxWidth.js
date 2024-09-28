@@ -1,11 +1,69 @@
 export function generateMaxWidthClasses() {
     const classes = {};
-    const maxWidthScale = ['0px','1px','0.125rem','0.25rem','0.375rem','0.5rem','0.625rem','0.75rem','0.875rem','1rem','1.25rem','1.5rem','1.75rem','2rem','2.25rem','2.5rem','2.75rem','3rem','3.5rem','4rem','5rem','6rem','7rem','8rem','9rem','10rem','11rem','12rem','13rem','14rem','15rem','16rem','18rem','20rem','24rem','none','20rem','24rem','28rem','32rem','36rem','42rem','48rem','56rem','64rem','72rem','80rem','100%','min-content','max-content','fit-content','65ch','640px','768px','1024px','1280px','1536px'];
-    const maxWidthNames = ['0','px','0.5','1','1.5','2','2.5','3','3.5','4','5','6','7','8','9','10','11','12','14','16','20','24','28','32','36','40','44','48','52','56','60','64','72','80','96','none','xs','sm','md','lg','xl','2xl','3xl','4xl','5xl','6xl','7xl','full','min','max','fit','prose','screen-sm','screen-md','screen-lg','screen-xl','screen-2xl'];
 
-    maxWidthScale.forEach((value, index) => {
-        const remValue = `${value}`;
-        classes[`max-w-${maxWidthNames[index]}`] = `max-width: ${remValue};`;
+    const maxWidthValues = {
+        '0': '0px',
+        'px': '1px',
+        '0.5': '0.125rem',  // 2px
+        '1': '0.25rem',     // 4px
+        '1.5': '0.375rem',  // 6px
+        '2': '0.5rem',      // 8px
+        '2.5': '0.625rem',  // 10px
+        '3': '0.75rem',     // 12px
+        '3.5': '0.875rem',  // 14px
+        '4': '1rem',        // 16px
+        '5': '1.25rem',     // 20px
+        '6': '1.5rem',      // 24px
+        '7': '1.75rem',     // 28px
+        '8': '2rem',        // 32px
+        '9': '2.25rem',     // 36px
+        '10': '2.5rem',     // 40px
+        '11': '2.75rem',    // 44px
+        '12': '3rem',       // 48px
+        '14': '3.5rem',     // 56px
+        '16': '4rem',       // 64px
+        '20': '5rem',       // 80px
+        '24': '6rem',       // 96px
+        '28': '7rem',       // 112px
+        '32': '8rem',       // 128px
+        '36': '9rem',       // 144px
+        '40': '10rem',      // 160px
+        '44': '11rem',      // 176px
+        '48': '12rem',      // 192px
+        '52': '13rem',      // 208px
+        '56': '14rem',      // 224px
+        '60': '15rem',      // 240px
+        '64': '16rem',      // 256px
+        '72': '18rem',      // 288px
+        '80': '20rem',      // 320px
+        '96': '24rem',      // 384px
+        'none': 'none',
+        'xs': '20rem',      // 320px
+        'sm': '24rem',      // 384px
+        'md': '28rem',      // 448px
+        'lg': '32rem',      // 512px
+        'xl': '36rem',      // 576px
+        '2xl': '42rem',     // 672px
+        '3xl': '48rem',     // 768px
+        '4xl': '56rem',     // 896px
+        '5xl': '64rem',     // 1024px
+        '6xl': '72rem',     // 1152px
+        '7xl': '80rem',     // 1280px
+        'full': '100%',
+        'min': 'min-content',
+        'max': 'max-content',
+        'fit': 'fit-content',
+        'prose': '65ch',
+        'screen-sm': '640px',
+        'screen-md': '768px',
+        'screen-lg': '1024px',
+        'screen-xl': '1280px',
+        'screen-2xl': '1536px',
+    };
+
+    Object.keys(maxWidthValues).forEach(key => {
+        const value = maxWidthValues[key];
+        classes[`max-w-${key}`] = `max-width: ${value};`;
     });
 
     return classes;

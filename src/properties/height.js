@@ -1,11 +1,79 @@
 export function generateHeightClasses() {
     const classes = {};
-    const heightScale = ['0px', '1px', '0.125rem', '0.25rem', '0.375rem', '0.5rem', '0.625rem', '0.75rem', '0.875rem', '1rem', '1.25rem', '1.5rem', '1.75rem', '2rem', '2.25rem', '2.5rem', '2.75rem', '3rem', '3.5rem', '4rem', '5rem', '6rem', '7rem', '8rem', '9rem', '10rem', '11rem', '12rem', '13rem', '14rem', '15rem', '16rem', '18rem', '20rem', '24rem', 'auto', '50%', '33.333333%', '66.666667%', '25%', '50%', '75%', '20%', '40%', '60%', '80%', '16.666667%', '33.333333%', '50%', '66.666667%', '83.333333%', '100%', '100vh', '100svh', '100lvh', '100dvh', 'min-content', 'max-content', 'fit-content'];
-    const heightNames = ['0', 'px', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7', '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40', '44', '48', '52', '56', '60', '64', '72', '80', '96', 'auto', '1/2', '1/3', '2/3', '1/4', '2/4', '3/4', '1/5', '2/5', '3/5', '4/5', '1/6', '2/6', '3/6', '4/6', '5/6', 'full', 'screen', 'svh', 'lvh', 'dvh', 'min', 'max', 'fit'];
 
-    heightScale.forEach((value, index) => {
-        const remValue = `${value}`;
-        classes[`h-${heightNames[index]}`] = `height: ${remValue};`;
+    const heightValues = {
+        '0': '0px',
+        'px': '1px',
+        '0.5': '0.125rem',  // 2px
+        '1': '0.25rem',     // 4px
+        '1.5': '0.375rem',  // 6px
+        '2': '0.5rem',      // 8px
+        '2.5': '0.625rem',  // 10px
+        '3': '0.75rem',     // 12px
+        '3.5': '0.875rem',  // 14px
+        '4': '1rem',        // 16px
+        '5': '1.25rem',     // 20px
+        '6': '1.5rem',      // 24px
+        '7': '1.75rem',     // 28px
+        '8': '2rem',        // 32px
+        '9': '2.25rem',     // 36px
+        '10': '2.5rem',     // 40px
+        '11': '2.75rem',    // 44px
+        '12': '3rem',       // 48px
+        '14': '3.5rem',     // 56px
+        '16': '4rem',       // 64px
+        '20': '5rem',       // 80px
+        '24': '6rem',       // 96px
+        '28': '7rem',       // 112px
+        '32': '8rem',       // 128px
+        '36': '9rem',       // 144px
+        '40': '10rem',      // 160px
+        '44': '11rem',      // 176px
+        '48': '12rem',      // 192px
+        '52': '13rem',      // 208px
+        '56': '14rem',      // 224px
+        '60': '15rem',      // 240px
+        '64': '16rem',      // 256px
+        '72': '18rem',      // 288px
+        '80': '20rem',      // 320px
+        '96': '24rem',      // 384px
+        'auto': 'auto',
+        'full': '100%',
+        'screen': '100vh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+        'dvh': '100dvh',
+        'min': 'min-content',
+        'max': 'max-content',
+        'fit': 'fit-content'
+    };
+
+    const fractionalHeights = {
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+        '1/6': '16.666667%',
+        '2/6': '33.333333%',
+        '3/6': '50%',
+        '4/6': '66.666667%',
+        '5/6': '83.333333%'
+    };
+
+    Object.keys(heightValues).forEach(key => {
+        const value = heightValues[key];
+        classes[`h-${key}`] = `height: ${value};`;
+    });
+
+    Object.keys(fractionalHeights).forEach(key => {
+        const value = fractionalHeights[key];
+        classes[`h-${key}`] = `height: ${value};`;
     });
 
     return classes;

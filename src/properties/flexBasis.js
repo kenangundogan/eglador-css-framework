@@ -1,7 +1,6 @@
 export function generateFlexBasisClasses() {
     const classes = {};
 
-    // Flex-basis değerleri
     const basisValues = {
         '0': '0px',
         'px': '1px',
@@ -68,7 +67,6 @@ export function generateFlexBasisClasses() {
         'full': '100%',
     };
 
-    // Sınıfları oluştur
     Object.keys(basisValues).forEach(key => {
         const value = basisValues[key];
         classes[`basis-${key}`] = `flex-basis: ${value};`;
