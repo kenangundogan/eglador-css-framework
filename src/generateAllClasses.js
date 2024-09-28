@@ -104,6 +104,9 @@ import { generateScrollSnapStopClasses } from './properties/scrollSnapStop.js';
 import { generateUserSelectClasses } from './properties/userSelect.js';
 import { generatetouchActionClasses } from './properties/touchAction.js';
 import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
+import { generateBreakAfterClasses } from './properties/breakAfter.js';
+import { generateBreakBeforeClasses } from './properties/breakBefore.js';
+import { generateBreakInsideClasses } from './properties/breakInside.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -215,6 +218,9 @@ export function generateAllClasses() {
         ...generateUserSelectClasses(),
         ...generatetouchActionClasses(),
         ...generateStrokeWidthClasses(),
+        ...generateBreakAfterClasses(),
+        ...generateBreakBeforeClasses(),
+        ...generateBreakInsideClasses(),
         ...generateColorClasses(),
         ...generateBreakpointsClasses(),
     };
