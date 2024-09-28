@@ -99,6 +99,7 @@ import { generateResizeClasses } from './properties/resize.js';
 import { generateScrollBehaviorClasses } from './properties/scrollBehavior.js';
 import { generateUserSelectClasses } from './properties/userSelect.js';
 import { generatetouchActionClasses } from './properties/touchAction.js';
+import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -205,6 +206,7 @@ export function generateAllClasses() {
         ...generateScrollBehaviorClasses(),
         ...generateUserSelectClasses(),
         ...generatetouchActionClasses(),
+        ...generateStrokeWidthClasses(),
         ...generateColorClasses(),
         ...generateBreakpointsClasses(),
     };
