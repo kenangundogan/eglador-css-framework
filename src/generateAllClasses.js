@@ -97,6 +97,8 @@ import { generateZIndexClasses } from './properties/zIndex.js';
 import { generatePointerEventClasses } from './properties/pointerEvent.js';
 import { generateResizeClasses } from './properties/resize.js';
 import { generateScrollBehaviorClasses } from './properties/scrollBehavior.js';
+import { generateScrollMarginClasses } from './properties/scrollMargin.js';
+import { generateScrollPaddingClasses } from './properties/scrollPadding.js';
 import { generateUserSelectClasses } from './properties/userSelect.js';
 import { generatetouchActionClasses } from './properties/touchAction.js';
 import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
@@ -204,6 +206,8 @@ export function generateAllClasses() {
         ...generatePointerEventClasses(),
         ...generateResizeClasses(),
         ...generateScrollBehaviorClasses(),
+        ...generateScrollMarginClasses(),
+        ...generateScrollPaddingClasses(),
         ...generateUserSelectClasses(),
         ...generatetouchActionClasses(),
         ...generateStrokeWidthClasses(),
