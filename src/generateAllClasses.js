@@ -55,6 +55,8 @@ import { generateFontVariantNumericClasses } from './properties/fontVariantNumer
 import { generateFontFamilyClasses } from './properties/fontFamily.js';
 import { generateBorderClasses } from './properties/border.js';
 import { generateBorderRadiusClasses } from './properties/borderRadius.js';
+import { generateBorderStyleClasses } from './properties/borderStyle.js';
+import { generateBorderWidthClasses } from './properties/borderWidth.js';
 import { generateBackgroundAttachmentClasses } from './properties/backgroundAttachment.js';
 import { generateBackgroundClipClasses } from './properties/backgroundClip.js';
 import { generateBackgroundImageClasses } from './properties/backgroundImage.js';
@@ -80,6 +82,9 @@ import { generateIsolationClasses } from './properties/isolation.js';
 import { generateColumnsClasses } from './properties/columns.js';
 import { generateBoxSizingClasses } from './properties/boxSizing.js';
 import { generateBoxDecorationBreakClasses } from './properties/boxDecorationBreak.js';
+import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
+import { generateOutlineStyleClasses } from './properties/outlineStyle.js';
+import { generateOutlineWidthClasses } from './properties/outlineWidth.js';
 import { generateVerticalAlignClasses } from './properties/verticalAlign.js';
 import { generateVisibilityClasses } from './properties/visibility.js';
 import { generateWordBreakClasses } from './properties/wordBreak.js';
@@ -147,6 +152,8 @@ export function generateAllClasses() {
         ...generateFontFamilyClasses(),
         ...generateBorderClasses(),
         ...generateBorderRadiusClasses(),
+        ...generateBorderStyleClasses(),
+        ...generateBorderWidthClasses(),
         ...generateBackgroundAttachmentClasses(),
         ...generateBackgroundClipClasses(),
         ...generateBackgroundImageClasses(),
@@ -172,6 +179,9 @@ export function generateAllClasses() {
         ...generateColumnsClasses(),
         ...generateBoxSizingClasses(),
         ...generateBoxDecorationBreakClasses(),
+        ...generateOutlineOffsetClasses(),
+        ...generateOutlineStyleClasses(),
+        ...generateOutlineWidthClasses(),
         ...generateVerticalAlignClasses(),
         ...generateVisibilityClasses(),
         ...generateWordBreakClasses(),
