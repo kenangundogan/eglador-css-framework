@@ -1,9 +1,12 @@
 import { generateAspectRatioClasses } from './properties/aspectRatio.js';
 import { generateOverflowClasses } from './properties/overflow.js';
+import { generateOverscrollBehaviorClasses } from './properties/overscrollBehavior.js';
 import { generatePositionClasses } from './properties/position.js';
 import { generateOrderClasses } from './properties/order.js';
 import { generateTopRightBottomLeftClasses } from './properties/topRightBottomLeft.js';
 import { generateDisplayClasses } from './properties/display.js';
+import { generateFloatClasses } from './properties/float.js';
+import { generateClearClasses } from './properties/clear.js';
 import { generateJustifyContentClasses } from './properties/justifyContent.js';
 import { generateJustifyItemsClasses } from './properties/justifyItems.js';
 import { generateJustifySelfClasses } from './properties/justifySelf.js';
@@ -72,93 +75,107 @@ import { generateListStylePositionClasses } from './properties/listStylePosition
 import { generateListStyleTypeClasses } from './properties/listStyleType.js';
 import { generateContentClasses } from './properties/content.js';
 import { generateHyphensClasses } from './properties/Hyphens.js';
+import { generateIsolationClasses } from './properties/isolation.js';
+import { generateColumnsClasses } from './properties/columns.js';
+import { generateBoxSizingClasses } from './properties/boxSizing.js';
+import { generateBoxDecorationBreakClasses } from './properties/boxDecorationBreak.js';
 import { generateVerticalAlignClasses } from './properties/verticalAlign.js';
+import { generateVisibilityClasses } from './properties/visibility.js';
 import { generateWordBreakClasses } from './properties/wordBreak.js';
 import { generateWhiteSpaceClasses } from './properties/whiteSpace.js';
+import { generateZIndexClasses } from './properties/zIndex.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
-// Tüm class'ları birleştiren fonksiyon
 export function generateAllClasses() {
     return {
-        ...generateAspectRatioClasses(), // Statik aspect-ratio class'ları
-        ...generateOverflowClasses(),    // Statik overflow class'ları
-        ...generatePositionClasses(),   // Statik position class'ları
-        ...generateOrderClasses(),     // Statik order class'ları
-        ...generateTopRightBottomLeftClasses(), // Statik top, right, bottom, left class'ları
-        ...generateDisplayClasses(),     // Statik display class'ları
-        ...generateJustifyContentClasses(), // Statik justify-content class'ları
-        ...generateJustifyItemsClasses(),  // Statik justify-items class'ları
-        ...generateJustifySelfClasses(),   // Statik justify-self class'ları
-        ...generateAlignContentClasses(),  // Statik align-content class'ları
-        ...generateAlignItemsClasses(), // Statik align-items class'ları
-        ...generateAlignSelfClasses(),   // Statik align-self class'ları
-        ...generatePlaceContentClasses(),  // Statik place-content class'ları
-        ...generatePlaceItemsClasses(),   // Statik place-items class'ları
-        ...generatePlaceSelfClasses(),    // Statik place-self class'ları
-        ...generateFlexDirectionClasses(), // Statik flex-direction class'ları
-        ...generateFlexWrapClasses(),    // Statik flex-wrap class'ları
-        ...generateFlexBasisClasses(),    // Statik flex-basis class'ları
-        ...generateFlexClasses(),     // Statik flex class'ları
-        ...generateFlexGrowClasses(),    // Statik flex-grow class'ları
-        ...generateFlexShrinkClasses(),   // Statik flex-shrink class'ları
-        ...generateAppearanceClasses(),   // Statik appearance class'ları
-        ...generateObjectFitClasses(),    // Statik object-fit class'ları
-        ...generateObjectPositionClasses(), // Statik object-position class'ları
-        ...generateWidthClasses(),     // Statik width class'ları
-        ...generateMaxWidthClasses(),    // Statik max-width class'ları
-        ...generateMinWidthClasses(),    // Statik min-width class'ları
-        ...generateHeightClasses(),    // Statik height class'ları
-        ...generateMaxHeightClasses(),   // Statik max-height class'ları
-        ...generateMinHeightClasses(),   // Statik min-height class'ları
-        ...generateSizeClasses(),     // Statik width ve height class'ları
-        ...generateSpaceClasses(),   // Statik space class'ları
-        ...generateMarginClasses(),     // Statik margin class'ları
-        ...generatePaddingClasses(),    // Statik padding class'ları
-        ...generateLeadingClasses(),    // Statik line-height
-        ...generateLetterSpacingClasses(), // Statik letter-spacing class'ları
-        ...generateLineClampClasses(),   // Statik line-clamp class'ları
-        ...generateLineHeightClasses(),   // Statik line-height class'ları
-        ...generateGapClasses(),     // Statik gap class'ları
-        ...generateGridTemplateColumnsClasses(), // Statik grid-template-columns class'ları
-        ...generateGridTemplateRowsClasses(), // Statik grid-template-rows class'ları
-        ...generateGridAutoFlowClasses(),   // Statik grid-auto-flow class'ları
-        ...generateGridAutoColumnsClasses(), // Statik grid-auto-columns class'ları
-        ...generateGridAutoRowsClasses(),   // Statik grid-auto-rows class'ları
-        ...generateGridRowStartEndClasses(), // Statik grid-row-start-end class'ları
-        ...generateGridColumnStartEndClasses(), // Statik grid-column-start-end class'ları
-        ...generateFontSizeClasses(),    // Statik font-size class'ları
-        ...generateFontSmoothingClasses(),  // Statik font-smoothing class'ları
-        ...generateFontStyleClasses(),    // Statik font-style class'ları
-        ...generateFontWeightClasses(),   // Statik font-weight class'ları
-        ...generateFontVariantNumericClasses(), // Statik font-variant-numeric class'ları
-        ...generateFontFamilyClasses(),   // Statik font-family class'ları
-        ...generateBorderClasses(),     // Statik border class'ları
-        ...generateBorderRadiusClasses(), // Statik border-radius class'ları
-        ...generateBackgroundAttachmentClasses(), // Statik background-attachment class'ları
-        ...generateBackgroundClipClasses(),  // Statik background-clip class'ları
-        ...generateBackgroundOriginClasses(), // Statik background-origin class'ları
-        ...generateBackgroundPositionClasses(), // Statik background-position class'ları
-        ...generateBackgroundRepeatClasses(), // Statik background-repeat class'ları
-        ...generateBackgroundSizeClasses(),  // Statik background-size class'ları
-        ...generateTextAlignClasses(),    // Statik text-align class'ları
-        ...generateTextDecorationClasses(), // Statik text-decoration class'ları
-        ...generateTextDecorationStyleClasses(), // Statik text-decoration-style class'ları
-        ...generateTextDecorationThicknessClasses(), // Statik text-decoration-thickness class'ları
-        ...generateTextIndentClasses(),   // Statik text-indent class'ları
-        ...generateTextOverflowClasses(),  // Statik text-overflow class'ları
-        ...generateTextTransformClasses(),  // Statik text-transform class'ları
-        ...generateTextUnderlineOffsetClasses(), // Statik text-underline-offset class'ları
-        ...generateTextWrapClasses(),    // Statik text-wrap class'ları
-        ...generateListStyleImageClasses(), // Statik list-style-image class'ları
-        ...generateListStylePositionClasses(), // Statik list-style-position class'ları
-        ...generateListStyleTypeClasses(),  // Statik list-style-type class'ları
-        ...generateContentClasses(),     // Statik content class'ları
-        ...generateHyphensClasses(),     // Statik hyphens class'ları
-        ...generateVerticalAlignClasses(), // Statik vertical-align class'ları
-        ...generateWordBreakClasses(),    // Statik word-break class'ları
-        ...generateWhiteSpaceClasses(),   // Statik white-space class'ları
-        ...generateColorClasses(),     // Statik background-color class'ları
-        ...generateBreakpointsClasses(), // Statik breakpoint class'ları
+        ...generateAspectRatioClasses(),
+        ...generateOverflowClasses(),
+        ...generateOverscrollBehaviorClasses(),
+        ...generatePositionClasses(),
+        ...generateOrderClasses(),
+        ...generateTopRightBottomLeftClasses(),
+        ...generateDisplayClasses(),
+        ...generateFloatClasses(),
+        ...generateClearClasses(),
+        ...generateJustifyContentClasses(),
+        ...generateJustifyItemsClasses(),
+        ...generateJustifySelfClasses(),
+        ...generateAlignContentClasses(),
+        ...generateAlignItemsClasses(),
+        ...generateAlignSelfClasses(),
+        ...generatePlaceContentClasses(),
+        ...generatePlaceItemsClasses(),
+        ...generatePlaceSelfClasses(),
+        ...generateFlexDirectionClasses(),
+        ...generateFlexWrapClasses(),
+        ...generateFlexBasisClasses(),
+        ...generateFlexClasses(),
+        ...generateFlexGrowClasses(),
+        ...generateFlexShrinkClasses(),
+        ...generateAppearanceClasses(),
+        ...generateObjectFitClasses(),
+        ...generateObjectPositionClasses(),
+        ...generateWidthClasses(),
+        ...generateMaxWidthClasses(),
+        ...generateMinWidthClasses(),
+        ...generateHeightClasses(),
+        ...generateMaxHeightClasses(),
+        ...generateMinHeightClasses(),
+        ...generateSizeClasses(),
+        ...generateSpaceClasses(),
+        ...generateMarginClasses(),
+        ...generatePaddingClasses(),
+        ...generateLeadingClasses(),
+        ...generateLetterSpacingClasses(),
+        ...generateLineClampClasses(),
+        ...generateLineHeightClasses(),
+        ...generateGapClasses(),
+        ...generateGridTemplateColumnsClasses(),
+        ...generateGridTemplateRowsClasses(),
+        ...generateGridAutoFlowClasses(),
+        ...generateGridAutoColumnsClasses(),
+        ...generateGridAutoRowsClasses(),
+        ...generateGridRowStartEndClasses(),
+        ...generateGridColumnStartEndClasses(),
+        ...generateFontSizeClasses(),
+        ...generateFontSmoothingClasses(),
+        ...generateFontStyleClasses(),
+        ...generateFontWeightClasses(),
+        ...generateFontVariantNumericClasses(),
+        ...generateFontFamilyClasses(),
+        ...generateBorderClasses(),
+        ...generateBorderRadiusClasses(),
+        ...generateBackgroundAttachmentClasses(),
+        ...generateBackgroundClipClasses(),
+        ...generateBackgroundOriginClasses(),
+        ...generateBackgroundPositionClasses(),
+        ...generateBackgroundRepeatClasses(),
+        ...generateBackgroundSizeClasses(),
+        ...generateTextAlignClasses(),
+        ...generateTextDecorationClasses(),
+        ...generateTextDecorationStyleClasses(),
+        ...generateTextDecorationThicknessClasses(),
+        ...generateTextIndentClasses(),
+        ...generateTextOverflowClasses(),
+        ...generateTextTransformClasses(),
+        ...generateTextUnderlineOffsetClasses(),
+        ...generateTextWrapClasses(),
+        ...generateListStyleImageClasses(),
+        ...generateListStylePositionClasses(),
+        ...generateListStyleTypeClasses(),
+        ...generateContentClasses(),
+        ...generateHyphensClasses(),
+        ...generateIsolationClasses(),
+        ...generateColumnsClasses(),
+        ...generateBoxSizingClasses(),
+        ...generateBoxDecorationBreakClasses(),
+        ...generateVerticalAlignClasses(),
+        ...generateVisibilityClasses(),
+        ...generateWordBreakClasses(),
+        ...generateWhiteSpaceClasses(),
+        ...generateZIndexClasses(),
+        ...generateColorClasses(),
+        ...generateBreakpointsClasses(),
     };
 }
