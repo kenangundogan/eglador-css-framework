@@ -80,6 +80,7 @@ import { generateListStyleImageClasses } from './properties/listStyleImage.js';
 import { generateListStylePositionClasses } from './properties/listStylePosition.js';
 import { generateListStyleTypeClasses } from './properties/listStyleType.js';
 import { generateContentClasses } from './properties/content.js';
+import { generateCursorClasses } from './properties/cursor.js';
 import { generateHyphensClasses } from './properties/Hyphens.js';
 import { generateIsolationClasses } from './properties/isolation.js';
 import { generateColumnsClasses } from './properties/columns.js';
@@ -93,6 +94,11 @@ import { generateVisibilityClasses } from './properties/visibility.js';
 import { generateWordBreakClasses } from './properties/wordBreak.js';
 import { generateWhiteSpaceClasses } from './properties/whiteSpace.js';
 import { generateZIndexClasses } from './properties/zIndex.js';
+import { generatePointerEventClasses } from './properties/pointerEvent.js';
+import { generateResizeClasses } from './properties/resize.js';
+import { generateScrollBehaviorClasses } from './properties/scrollBehavior.js';
+import { generateUserSelectClasses } from './properties/userSelect.js';
+import { generatetouchActionClasses } from './properties/touchAction.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -180,6 +186,7 @@ export function generateAllClasses() {
         ...generateListStylePositionClasses(),
         ...generateListStyleTypeClasses(),
         ...generateContentClasses(),
+        ...generateCursorClasses(),
         ...generateHyphensClasses(),
         ...generateIsolationClasses(),
         ...generateColumnsClasses(),
@@ -193,6 +200,11 @@ export function generateAllClasses() {
         ...generateWordBreakClasses(),
         ...generateWhiteSpaceClasses(),
         ...generateZIndexClasses(),
+        ...generatePointerEventClasses(),
+        ...generateResizeClasses(),
+        ...generateScrollBehaviorClasses(),
+        ...generateUserSelectClasses(),
+        ...generatetouchActionClasses(),
         ...generateColorClasses(),
         ...generateBreakpointsClasses(),
     };

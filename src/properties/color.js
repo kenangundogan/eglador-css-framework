@@ -52,6 +52,9 @@ export function generateColorClasses() {
             // accent-color
             colorClasses[`accent-${colorName}-${value}`] = `accent-color: ${darkenedColor};`;
 
+            // caret-color
+            colorClasses[`caret-${colorName}-${value}`] = `caret-color: ${darkenedColor};`;
+
         });
     });
 
@@ -90,6 +93,12 @@ export function generateColorClasses() {
     colorClasses['accent-transparent'] = 'accent-color: transparent;';
     colorClasses['accent-black'] = 'accent-color: rgb(0 0 0);';
     colorClasses['accent-white'] = 'accent-color: rgb(255 255 255);';
+
+    colorClasses['caret-inherit'] = 'caret-color: inherit;';
+    colorClasses['caret-current'] = 'caret-color: currentColor;';
+    colorClasses['caret-transparent'] = 'caret-color: transparent;';
+    colorClasses['caret-black'] = 'caret-color: rgb(0 0 0);';
+    colorClasses['caret-white'] = 'caret-color: rgb(255 255 255);';
 
     return colorClasses;
 }
