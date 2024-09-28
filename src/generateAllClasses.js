@@ -107,6 +107,8 @@ import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
 import { generateBreakAfterClasses } from './properties/breakAfter.js';
 import { generateBreakBeforeClasses } from './properties/breakBefore.js';
 import { generateBreakInsideClasses } from './properties/breakInside.js';
+import { generateScreenReadersClasses } from './properties/screenReaders.js';
+import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -221,6 +223,8 @@ export function generateAllClasses() {
         ...generateBreakAfterClasses(),
         ...generateBreakBeforeClasses(),
         ...generateBreakInsideClasses(),
+        ...generateScreenReadersClasses(),
+        ...generateForcedColorAdjustClasses(),
         ...generateColorClasses(),
         ...generateBreakpointsClasses(),
     };
