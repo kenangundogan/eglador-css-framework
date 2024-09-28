@@ -62,7 +62,10 @@ import { generateTextOverflowClasses } from './properties/textOverflow.js';
 import { generateTextTransformClasses } from './properties/textTransform.js';
 import { generateTextUnderlineOffsetClasses } from './properties/textUnderlineOffset.js';
 import { generateTextWrapClasses } from './properties/textWrap.js';
-import { generateContentClasses } from './properties/Content.js';
+import { generateListStyleImageClasses } from './properties/listStyleImage.js';
+import { generateListStylePositionClasses } from './properties/listStylePosition.js';
+import { generateListStyleTypeClasses } from './properties/listStyleType.js';
+import { generateContentClasses } from './properties/content.js';
 import { generateHyphensClasses } from './properties/Hyphens.js';
 import { generateVerticalAlignClasses } from './properties/verticalAlign.js';
 import { generateWordBreakClasses } from './properties/wordBreak.js';
@@ -137,6 +140,9 @@ export function generateAllClasses() {
         ...generateTextTransformClasses(),  // Statik text-transform class'ları
         ...generateTextUnderlineOffsetClasses(), // Statik text-underline-offset class'ları
         ...generateTextWrapClasses(),    // Statik text-wrap class'ları
+        ...generateListStyleImageClasses(), // Statik list-style-image class'ları
+        ...generateListStylePositionClasses(), // Statik list-style-position class'ları
+        ...generateListStyleTypeClasses(),  // Statik list-style-type class'ları
         ...generateContentClasses(),     // Statik content class'ları
         ...generateHyphensClasses(),     // Statik hyphens class'ları
         ...generateVerticalAlignClasses(), // Statik vertical-align class'ları
