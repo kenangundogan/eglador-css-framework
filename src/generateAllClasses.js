@@ -58,9 +58,15 @@ import { generateTextAlignClasses } from './properties/textAlign.js';
 import { generateTextDecorationClasses } from './properties/textDecoration.js';
 import { generateTextDecorationStyleClasses } from './properties/textDecorationStyle.js';
 import { generateTextIndentClasses } from './properties/textIndent.js';
+import { generateTextOverflowClasses } from './properties/textOverflow.js';
 import { generateTextTransformClasses } from './properties/textTransform.js';
 import { generateTextUnderlineOffsetClasses } from './properties/textUnderlineOffset.js';
 import { generateTextWrapClasses } from './properties/textWrap.js';
+import { generateContentClasses } from './properties/Content.js';
+import { generateHyphensClasses } from './properties/Hyphens.js';
+import { generateVerticalAlignClasses } from './properties/verticalAlign.js';
+import { generateWordBreakClasses } from './properties/wordBreak.js';
+import { generateWhiteSpaceClasses } from './properties/whiteSpace.js';
 import { generateColorClasses } from './properties/color.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
@@ -127,9 +133,15 @@ export function generateAllClasses() {
         ...generateTextDecorationClasses(), // Statik text-decoration class'ları
         ...generateTextDecorationStyleClasses(), // Statik text-decoration-style class'ları
         ...generateTextIndentClasses(),   // Statik text-indent class'ları
+        ...generateTextOverflowClasses(),  // Statik text-overflow class'ları
         ...generateTextTransformClasses(),  // Statik text-transform class'ları
         ...generateTextUnderlineOffsetClasses(), // Statik text-underline-offset class'ları
         ...generateTextWrapClasses(),    // Statik text-wrap class'ları
+        ...generateContentClasses(),     // Statik content class'ları
+        ...generateHyphensClasses(),     // Statik hyphens class'ları
+        ...generateVerticalAlignClasses(), // Statik vertical-align class'ları
+        ...generateWordBreakClasses(),    // Statik word-break class'ları
+        ...generateWhiteSpaceClasses(),   // Statik white-space class'ları
         ...generateColorClasses(),     // Statik background-color class'ları
         ...generateBreakpointsClasses(), // Statik breakpoint class'ları
     };
