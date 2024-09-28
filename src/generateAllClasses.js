@@ -57,6 +57,7 @@ import { generateBorderClasses } from './properties/border.js';
 import { generateBorderRadiusClasses } from './properties/borderRadius.js';
 import { generateBackgroundAttachmentClasses } from './properties/backgroundAttachment.js';
 import { generateBackgroundClipClasses } from './properties/backgroundClip.js';
+import { generateBackgroundImageClasses } from './properties/backgroundImage.js';
 import { generateBackgroundOriginClasses } from './properties/backgroundOrigin.js';
 import { generateBackgroundPositionClasses } from './properties/backgroundPosition.js';
 import { generateBackgroundRepeatClasses } from './properties/backgroundRepeat.js';
@@ -148,6 +149,7 @@ export function generateAllClasses() {
         ...generateBorderRadiusClasses(),
         ...generateBackgroundAttachmentClasses(),
         ...generateBackgroundClipClasses(),
+        ...generateBackgroundImageClasses(),
         ...generateBackgroundOriginClasses(),
         ...generateBackgroundPositionClasses(),
         ...generateBackgroundRepeatClasses(),

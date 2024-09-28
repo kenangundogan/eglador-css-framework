@@ -5,9 +5,9 @@ export function generateSpaceClasses() {
 
     spaceScale.forEach((value, index) => {
         const unitValue = `${value}`;
-        classes[`space-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--tw-space-x-reverse: 0; margin-right: ${unitValue}; margin-left: ${unitValue};`;
-        classes[`space-y-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--tw-space-y-reverse: 0; margin-top: ${unitValue}; margin-bottom: ${unitValue};`;
-        classes[`space-x-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--tw-space-x-reverse: 0; margin-right: ${unitValue}; margin-left: ${unitValue};`;
+        classes[`space-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--kg-space-x-reverse: 0; margin-right: ${unitValue}; margin-left: ${unitValue};`;
+        classes[`space-y-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--kg-space-y-reverse: 0; margin-top: ${unitValue}; margin-bottom: ${unitValue};`;
+        classes[`space-x-${spaceNames[index]} > :not([hidden]) ~ :not([hidden])`] = `--kg-space-x-reverse: 0; margin-right: ${unitValue}; margin-left: ${unitValue};`;
     });
 
     return classes;
