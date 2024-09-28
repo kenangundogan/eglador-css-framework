@@ -61,6 +61,7 @@ import { generateBackgroundSizeClasses } from './properties/backgroundSize.js';
 import { generateTextAlignClasses } from './properties/textAlign.js';
 import { generateTextDecorationClasses } from './properties/textDecoration.js';
 import { generateTextDecorationStyleClasses } from './properties/textDecorationStyle.js';
+import { generateTextDecorationThicknessClasses } from './properties/textDecorationThickness.js';
 import { generateTextIndentClasses } from './properties/textIndent.js';
 import { generateTextOverflowClasses } from './properties/textOverflow.js';
 import { generateTextTransformClasses } from './properties/textTransform.js';
@@ -143,6 +144,7 @@ export function generateAllClasses() {
         ...generateTextAlignClasses(),    // Statik text-align class'ları
         ...generateTextDecorationClasses(), // Statik text-decoration class'ları
         ...generateTextDecorationStyleClasses(), // Statik text-decoration-style class'ları
+        ...generateTextDecorationThicknessClasses(), // Statik text-decoration-thickness class'ları
         ...generateTextIndentClasses(),   // Statik text-indent class'ları
         ...generateTextOverflowClasses(),  // Statik text-overflow class'ları
         ...generateTextTransformClasses(),  // Statik text-transform class'ları
