@@ -99,6 +99,8 @@ import { generateResizeClasses } from './properties/resize.js';
 import { generateScrollBehaviorClasses } from './properties/scrollBehavior.js';
 import { generateScrollMarginClasses } from './properties/scrollMargin.js';
 import { generateScrollPaddingClasses } from './properties/scrollPadding.js';
+import { generateScrollSnapAlignClasses } from './properties/scrollSnapAlign.js';
+import { generateScrollSnapStopClasses } from './properties/scrollSnapStop.js';
 import { generateUserSelectClasses } from './properties/userSelect.js';
 import { generatetouchActionClasses } from './properties/touchAction.js';
 import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
@@ -208,6 +210,8 @@ export function generateAllClasses() {
         ...generateScrollBehaviorClasses(),
         ...generateScrollMarginClasses(),
         ...generateScrollPaddingClasses(),
+        ...generateScrollSnapAlignClasses(),
+        ...generateScrollSnapStopClasses(),
         ...generateUserSelectClasses(),
         ...generatetouchActionClasses(),
         ...generateStrokeWidthClasses(),
