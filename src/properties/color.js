@@ -43,6 +43,9 @@ export function generateColorClasses() {
 
             // border-color class'ı için CSS kuralı oluşturalım
             colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor};`;
+
+            // text-decoration-color class'ı için CSS kuralı oluşturalım
+            colorClasses[`decoration-${colorName}-${value}`] = `text-decoration-color: ${darkenedColor};`;
         });
     });
 
@@ -63,6 +66,12 @@ export function generateColorClasses() {
     colorClasses['border-transparent'] = 'border-color: transparent;';
     colorClasses['border-black'] = 'border-color: rgb(0 0 0);';
     colorClasses['border-white'] = 'border-color: rgb(255 255 255);';
+
+    colorClasses['decoration-inherit'] = 'text-decoration-color: inherit;';
+    colorClasses['decoration-current'] = 'text-decoration-color: currentColor;';
+    colorClasses['decoration-transparent'] = 'text-decoration-color: transparent;';
+    colorClasses['decoration-black'] = 'text-decoration-color: rgb(0 0 0);';
+    colorClasses['decoration-white'] = 'text-decoration-color: rgb(255 255 255);';
 
     return colorClasses;
 }

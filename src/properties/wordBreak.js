@@ -1,4 +1,4 @@
-export function generateWhiteSpaceClasses() {
+export function generateWordBreakClasses() {
     return {
         'break-normal': 'overflow-wrap: normal; word-break: normal;',
         'break-words': 'overflow-wrap: break-word;',
