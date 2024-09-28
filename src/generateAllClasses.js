@@ -25,6 +25,9 @@ import { generateFlexShrinkClasses } from './properties/flexShrink.js';
 import { generateAppearanceClasses } from './properties/appearance.js';
 import { generateObjectFitClasses } from './properties/objectFit.js';
 import { generateObjectPositionClasses } from './properties/objectPosition.js';
+import { generateOpacityClasses } from './properties/opacity.js';
+import { generateMixBlendModeClasses } from './properties/mixBlendMode.js';
+import { generateBackgroundBlendModeClasses } from './properties/backgroundBlendMode.js';
 import { generateWidthClasses } from './properties/width.js';
 import { generateMaxWidthClasses } from './properties/maxWidth.js';
 import { generateMinWidthClasses } from './properties/minWidth.js';
@@ -122,6 +125,9 @@ export function generateAllClasses() {
         ...generateAppearanceClasses(),
         ...generateObjectFitClasses(),
         ...generateObjectPositionClasses(),
+        ...generateOpacityClasses(),
+        ...generateMixBlendModeClasses(),
+        ...generateBackgroundBlendModeClasses(),
         ...generateWidthClasses(),
         ...generateMaxWidthClasses(),
         ...generateMinWidthClasses(),
