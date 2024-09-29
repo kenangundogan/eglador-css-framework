@@ -61,6 +61,9 @@ export function generateColorClasses() {
             // stroke-color
             colorClasses[`stroke-${colorName}-${value}`] = `stroke: ${darkenedColor};`;
 
+            // divide-color
+            colorClasses[`divide-${colorName}-${value}` + ' > * + *'] = {'border-color': darkenedColor };
+
         });
     });
 
@@ -117,6 +120,12 @@ export function generateColorClasses() {
     colorClasses['stroke-transparent'] = 'stroke: transparent;';
     colorClasses['stroke-black'] = 'stroke: rgb(0 0 0);';
     colorClasses['stroke-white'] = 'stroke: rgb(255 255 255);';
+
+    colorClasses['divide-inherit > * + *'] = {'border-color': 'inherit' };
+    colorClasses['divide-current > * + *'] = {'border-color': 'currentColor' };
+    colorClasses['divide-transparent > * + *'] = {'border-color': 'transparent' };
+    colorClasses['divide-black > * + *'] = {'border-color': 'rgb(0 0 0)' };
+    colorClasses['divide-white > * + *'] = {'border-color': 'rgb(255 255 255)' };
 
     return colorClasses;
 }

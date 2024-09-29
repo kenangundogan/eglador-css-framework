@@ -34,8 +34,7 @@ import { generateMinWidthClasses } from './properties/minWidth.js';
 import { generateHeightClasses } from './properties/height.js';
 import { generateMaxHeightClasses } from './properties/maxHeight.js';
 import { generateMinHeightClasses } from './properties/minHeight.js';
-import { generateSizeClasses } from './properties/size.js';
-import { generateSpaceClasses } from './properties/space.js';
+import { generateSizeClasses } from './properties/size.js';;
 import { generateMarginClasses } from './properties/margin.js';
 import { generatePaddingClasses } from './properties/padding.js';
 import { generateLeadingClasses } from './properties/leading.js';
@@ -111,6 +110,9 @@ import { generateBreakInsideClasses } from './properties/breakInside.js';
 import { generateScreenReadersClasses } from './properties/screenReaders.js';
 import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust.js';
 import { generateColorClasses } from './properties/color.js';
+import { generateSpaceClasses } from './properties/space.js'
+import { generateDivideStyleClasses } from './properties/divideStyle.js';
+import { generateDivideWidthClasses } from './properties/divideWidth.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
 export function generateAllClasses() {
@@ -152,7 +154,6 @@ export function generateAllClasses() {
         ...generateMaxHeightClasses(),
         ...generateMinHeightClasses(),
         ...generateSizeClasses(),
-        ...generateSpaceClasses(),
         ...generateMarginClasses(),
         ...generatePaddingClasses(),
         ...generateLeadingClasses(),
@@ -228,6 +229,9 @@ export function generateAllClasses() {
         ...generateScreenReadersClasses(),
         ...generateForcedColorAdjustClasses(),
         ...generateColorClasses(),
+        ...generateSpaceClasses(),
+        ...generateDivideStyleClasses(),
+        ...generateDivideWidthClasses(),
         ...generateBreakpointsClasses(),
     };
 }
