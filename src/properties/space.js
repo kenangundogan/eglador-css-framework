@@ -45,25 +45,25 @@ export function generateSpaceClasses() {
 
         // space-x sınıfları
         classes[`space-x-${valueKey} > * + *`] = {
-            '--tw-space-x-reverse': '0',
-            'margin-right': `calc(${value} * var(--tw-space-x-reverse))`,
-            'margin-left': `calc(${value} * calc(1 - var(--tw-space-x-reverse)))`
+            '--kg-space-x-reverse': '0',
+            'margin-right': `calc(${value} * var(--kg-space-x-reverse))`,
+            'margin-left': `calc(${value} * calc(1 - var(--kg-space-x-reverse)))`
         };
 
         // space-y sınıfları
         classes[`space-y-${valueKey} > * + *`] = {
-            '--tw-space-y-reverse': '0',
-            'margin-top': `calc(${value} * calc(1 - var(--tw-space-y-reverse)))`,
-            'margin-bottom': `calc(${value} * var(--tw-space-y-reverse))`
+            '--kg-space-y-reverse': '0',
+            'margin-top': `calc(${value} * calc(1 - var(--kg-space-y-reverse)))`,
+            'margin-bottom': `calc(${value} * var(--kg-space-y-reverse))`
         };
     });
 
     // Reverse sınıflarını oluştur
     classes['space-x-reverse > * + *'] = {
-        '--tw-space-x-reverse': '1',
+        '--kg-space-x-reverse': '1',
     };
     classes['space-y-reverse > * + *'] = {
-        '--tw-space-y-reverse': '1',
+        '--kg-space-y-reverse': '1',
     };
     return classes;
 }

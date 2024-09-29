@@ -2,6 +2,7 @@ import fs from 'fs';
 import config from './eglador.config.js';
 import { readCssFile } from './readCssFile.js';
 import { extractClassesFromFiles } from './classExtractor.js';
+import { generateRootDefinationClasses } from './properties/rootDefination.js';
 import { generateResetCss } from './generateResetCss.js';
 import { generateAllClasses } from './generateAllClasses.js';
 import { generateBaseCss } from './baseCss.js';
@@ -10,6 +11,9 @@ import { generateSelectorCss } from './selectorCss.js';
 
 // Tüm class'ları toplayıp CSS dosyasına yazan fonksiyon
 export function writeCssFile() {
+
+    // Root defination class'larını oluştur
+    const rootDefinationCss = generateRootDefinationClasses();
 
     // CSS reset dosyasını oluştur
     const resetCss = generateResetCss();
@@ -33,6 +37,6 @@ export function writeCssFile() {
     const inputCssContent = readCssFile();
 
     // CSS dosyasını belirlenen output dosyasına yaz
-    fs.writeFileSync(config.output, `${resetCss}\n${baseCss}\n${selectorCss}\n${responsiveCss}\n${inputCssContent}`);
+    fs.writeFileSync(config.output, `${rootDefinationCss}\n${resetCss}\n${baseCss}\n${selectorCss}\n${responsiveCss}\n${inputCssContent}`);
     console.log(`CSS file generated successfully at ${config.output}`);
 }

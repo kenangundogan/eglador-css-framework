@@ -33,15 +33,16 @@ export function generateColorClasses() {
     Object.entries(colors).forEach(([colorName, startColor]) => {
         colorValueRange.forEach((value, index) => {
             const darkenedColor = tinycolor(startColor).darken((index / colorValueRange.length) * 100).toRgbString();
+            const transparentColor = tinycolor(startColor).setAlpha(0).toRgbString();
 
             // background-color
-            colorClasses[`bg-${colorName}-${value}`] = `background-color: ${darkenedColor};`;
+            colorClasses[`bg-${colorName}-${value}`] = `background-color: ${darkenedColor}; --kg-bg-opacity: 1;`;
 
             // text-color
-            colorClasses[`text-${colorName}-${value}`] = `color: ${darkenedColor};`;
+            colorClasses[`text-${colorName}-${value}`] = `color: ${darkenedColor}; --kg-text-opacity: 1;`;
 
             // border-color
-            colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor};`;
+            colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor}; --kg-border-opacity: 1;`;
 
             // text-decoration-color
             colorClasses[`decoration-${colorName}-${value}`] = `text-decoration-color: ${darkenedColor};`;
@@ -62,7 +63,19 @@ export function generateColorClasses() {
             colorClasses[`stroke-${colorName}-${value}`] = `stroke: ${darkenedColor};`;
 
             // divide-color
-            colorClasses[`divide-${colorName}-${value}` + ' > * + *'] = {'border-color': darkenedColor };
+            colorClasses[`divide-${colorName}-${value}` + ' > * + *'] = { 'border-color': darkenedColor };
+
+            // background-color to, via, from
+            colorClasses[`to-${colorName}-${value}`] = `--kg-gradient-to: ${darkenedColor} var(--kg-gradient-to-position);`;
+            colorClasses[`via-${colorName}-${value}`] = `
+            --kg-gradient-to: ${transparentColor} var(--kg-gradient-to-position);
+            --kg-gradient-stops: var(--kg-gradient-from), ${darkenedColor} var(--kg-gradient-to-position), var(--kg-gradient-to);
+            `;
+            colorClasses[`from-${colorName}-${value}`] = `
+            --kg-gradient-from: ${darkenedColor} var(--kg-gradient-from-position);
+            --kg-gradient-to: ${transparentColor} var(--kg-gradient-to-position);
+            --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);
+            `;
 
         });
     });
@@ -121,11 +134,11 @@ export function generateColorClasses() {
     colorClasses['stroke-black'] = 'stroke: rgb(0 0 0);';
     colorClasses['stroke-white'] = 'stroke: rgb(255 255 255);';
 
-    colorClasses['divide-inherit > * + *'] = {'border-color': 'inherit' };
-    colorClasses['divide-current > * + *'] = {'border-color': 'currentColor' };
-    colorClasses['divide-transparent > * + *'] = {'border-color': 'transparent' };
-    colorClasses['divide-black > * + *'] = {'border-color': 'rgb(0 0 0)' };
-    colorClasses['divide-white > * + *'] = {'border-color': 'rgb(255 255 255)' };
+    colorClasses['divide-inherit > * + *'] = { 'border-color': 'inherit' };
+    colorClasses['divide-current > * + *'] = { 'border-color': 'currentColor' };
+    colorClasses['divide-transparent > * + *'] = { 'border-color': 'transparent' };
+    colorClasses['divide-black > * + *'] = { 'border-color': 'rgb(0 0 0)' };
+    colorClasses['divide-white > * + *'] = { 'border-color': 'rgb(255 255 255)' };
 
     return colorClasses;
 }
