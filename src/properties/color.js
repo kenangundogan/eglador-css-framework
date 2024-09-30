@@ -65,6 +65,9 @@ export function generateColorClasses() {
             // divide-color
             colorClasses[`divide-${colorName}-${value}` + ' > * + *'] = { 'border-color': darkenedColor };
 
+            // shadow-color
+            colorClasses[`shadow-${colorName}-${value}`] = `--kg-shadow-color: ${darkenedColor}; --kg-shadow: var(--kg-shadow-colored)!important;`;
+
             // background-color to, via, from
             colorClasses[`to-${colorName}-${value}`] = `--kg-gradient-to: ${darkenedColor} var(--kg-gradient-to-position);`;
             colorClasses[`via-${colorName}-${value}`] = `
