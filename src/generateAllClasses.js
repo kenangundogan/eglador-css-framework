@@ -140,6 +140,13 @@ import { generateBorderSpacingClasses } from './properties/borderSpacing.js';
 import { generateTableLayoutClasses } from './properties/tableLayout.js';
 import { generateCaptionSideClasses } from './properties/captionSide.js';
 
+// Transitions & Animation
+import { generateTransitionPropertyClasses } from './properties/transitionProperty.js';
+import { generateTransitionDurationClasses } from './properties/transitionDuration.js';
+import { generateTransitionTimingFunctionClasses } from './properties/transitionTimingFunction.js';
+import { generateTransitionDelayClasses } from './properties/transitionDelay.js';
+// import { generateAnimationClasses } from './properties/animation.js';
+
 // Transforms
 import { generateTransformScaleClasses } from './properties/transformScale.js';
 import { generateTransformRotateClasses } from './properties/transformRotate.js';
@@ -314,6 +321,11 @@ export function generateAllClasses() {
         ...generateBorderSpacingClasses(),
         ...generateTableLayoutClasses(),
         ...generateCaptionSideClasses(),
+        ...generateTransitionPropertyClasses(),
+        ...generateTransitionDurationClasses(),
+        ...generateTransitionTimingFunctionClasses(),
+        ...generateTransitionDelayClasses(),
+        ...generateAnimationClasses(),
         ...generateColorClasses(),
         ...generateSpaceClasses(),
         ...generateDivideStyleClasses(),
