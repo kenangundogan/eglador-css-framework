@@ -109,6 +109,26 @@ import { generateBreakBeforeClasses } from './properties/breakBefore.js';
 import { generateBreakInsideClasses } from './properties/breakInside.js';
 import { generateScreenReadersClasses } from './properties/screenReaders.js';
 import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust.js';
+
+import { generateBlurClasses } from './properties/blur.js';
+import { generateBrightnessClasses } from './properties/brightness.js';
+import { generateContrastClasses } from './properties/contrast.js';
+import { generateDropShadowClasses } from './properties/dropShadow.js';
+import { generateGrayscaleClasses } from './properties/grayscale.js';
+import { generateHueRotateClasses } from './properties/hueRotate.js';
+import { generateInvertClasses } from './properties/invert.js';
+import { generateSaturateClasses } from './properties/saturate.js';
+import { generateSepiaClasses } from './properties/sepia.js';
+import { generateBackdropBlurClasses } from './properties/backdropBlur.js';
+import { generateBackdropBrightnessClasses } from './properties/backdropBrightness.js';
+import { generateBackdropContrastClasses } from './properties/backdropContrast.js';
+import { generateBackdropGrayscaleClasses } from './properties/backdropGrayscale.js';
+import { generateBackdropHueRotateClasses } from './properties/backdropHueRotate.js';
+import { generateBackdropInvertClasses } from './properties/backdropInvert.js';
+import { generateBackdropOpacityClasses } from './properties/backdropOpacity.js';
+import { generateBackdropSaturateClasses } from './properties/backdropSaturate.js';
+import { generateBackdropSepiaClasses } from './properties/backdropSepia.js';
+
 import { generateColorClasses } from './properties/color.js';
 import { generateSpaceClasses } from './properties/space.js'
 import { generateDivideStyleClasses } from './properties/divideStyle.js';
@@ -228,6 +248,24 @@ export function generateAllClasses() {
         ...generateBreakInsideClasses(),
         ...generateScreenReadersClasses(),
         ...generateForcedColorAdjustClasses(),
+        ...generateBlurClasses(),
+        ...generateBrightnessClasses(),
+        ...generateContrastClasses(),
+        ...generateDropShadowClasses(),
+        ...generateGrayscaleClasses(),
+        ...generateHueRotateClasses(),
+        ...generateInvertClasses(),
+        ...generateSaturateClasses(),
+        ...generateSepiaClasses(),
+        ...generateBackdropBlurClasses(),
+        ...generateBackdropBrightnessClasses(),
+        ...generateBackdropContrastClasses(),
+        ...generateBackdropGrayscaleClasses(),
+        ...generateBackdropHueRotateClasses(),
+        ...generateBackdropInvertClasses(),
+        ...generateBackdropOpacityClasses(),
+        ...generateBackdropSaturateClasses(),
+        ...generateBackdropSepiaClasses(),
         ...generateColorClasses(),
         ...generateSpaceClasses(),
         ...generateDivideStyleClasses(),

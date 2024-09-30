@@ -28,6 +28,30 @@ export function generateColorClasses() {
         rose: '#fff1f2',
     };
 
+    const opacities = {
+        '0': '0',
+        '5': '0.05',
+        '10': '0.1',
+        '15': '0.15',
+        '20': '0.2',
+        '25': '0.25',
+        '30': '0.3',
+        '35': '0.35',
+        '40': '0.4',
+        '45': '0.45',
+        '50': '0.5',
+        '55': '0.55',
+        '60': '0.6',
+        '65': '0.65',
+        '70': '0.7',
+        '75': '0.75',
+        '80': '0.8',
+        '85': '0.85',
+        '90': '0.9',
+        '95': '0.95',
+        '100': '1'
+    };
+
     const colorValueRange = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
     Object.entries(colors).forEach(([colorName, startColor]) => {
@@ -38,11 +62,26 @@ export function generateColorClasses() {
             // background-color
             colorClasses[`bg-${colorName}-${value}`] = `background-color: ${darkenedColor}; --kg-bg-opacity: 1;`;
 
+            // background-color for opacity
+            Object.keys(opacities).forEach((opacityKey) => {
+                colorClasses[`bg-${colorName}-${value}/${opacityKey}`] = `background-color: ${tinycolor(startColor).darken((index / colorValueRange.length) * 100).setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+            });
+
             // text-color
             colorClasses[`text-${colorName}-${value}`] = `color: ${darkenedColor}; --kg-text-opacity: 1;`;
 
+            // text-color for opacity
+            Object.keys(opacities).forEach((opacityKey) => {
+                colorClasses[`text-${colorName}-${value}/${opacityKey}`] = `color: ${tinycolor(startColor).darken((index / colorValueRange.length) * 100).setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+            });
+
             // border-color
             colorClasses[`border-${colorName}-${value}`] = `border-color: ${darkenedColor}; --kg-border-opacity: 1;`;
+
+            // border-color for opacity
+            Object.keys(opacities).forEach((opacityKey) => {
+                colorClasses[`border-${colorName}-${value}/${opacityKey}`] = `border-color: ${tinycolor(startColor).darken((index / colorValueRange.length) * 100).setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+            });
 
             // text-decoration-color
             colorClasses[`decoration-${colorName}-${value}`] = `text-decoration-color: ${darkenedColor};`;
@@ -89,17 +128,35 @@ export function generateColorClasses() {
     colorClasses['text-black'] = 'color: rgb(0 0 0);';
     colorClasses['text-white'] = 'color: rgb(255 255 255);';
 
+    // text-white and black with opacity
+    Object.keys(opacities).forEach((opacityKey) => {
+        colorClasses[`text-white/${opacityKey}`] = `color: ${tinycolor('#ffffff').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+        colorClasses[`text-black/${opacityKey}`] = `color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+    });
+
     colorClasses['bg-inherit'] = 'background-color: inherit;';
     colorClasses['bg-current'] = 'background-color: currentColor;';
     colorClasses['bg-transparent'] = 'background-color: transparent;';
     colorClasses['bg-black'] = 'background-color: rgb(0 0 0);';
     colorClasses['bg-white'] = 'background-color: rgb(255 255 255);';
 
+    // bg-white and black with opacity
+    Object.keys(opacities).forEach((opacityKey) => {
+        colorClasses[`bg-white/${opacityKey}`] = `background-color: ${tinycolor('#ffffff').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+        colorClasses[`bg-black/${opacityKey}`] = `background-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+    });
+
     colorClasses['border-inherit'] = 'border-color: inherit;';
     colorClasses['border-current'] = 'border-color: currentColor;';
     colorClasses['border-transparent'] = 'border-color: transparent;';
     colorClasses['border-black'] = 'border-color: rgb(0 0 0);';
     colorClasses['border-white'] = 'border-color: rgb(255 255 255);';
+
+    // border-white and black with opacity
+    Object.keys(opacities).forEach((opacityKey) => {
+        colorClasses[`border-white/${opacityKey}`] = `border-color: ${tinycolor('#ffffff').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+        colorClasses[`border-black/${opacityKey}`] = `border-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+    });
 
     colorClasses['decoration-inherit'] = 'text-decoration-color: inherit;';
     colorClasses['decoration-current'] = 'text-decoration-color: currentColor;';
