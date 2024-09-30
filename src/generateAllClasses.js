@@ -140,6 +140,13 @@ import { generateBorderSpacingClasses } from './properties/borderSpacing.js';
 import { generateTableLayoutClasses } from './properties/tableLayout.js';
 import { generateCaptionSideClasses } from './properties/captionSide.js';
 
+// Transforms
+import { generateTransformScaleClasses } from './properties/transformScale.js';
+import { generateTransformRotateClasses } from './properties/transformRotate.js';
+import { generateTransformTranslateClasses } from './properties/transformTranslate.js';
+import { generateTransformSkewClasses } from './properties/transformSkew.js';
+import { generateTransformOriginClasses } from './properties/transformOrigin.js';
+
 // Interactivity
 import { generateAppearanceClasses } from './properties/appearance.js';
 import { generateCursorClasses } from './properties/cursor.js';
@@ -299,6 +306,11 @@ export function generateAllClasses() {
         ...generateBackdropSaturateClasses(),
         ...generateBackdropSepiaClasses(),
         ...generateBorderCollapseClasses(),
+        ...generateTransformScaleClasses(),
+        ...generateTransformRotateClasses(),
+        ...generateTransformTranslateClasses(),
+        ...generateTransformSkewClasses(),
+        ...generateTransformOriginClasses(),
         ...generateBorderSpacingClasses(),
         ...generateTableLayoutClasses(),
         ...generateCaptionSideClasses(),
