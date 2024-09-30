@@ -25,9 +25,6 @@ import { generateFlexShrinkClasses } from './properties/flexShrink.js';
 import { generateAppearanceClasses } from './properties/appearance.js';
 import { generateObjectFitClasses } from './properties/objectFit.js';
 import { generateObjectPositionClasses } from './properties/objectPosition.js';
-import { generateOpacityClasses } from './properties/opacity.js';
-import { generateMixBlendModeClasses } from './properties/mixBlendMode.js';
-import { generateBackgroundBlendModeClasses } from './properties/backgroundBlendMode.js';
 import { generateWidthClasses } from './properties/width.js';
 import { generateMaxWidthClasses } from './properties/maxWidth.js';
 import { generateMinWidthClasses } from './properties/minWidth.js';
@@ -55,10 +52,7 @@ import { generateFontStyleClasses } from './properties/fontStyle.js';
 import { generateFontWeightClasses } from './properties/fontWeight.js';
 import { generateFontVariantNumericClasses } from './properties/fontVariantNumeric.js';
 import { generateFontFamilyClasses } from './properties/fontFamily.js';
-import { generateBorderClasses } from './properties/border.js';
-import { generateBorderRadiusClasses } from './properties/borderRadius.js';
-import { generateBorderStyleClasses } from './properties/borderStyle.js';
-import { generateBorderWidthClasses } from './properties/borderWidth.js';
+
 import { generateBackgroundAttachmentClasses } from './properties/backgroundAttachment.js';
 import { generateBackgroundClipClasses } from './properties/backgroundClip.js';
 import { generateBackgroundImageClasses } from './properties/backgroundImage.js';
@@ -85,10 +79,8 @@ import { generateIsolationClasses } from './properties/isolation.js';
 import { generateColumnsClasses } from './properties/columns.js';
 import { generateBoxSizingClasses } from './properties/boxSizing.js';
 import { generateBoxDecorationBreakClasses } from './properties/boxDecorationBreak.js';
-import { generateBoxShadowClasses } from './properties/boxShadow.js';
-import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
-import { generateOutlineStyleClasses } from './properties/outlineStyle.js';
-import { generateOutlineWidthClasses } from './properties/outlineWidth.js';
+
+
 import { generateVerticalAlignClasses } from './properties/verticalAlign.js';
 import { generateVisibilityClasses } from './properties/visibility.js';
 import { generateWordBreakClasses } from './properties/wordBreak.js';
@@ -102,14 +94,36 @@ import { generateScrollPaddingClasses } from './properties/scrollPadding.js';
 import { generateScrollSnapAlignClasses } from './properties/scrollSnapAlign.js';
 import { generateScrollSnapStopClasses } from './properties/scrollSnapStop.js';
 import { generateUserSelectClasses } from './properties/userSelect.js';
+import { generateWillChangeClasses } from './properties/willChange.js';
 import { generatetouchActionClasses } from './properties/touchAction.js';
 import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
 import { generateBreakAfterClasses } from './properties/breakAfter.js';
 import { generateBreakBeforeClasses } from './properties/breakBefore.js';
 import { generateBreakInsideClasses } from './properties/breakInside.js';
+
+// Borders
+import { generateBorderRadiusClasses } from './properties/borderRadius.js';
+import { generateBorderWidthClasses } from './properties/borderWidth.js';
+import { generateBorderStyleClasses } from './properties/borderStyle.js';
+import { generateDivideWidthClasses } from './properties/divideWidth.js';
+import { generateDivideStyleClasses } from './properties/divideStyle.js';
+import { generateOutlineWidthClasses } from './properties/outlineWidth.js';
+import { generateOutlineStyleClasses } from './properties/outlineStyle.js';
+import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
+import { generateRingWidthClasses } from './properties/ringWidth.js';
+import { generateRingOffsetWidthClasses } from './properties/ringOffsetWidth.js';
+
+// Effects
+import { generateBoxShadowClasses } from './properties/boxShadow.js';
+import { generateOpacityClasses } from './properties/opacity.js';
+import { generateMixBlendModeClasses } from './properties/mixBlendMode.js';
+import { generateBackgroundBlendModeClasses } from './properties/backgroundBlendMode.js';
+
+// Accessibility
 import { generateScreenReadersClasses } from './properties/screenReaders.js';
 import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust.js';
 
+// Filters
 import { generateBlurClasses } from './properties/blur.js';
 import { generateBrightnessClasses } from './properties/brightness.js';
 import { generateContrastClasses } from './properties/contrast.js';
@@ -129,10 +143,14 @@ import { generateBackdropOpacityClasses } from './properties/backdropOpacity.js'
 import { generateBackdropSaturateClasses } from './properties/backdropSaturate.js';
 import { generateBackdropSepiaClasses } from './properties/backdropSepia.js';
 
+// Tables
+import { generateBorderCollapseClasses } from './properties/borderCollapse.js';
+import { generateBorderSpacingClasses } from './properties/borderSpacing.js';
+import { generateTableLayoutClasses } from './properties/tableLayout.js';
+import { generateCaptionSideClasses } from './properties/captionSide.js';
+
 import { generateColorClasses } from './properties/color.js';
 import { generateSpaceClasses } from './properties/space.js'
-import { generateDivideStyleClasses } from './properties/divideStyle.js';
-import { generateDivideWidthClasses } from './properties/divideWidth.js';
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
 export function generateAllClasses() {
@@ -194,7 +212,6 @@ export function generateAllClasses() {
         ...generateFontWeightClasses(),
         ...generateFontVariantNumericClasses(),
         ...generateFontFamilyClasses(),
-        ...generateBorderClasses(),
         ...generateBorderRadiusClasses(),
         ...generateBorderStyleClasses(),
         ...generateBorderWidthClasses(),
@@ -226,6 +243,8 @@ export function generateAllClasses() {
         ...generateBoxDecorationBreakClasses(),
         ...generateBoxShadowClasses(),
         ...generateOutlineOffsetClasses(),
+        ...generateRingWidthClasses(),
+        ...generateRingOffsetWidthClasses(),
         ...generateOutlineStyleClasses(),
         ...generateOutlineWidthClasses(),
         ...generateVerticalAlignClasses(),
@@ -241,6 +260,7 @@ export function generateAllClasses() {
         ...generateScrollSnapAlignClasses(),
         ...generateScrollSnapStopClasses(),
         ...generateUserSelectClasses(),
+        ...generateWillChangeClasses(),
         ...generatetouchActionClasses(),
         ...generateStrokeWidthClasses(),
         ...generateBreakAfterClasses(),
@@ -266,6 +286,10 @@ export function generateAllClasses() {
         ...generateBackdropOpacityClasses(),
         ...generateBackdropSaturateClasses(),
         ...generateBackdropSepiaClasses(),
+        ...generateBorderCollapseClasses(),
+        ...generateBorderSpacingClasses(),
+        ...generateTableLayoutClasses(),
+        ...generateCaptionSideClasses(),
         ...generateColorClasses(),
         ...generateSpaceClasses(),
         ...generateDivideStyleClasses(),

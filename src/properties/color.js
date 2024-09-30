@@ -83,6 +83,14 @@ export function generateColorClasses() {
                 colorClasses[`border-${colorName}-${value}/${opacityKey}`] = `border-color: ${tinycolor(startColor).darken((index / colorValueRange.length) * 100).setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
             });
 
+            // ring-color
+            colorClasses[`ring-${colorName}-${value}`] = `--kg-ring-opacity: 1; --kg-ring-color: ${darkenedColor};`;
+
+            // ring-color for opacity
+            Object.keys(opacities).forEach((opacityKey) => {
+                colorClasses[`ring-${colorName}-${value}/${opacityKey}`] = `--kg-ring-opacity: ${opacities[opacityKey]}; --kg-ring-color: ${tinycolor(startColor).darken((index / colorValueRange.length) * 100).setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+            });
+
             // text-decoration-color
             colorClasses[`decoration-${colorName}-${value}`] = `text-decoration-color: ${darkenedColor};`;
 
@@ -156,6 +164,18 @@ export function generateColorClasses() {
     Object.keys(opacities).forEach((opacityKey) => {
         colorClasses[`border-white/${opacityKey}`] = `border-color: ${tinycolor('#ffffff').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
         colorClasses[`border-black/${opacityKey}`] = `border-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+    });
+
+    colorClasses['ring-inherit'] = 'ring-color: inherit;';
+    colorClasses['ring-current'] = 'ring-color: currentColor;';
+    colorClasses['ring-transparent'] = 'ring-color: transparent;';
+    colorClasses['ring-black'] = 'ring-color: rgb(0 0 0);';
+    colorClasses['ring-white'] = 'ring-color: rgb(255 255 255);';
+
+    // ring-white and black with opacity
+    Object.keys(opacities).forEach((opacityKey) => {
+        colorClasses[`ring-white/${opacityKey}`] = `ring-color: ${tinycolor('#ffffff').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
+        colorClasses[`ring-black/${opacityKey}`] = `ring-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
     colorClasses['decoration-inherit'] = 'text-decoration-color: inherit;';
