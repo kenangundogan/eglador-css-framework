@@ -8,12 +8,20 @@ export function generateZIndexClasses() {
         '30': '30',
         '40': '40',
         '50': '50',
+        '-10': '-10',
+        '-20': '-20',
+        '-30': '-30',
+        '-40': '-40',
+        '-50': '-50',
         'auto': 'auto',
     };
 
-    Object.keys(zIndexValues).forEach(key => {
-        const value = zIndexValues[key];
-        classes[`z-${key}`] = `z-index: ${value};`;
+    Object.entries(zIndexValues).forEach(([key, value]) => {
+        if (key.startsWith('-')) {
+            classes[`-z${key}`] = `z-index: ${value};`;
+        } else {
+            classes[`z-${key}`] = `z-index: ${value};`;
+        }
     });
 
     return classes;

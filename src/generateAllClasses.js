@@ -325,7 +325,6 @@ export function generateAllClasses() {
         ...generateTransitionDurationClasses(),
         ...generateTransitionTimingFunctionClasses(),
         ...generateTransitionDelayClasses(),
-        ...generateAnimationClasses(),
         ...generateColorClasses(),
         ...generateSpaceClasses(),
         ...generateDivideStyleClasses(),

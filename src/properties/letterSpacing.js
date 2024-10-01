@@ -12,7 +12,20 @@ export function generateLetterSpacingClasses() {
 
     Object.keys(letterSpacingValues).forEach(key => {
         const value = letterSpacingValues[key];
+
+        // Pozitif letter-spacing sınıfları
         classes[`tracking-${key}`] = `letter-spacing: ${value};`;
+
+        // Negatif letter-spacing sınıfları
+        if (value.startsWith('-')) {
+            // Eğer negatifse, pozitif hale getiriyoruz
+            const positiveValue = value.slice(1); // "-" işaretini kaldırıyoruz
+            classes[`-tracking-${key}`] = `letter-spacing: ${positiveValue};`;
+        } else {
+            // Eğer pozitifse, negatif hale getiriyoruz
+            const negativeValue = `-${value}`;
+            classes[`-tracking-${key}`] = `letter-spacing: ${negativeValue};`;
+        }
     });
 
     return classes;

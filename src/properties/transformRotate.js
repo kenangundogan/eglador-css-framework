@@ -14,8 +14,15 @@ export function generateTransformRotateClasses() {
     };
 
     Object.entries(rotations).forEach(([key, rotationValue]) => {
+        // Pozitif rotate sınıfı
         transformRotateClasses[`rotate-${key}`] = `
             --kg-rotate: ${rotationValue};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif rotate sınıfı
+        transformRotateClasses[`-rotate-${key}`] = `
+            --kg-rotate: -${rotationValue};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
     });

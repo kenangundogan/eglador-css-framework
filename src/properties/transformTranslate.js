@@ -47,15 +47,27 @@ export function generateTransformTranslateClasses() {
     };
 
     Object.entries(translations).forEach(([key, value]) => {
-        // translate-x sınıfı
+        // Pozitif translate-x sınıfı
         transformTranslateClasses[`translate-x-${key}`] = `
             --kg-translate-x: ${value};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
 
-        // translate-y sınıfı
+        // Pozitif translate-y sınıfı
         transformTranslateClasses[`translate-y-${key}`] = `
             --kg-translate-y: ${value};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif translate-x sınıfı
+        transformTranslateClasses[`-translate-x-${key}`] = `
+            --kg-translate-x: -${value};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif translate-y sınıfı
+        transformTranslateClasses[`-translate-y-${key}`] = `
+            --kg-translate-y: -${value};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
     });

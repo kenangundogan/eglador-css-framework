@@ -15,22 +15,41 @@ export function generateTransformScaleClasses() {
     };
 
     Object.entries(scales).forEach(([key, scaleValue]) => {
-        // Genel scale sınıfı
+        // Pozitif Genel scale sınıfı
         transformScaleClasses[`scale-${key}`] = `
             --kg-scale-x: ${scaleValue};
             --kg-scale-y: ${scaleValue};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
 
-        // X ekseni için scale sınıfı
+        // Pozitif X ekseni için scale sınıfı
         transformScaleClasses[`scale-x-${key}`] = `
             --kg-scale-x: ${scaleValue};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
 
-        // Y ekseni için scale sınıfı
+        // Pozitif Y ekseni için scale sınıfı
         transformScaleClasses[`scale-y-${key}`] = `
             --kg-scale-y: ${scaleValue};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif Genel scale sınıfı
+        transformScaleClasses[`-scale-${key}`] = `
+            --kg-scale-x: -${scaleValue};
+            --kg-scale-y: -${scaleValue};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif X ekseni için scale sınıfı
+        transformScaleClasses[`-scale-x-${key}`] = `
+            --kg-scale-x: -${scaleValue};
+            transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
+        `;
+
+        // Negatif Y ekseni için scale sınıfı
+        transformScaleClasses[`-scale-y-${key}`] = `
+            --kg-scale-y: -${scaleValue};
             transform: translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y));
         `;
     });

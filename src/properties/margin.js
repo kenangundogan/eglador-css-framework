@@ -52,6 +52,16 @@ export function generateMarginClasses() {
         classes[`mr-${key}`] = `margin-right: ${value};`;
         classes[`mb-${key}`] = `margin-bottom: ${value};`;
         classes[`ml-${key}`] = `margin-left: ${value};`;
+
+        classes[`-m-${key}`] = `margin: -${value};`;
+        classes[`-mx-${key}`] = `margin-left: -${value}; margin-right: -${value};`;
+        classes[`-my-${key}`] = `margin-top: -${value}; margin-bottom: -${value};`;
+        classes[`-ms-${key}`] = `margin-inline-start: -${value};`;
+        classes[`-me-${key}`] = `margin-inline-end: -${value};`;
+        classes[`-mt-${key}`] = `margin-top: -${value};`;
+        classes[`-mr-${key}`] = `margin-right: -${value};`;
+        classes[`-mb-${key}`] = `margin-bottom: -${value};`;
+        classes[`-ml-${key}`] = `margin-left: -${value};`;
     });
 
     return classes;

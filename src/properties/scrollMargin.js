@@ -41,6 +41,8 @@ export function generateScrollMarginClasses() {
 
     Object.keys(margins).forEach((key) => {
         const value = margins[key];
+
+        // Pozitif scroll-margin sınıfları
         classes[`scroll-m-${key}`] = `scroll-margin: ${value};`;
         classes[`scroll-mx-${key}`] = `scroll-margin-left: ${value}; scroll-margin-right: ${value};`;
         classes[`scroll-my-${key}`] = `scroll-margin-top: ${value}; scroll-margin-bottom: ${value};`;
@@ -50,6 +52,18 @@ export function generateScrollMarginClasses() {
         classes[`scroll-mr-${key}`] = `scroll-margin-right: ${value};`;
         classes[`scroll-mb-${key}`] = `scroll-margin-bottom: ${value};`;
         classes[`scroll-ml-${key}`] = `scroll-margin-left: ${value};`;
+
+        // Negatif scroll-margin sınıfları
+        classes[`-scroll-m-${key}`] = `scroll-margin: -${value};`;
+        classes[`-scroll-mx-${key}`] = `scroll-margin-left: -${value}; scroll-margin-right: -${value};`;
+        classes[`-scroll-my-${key}`] = `scroll-margin-top: -${value}; scroll-margin-bottom: -${value};`;
+        classes[`-scroll-ms-${key}`] = `scroll-margin-inline-start: -${value};`;
+        classes[`-scroll-me-${key}`] = `scroll-margin-inline-end: -${value};`;
+        classes[`-scroll-mt-${key}`] = `scroll-margin-top: -${value};`;
+        classes[`-scroll-mr-${key}`] = `scroll-margin-right: -${value};`;
+        classes[`-scroll-mb-${key}`] = `scroll-margin-bottom: -${value};`;
+        classes[`-scroll-ml-${key}`] = `scroll-margin-left: -${value};`;
+
     });
 
     return classes;

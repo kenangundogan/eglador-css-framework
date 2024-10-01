@@ -41,7 +41,12 @@ export function generateTextIndentClasses() {
 
     Object.keys(textIndentValues).forEach(key => {
         const value = textIndentValues[key];
+
+        // Pozitif text-indent sınıfları
         classes[`indent-${key}`] = `text-indent: ${value};`;
+
+        // Negatif text-indent sınıfları (0 ve px dahil)
+        classes[`-indent-${key}`] = `text-indent: -${value};`;
     });
 
     return classes;

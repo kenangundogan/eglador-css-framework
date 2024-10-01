@@ -1,3 +1,6 @@
+import { cssObjectToString } from './utils/cssObjectToString.js';
+import { escapeClassName } from './utils/escapeClassName.js';
+
 import { generateBreakpointsClasses } from './properties/breakpoints.js';
 import { generatePseudoClasses } from './properties/pseudoClasses.js';
 import { generatePseudoElements } from './properties/pseudoElements.js';
@@ -56,7 +59,7 @@ export function generateResponsiveCss(extractedClasses, allClasses) {
                         fullSelector = `.${breakpoint}\\:${pseudoElementPrefix}\\:${restClass}\::${pseudoElementPrefix}`;
                     }
                     else {
-                        fullSelector = `.${breakpoint}\\:${restClass}`;
+                        fullSelector = '.' + escapeClassName(breakpoint+ ':' + restClass);
                     }
                 }
 
@@ -72,6 +75,5 @@ export function generateResponsiveCss(extractedClasses, allClasses) {
         mediaQueryCss += `@media (min-width: ${breakpoint}) { ${mediaQueryGroups[breakpoint].join(' ')} } `;
     });
 
-    console.log('Media Query CSS:', mediaQueryCss);
     return mediaQueryCss;
 }
