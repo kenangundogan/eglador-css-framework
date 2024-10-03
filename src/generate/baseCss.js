@@ -1,7 +1,7 @@
-import { cssObjectToString } from './utils/cssObjectToString.js';
-import { escapeClassName } from './utils/escapeClassName.js';
+import { cssObjectToString } from '../utils/cssObjectToString.js';
+import { escapeClassName } from '../utils/escapeClassName.js';
 
-export function generateBaseCss(base, allClasses) {
+export function baseCss(base, allClasses) {
     const baseCss = base.map(className => {
         if (className.startsWith('space-') || className.startsWith('-space-')) {
             const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];

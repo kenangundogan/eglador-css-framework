@@ -1,11 +1,12 @@
-import { cssObjectToString } from './utils/cssObjectToString.js';
-import { escapeClassName } from './utils/escapeClassName.js';
+import { cssObjectToString } from '../utils/cssObjectToString.js';
+import { escapeClassName } from '../utils/escapeClassName.js';
 
-import { generateBreakpointsClasses } from './properties/breakpoints.js';
-import { generatePseudoClasses } from './properties/pseudoClasses.js';
-import { generatePseudoElements } from './properties/pseudoElements.js';
+import { generateBreakpointsClasses } from '../properties/breakpoints.js';
+import { generatePseudoClasses } from '../properties/pseudoClasses.js';
+import { generatePseudoElements } from '../properties/pseudoElements.js';
+import { processCustomCss } from './customCssProcessor.js';
 
-export function generateResponsiveCss(extractedClasses, allClasses) {
+export function responsiveCss(extractedClasses, allClasses) {
     const breakpoints = generateBreakpointsClasses();  // Breakpoint'leri alıyoruz
     const pseudoClasses = generatePseudoClasses();  // Pseudo class'ları alıyoruz
     const pseudoElements = generatePseudoElements();  // Pseudo element'leri alıyoruz
@@ -37,8 +38,21 @@ export function generateResponsiveCss(extractedClasses, allClasses) {
                 }
             });
 
+            let baseClassContent = "";
+
+            // restClass içinde '[' ve ']' karakterleri varsa bunlar custom class olabilir
+            if (restClass.includes('[') && restClass.includes(']')) {
+                const customCssContent = processCustomCss(restClass);
+                if (customCssContent) {
+                    console.log('Custom class:', restClass);
+                    console.log('Generated CSS:', customCssContent);
+                }
+            }
+
             // Base class'ı bulalım
-            const baseClassContent = allClasses[restClass];  // Kalan restClass sadece base class olmalı
+            else {
+                baseClassContent = allClasses[restClass];
+            }
 
             // Eğer baseClassContent varsa media query grubuna ekle
             if (baseClassContent) {
@@ -59,7 +73,7 @@ export function generateResponsiveCss(extractedClasses, allClasses) {
                         fullSelector = `.${breakpoint}\\:${pseudoElementPrefix}\\:${restClass}\::${pseudoElementPrefix}`;
                     }
                     else {
-                        fullSelector = '.' + escapeClassName(breakpoint+ ':' + restClass);
+                        fullSelector = '.' + escapeClassName(breakpoint + ':' + restClass);
                     }
                 }
 

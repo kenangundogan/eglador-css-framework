@@ -2,12 +2,12 @@ import fs from 'fs';
 import config from './eglador.config.js';
 import { readCssFile } from './readCssFile.js';
 import { extractClassesFromFiles } from './classExtractor.js';
-import { generateCustomClass } from './generateCustomClass.js';
-import { generateRootDefinationClasses } from './properties/rootDefination.js';
-import { generateResetCss } from './generateResetCss.js';
+import { rootDefinationCss } from './properties/rootDefination.js';
+import { resetCss } from './generate/resetCss.js';
 import { generateAllClasses } from './generateAllClasses.js';
-import { generateBaseCss } from './baseCss.js';
-import { generateResponsiveCss } from './generateResponsiveCss.js';
+import { baseCss } from './generate/baseCss.js';
+import { responsiveCss } from './generate/responsiveCss.js';
+import { customCss } from './generate/customCss.js';
 import { generateSelectorCss } from './selectorCss.js';
 import { groupClasses } from './classGroups.js';
 
@@ -15,10 +15,10 @@ import { groupClasses } from './classGroups.js';
 export function writeCssFile() {
 
     // Root defination class'larını oluştur
-    const rootDefinationCss = generateRootDefinationClasses();
+    const rootDefinationCssResult = rootDefinationCss();
 
     // CSS reset dosyasını oluştur
-    const resetCss = generateResetCss();
+    const resetCssResult = resetCss();
 
     // Tüm base class'ları al
     const allClasses = generateAllClasses();
@@ -31,13 +31,13 @@ export function writeCssFile() {
     console.log(groupedClasses);
 
     // Custom class'ları işleyelim
-    // const customCss = generateCustomClass(extractedClasses);
+    const customCssResult = customCss(extractedClasses);
 
     // Statik class'ları işleyelim
-    const baseCss = generateBaseCss(groupedClasses.base, allClasses);
+    const baseCssResult = baseCss(groupedClasses.base, allClasses);
 
     // Media query class'larını işleyelim
-    const responsiveCss = generateResponsiveCss(groupedClasses.responsive, allClasses);
+    const responsiveCssResult = responsiveCss(groupedClasses.responsive, allClasses);
 
     // Tüm selector class'ları işleyelim
     // const selectorCss = generateSelectorCss(extractedClasses, allClasses);
@@ -46,6 +46,6 @@ export function writeCssFile() {
     const inputCssContent = readCssFile();
 
     // CSS dosyasını belirlenen output dosyasına yaz
-    fs.writeFileSync(config.output, `${rootDefinationCss}\n${resetCss}\n${baseCss}\n${responsiveCss}\n${inputCssContent}`);
+    fs.writeFileSync(config.output, `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${responsiveCssResult}\n${inputCssContent}`);
     console.log(`CSS file generated successfully at ${config.output}`);
 }
