@@ -166,11 +166,11 @@ export function generateColorClasses() {
         colorClasses[`border-black/${opacityKey}`] = `border-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
-    colorClasses['ring-inherit'] = 'ring-color: inherit;';
-    colorClasses['ring-current'] = 'ring-color: currentColor;';
-    colorClasses['ring-transparent'] = 'ring-color: transparent;';
-    colorClasses['ring-black'] = 'ring-color: rgb(0 0 0);';
-    colorClasses['ring-white'] = 'ring-color: rgb(255 255 255);';
+    colorClasses['ring-inherit'] = '--kg-ring-color: inherit;';
+    colorClasses['ring-current'] = '--kg-ring-color: currentColor;';
+    colorClasses['ring-transparent'] = '--kg-ring-color: transparent;';
+    colorClasses['ring-black'] = '--kg-ring-color: rgb(0 0 0);';
+    colorClasses['ring-white'] = '--kg-ring-color: rgb(255 255 255);';
 
     // ring-white and black with opacity
     Object.keys(opacities).forEach((opacityKey) => {

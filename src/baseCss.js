@@ -1,28 +1,22 @@
 import { cssObjectToString } from './utils/cssObjectToString.js';
 import { escapeClassName } from './utils/escapeClassName.js';
 
-// Statik class'ları CSS'e dönüştürme ve harf sırasına göre sıralama
-export function generateBaseCss(extractedClasses, allClasses) {
-    return extractedClasses
-        .filter(className => !className.includes(':')) // Responsive class'ları hariç tut
-        // .sort() // Harf sırasına göre sıralama
-        .map(className => {
-            const escapedClassName = escapeClassName(className);
+export function generateBaseCss(base, allClasses) {
+    const baseCss = base.map(className => {
+        if (className.startsWith('space-') || className.startsWith('-space-')) {
+            const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
+            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+        }
 
-            // allClasses içinde space- ile başlayan bir class varsa, onu işle
-            if (className.startsWith('space-') || className.startsWith('-space-')) {
-                const cssObj = allClasses[className + ' > * + *'];
-                return `.${escapedClassName} > * + * { ${cssObjectToString(cssObj)} }`;
-            }
-            if (className.startsWith('divide-') || className.startsWith('divide-')) {
-                const cssObj = allClasses[className + ' > * + *'];
-                return `.${escapedClassName} > * + * { ${cssObjectToString(cssObj)} }`;
-            }
-            if (allClasses[className]) {
-                return `.${escapedClassName} { ${allClasses[className]} }`; // Statik class'ı ekle
-            }
-            return null;
-        })
-        .filter(Boolean)
-        .join('\n');
+        if (className.startsWith('divide-x') || className.startsWith('divide-y') || className.startsWith('-divide-x') || className.startsWith('-divide-y')) {
+            const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
+            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+        }
+
+        if (allClasses[className]) {
+            return `.${escapeClassName(className)} { ${allClasses[className]} }`;
+        }
+    });
+
+    return baseCss.sort().join('\n');
 }
