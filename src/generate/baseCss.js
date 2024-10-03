@@ -1,20 +1,21 @@
 import { cssObjectToString } from '../utils/cssObjectToString.js';
-import { escapeClassName } from '../utils/escapeClassName.js';
 
 export function baseCss(base, allClasses) {
     const baseCss = base.map(className => {
-        if (className.startsWith('space-') || className.startsWith('-space-')) {
+        const escapedClassName = className.replace(/\//g, '\\/').replace(/\./g, '\\.');
+
+        if (escapedClassName.startsWith('space-') || escapedClassName.startsWith('-space-')) {
             const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
-            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+            return `.${escapedClassName} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
         }
 
-        if (className.startsWith('divide-x') || className.startsWith('divide-y') || className.startsWith('-divide-x') || className.startsWith('-divide-y')) {
+        if (escapedClassName.startsWith('divide-x') || escapedClassName.startsWith('divide-y') || escapedClassName.startsWith('-divide-x') || escapedClassName.startsWith('-divide-y')) {
             const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
-            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+            return `.${escapedClassName} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
         }
 
         if (allClasses[className]) {
-            return `.${escapeClassName(className)} { ${allClasses[className]} }`;
+            return `.${escapedClassName} { ${allClasses[className]} }`;
         }
     });
 

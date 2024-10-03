@@ -56,7 +56,8 @@ export function processCustomCss(restClass) {
         let cssRule = `${cssProperty}: ${value};`;
 
         // Sonuç olarak class ismi ve CSS kuralını dönelim
-        return `.${escapedClassName} { ${cssRule} }`;
+        // return `.${escapedClassName} { ${cssRule} }`;
+        return `${cssRule}`;
     }
 
     return null;
