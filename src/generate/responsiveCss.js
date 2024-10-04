@@ -1,4 +1,3 @@
-import { cssObjectToString } from '../utils/cssObjectToString.js';
 import { escapeClassName } from '../utils/escapeClassName.js';
 
 import { generateBreakpointsClasses } from '../properties/breakpoints.js';

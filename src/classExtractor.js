@@ -27,7 +27,6 @@ export function extractClassesFromFiles() {
             }
         });
     });
-    // console.log('classesFound', classesFound);
 
     return [...classesFound];
 }

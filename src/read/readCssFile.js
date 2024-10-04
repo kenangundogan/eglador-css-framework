@@ -1,5 +1,5 @@
 import fs from 'fs';
-import config from './eglador.config.js';
+import config from '../eglador.config.js';
 
 export function readCssFile() {
     const cssContent = fs.readFileSync(config.input, 'utf8');

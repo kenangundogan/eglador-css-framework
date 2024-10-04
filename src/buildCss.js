@@ -1,4 +1,3 @@
-import { writeCssFile } from './writeCssFile.js';
+import { writeCssFile } from './write/writeCssFile.js';
 
-// CSS dosyasını oluştur ve yaz
 writeCssFile();
