@@ -10,8 +10,8 @@ export function groupClasses(classes) {
     };
 
     // Pseudo-classes ve pseudo-elements tanımları
-    const pseudoClasses = ['hover', 'focus', 'active', 'group-hover', 'disabled', 'visited', 'checked', 'first', 'last', 'odd', 'even'];
-    const pseudoElements = ['before', 'after', 'first-letter', 'first-line', 'placeholder'];
+    const pseudoClasses = ['hover', 'focus', 'focus-within', 'focus-visible', 'active', 'visited', 'target', 'has', 'first', 'last', 'only', 'odd', 'even', 'first-of-type', 'last-of-type', 'only-of-type', 'empty', 'disabled', 'enabled', 'checked', 'indeterminate', 'default', 'required', 'valid', 'invalid', 'in-range', 'out-of-range', 'placeholder-shown', 'autofill', 'read-only'];
+    const pseudoElements = ['before', 'after', 'first-letter', 'first-line', 'marker', 'selection', 'file', 'backdrop', 'placeholder'];
     const brekpoints = ['sm:', 'md:', 'lg:', 'xl:', '2xl:'];
 
     classes.forEach(className => {
