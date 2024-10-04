@@ -130,6 +130,7 @@ export function generateColorClasses() {
         });
     });
 
+    // text-color
     colorClasses['text-inherit'] = 'color: inherit;';
     colorClasses['text-current'] = 'color: currentColor;';
     colorClasses['text-transparent'] = 'color: transparent;';
@@ -142,6 +143,7 @@ export function generateColorClasses() {
         colorClasses[`text-black/${opacityKey}`] = `color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
+    // background-color
     colorClasses['bg-inherit'] = 'background-color: inherit;';
     colorClasses['bg-current'] = 'background-color: currentColor;';
     colorClasses['bg-transparent'] = 'background-color: transparent;';
@@ -154,6 +156,7 @@ export function generateColorClasses() {
         colorClasses[`bg-black/${opacityKey}`] = `background-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
+    // border-color
     colorClasses['border-inherit'] = 'border-color: inherit;';
     colorClasses['border-current'] = 'border-color: currentColor;';
     colorClasses['border-transparent'] = 'border-color: transparent;';
@@ -166,6 +169,7 @@ export function generateColorClasses() {
         colorClasses[`border-black/${opacityKey}`] = `border-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
+    // ring-color
     colorClasses['ring-inherit'] = '--kg-ring-color: inherit;';
     colorClasses['ring-current'] = '--kg-ring-color: currentColor;';
     colorClasses['ring-transparent'] = '--kg-ring-color: transparent;';
@@ -178,47 +182,79 @@ export function generateColorClasses() {
         colorClasses[`ring-black/${opacityKey}`] = `ring-color: ${tinycolor('#000000').setAlpha(parseFloat(opacities[opacityKey])).toRgbString()};`;
     });
 
+    // text-decoration-color
     colorClasses['decoration-inherit'] = 'text-decoration-color: inherit;';
     colorClasses['decoration-current'] = 'text-decoration-color: currentColor;';
     colorClasses['decoration-transparent'] = 'text-decoration-color: transparent;';
     colorClasses['decoration-black'] = 'text-decoration-color: rgb(0 0 0);';
     colorClasses['decoration-white'] = 'text-decoration-color: rgb(255 255 255);';
 
+    // outline-color
     colorClasses['outline-inherit'] = 'outline-color: inherit;';
     colorClasses['outline-current'] = 'outline-color: currentColor;';
     colorClasses['outline-transparent'] = 'outline-color: transparent;';
     colorClasses['outline-black'] = 'outline-color: rgb(0 0 0);';
     colorClasses['outline-white'] = 'outline-color: rgb(255 255 255);';
 
+    // accent-color
     colorClasses['accent-inherit'] = 'accent-color: inherit;';
     colorClasses['accent-current'] = 'accent-color: currentColor;';
     colorClasses['accent-transparent'] = 'accent-color: transparent;';
     colorClasses['accent-black'] = 'accent-color: rgb(0 0 0);';
     colorClasses['accent-white'] = 'accent-color: rgb(255 255 255);';
 
+    // caret-color
     colorClasses['caret-inherit'] = 'caret-color: inherit;';
     colorClasses['caret-current'] = 'caret-color: currentColor;';
     colorClasses['caret-transparent'] = 'caret-color: transparent;';
     colorClasses['caret-black'] = 'caret-color: rgb(0 0 0);';
     colorClasses['caret-white'] = 'caret-color: rgb(255 255 255);';
 
+    // fill-color
     colorClasses['fill-inherit'] = 'fill: inherit;';
     colorClasses['fill-current'] = 'fill: currentColor;';
     colorClasses['fill-transparent'] = 'fill: transparent;';
     colorClasses['fill-black'] = 'fill: rgb(0 0 0);';
     colorClasses['fill-white'] = 'fill: rgb(255 255 255);';
 
+    // stroke-color
     colorClasses['stroke-inherit'] = 'stroke: inherit;';
     colorClasses['stroke-current'] = 'stroke: currentColor;';
     colorClasses['stroke-transparent'] = 'stroke: transparent;';
     colorClasses['stroke-black'] = 'stroke: rgb(0 0 0);';
     colorClasses['stroke-white'] = 'stroke: rgb(255 255 255);';
 
+    // divide-color
     colorClasses['divide-inherit > * + *'] = { 'border-color': 'inherit' };
     colorClasses['divide-current > * + *'] = { 'border-color': 'currentColor' };
     colorClasses['divide-transparent > * + *'] = { 'border-color': 'transparent' };
     colorClasses['divide-black > * + *'] = { 'border-color': 'rgb(0 0 0)' };
     colorClasses['divide-white > * + *'] = { 'border-color': 'rgb(255 255 255)' };
+
+    // shadow-color
+    colorClasses['shadow-inherit'] = '--kg-shadow-color: inherit; --kg-shadow: var(--kg-shadow-colored)!important;';
+    colorClasses['shadow-current'] = '--kg-shadow-color: currentColor; --kg-shadow: var(--kg-shadow-colored)!important;';
+    colorClasses['shadow-transparent'] = '--kg-shadow-color: transparent; --kg-shadow: var(--kg-shadow-colored)!important;';
+    colorClasses['shadow-black'] = '--kg-shadow-color: rgb(0 0 0); --kg-shadow: var(--kg-shadow-colored)!important;';
+    colorClasses['shadow-white'] = '--kg-shadow-color: rgb(255 255 255); --kg-shadow: var(--kg-shadow-colored)!important;';
+
+    // background-color to, via, from
+    colorClasses['to-inherit'] = '--kg-gradient-to: inherit var(--kg-gradient-to-position);';
+    colorClasses['via-inherit'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), inherit var(--kg-gradient-to-position), var(--kg-gradient-to);';
+    colorClasses['from-inherit'] = '--kg-gradient-from: inherit var(--kg-gradient-from-position); --kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);';
+    colorClasses['to-current'] = '--kg-gradient-to: currentColor var(--kg-gradient-to-position);';
+    colorClasses['via-current'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), currentColor var(--kg-gradient-to-position), var(--kg-gradient-to);';
+    colorClasses['from-current'] = '--kg-gradient-from: currentColor var(--kg-gradient-from-position); --kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);';
+    colorClasses['to-transparent'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position);';
+    colorClasses['via-transparent'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), transparent var(--kg-gradient-to-position), var(--kg-gradient-to);';
+    colorClasses['from-transparent'] = '--kg-gradient-from: transparent var(--kg-gradient-from-position); --kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);';
+    colorClasses['to-black'] = '--kg-gradient-to: rgb(0 0 0) var(--kg-gradient-to-position);';
+    colorClasses['via-black'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), rgb(0 0 0) var(--kg-gradient-to-position), var(--kg-gradient-to);';
+    colorClasses['from-black'] = '--kg-gradient-from: rgb(0 0 0) var(--kg-gradient-from-position); --kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);';
+    colorClasses['to-white'] = '--kg-gradient-to: rgb(255 255 255) var(--kg-gradient-to-position);';
+    colorClasses['via-white'] = '--kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), rgb(255 255 255) var(--kg-gradient-to-position), var(--kg-gradient-to);';
+    colorClasses['from-white'] = '--kg-gradient-from: rgb(255 255 255) var(--kg-gradient-from-position); --kg-gradient-to: transparent var(--kg-gradient-to-position); --kg-gradient-stops: var(--kg-gradient-from), var(--kg-gradient-to);';
+
 
     return colorClasses;
 }
