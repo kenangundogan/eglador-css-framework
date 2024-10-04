@@ -1,4 +1,5 @@
 import { escapeClassName } from '../utils/escapeClassName.js';
+import { prefixToPropertyMap } from './../properties/prefixToPropertyMap.js';
 
 export function cssObjectToString(cssObject) {
     return Object.entries(cssObject)
@@ -8,36 +9,6 @@ export function cssObjectToString(cssObject) {
 
 export function customCss(extractedClasses) {
     const classes = {};
-
-    // Dinamik olarak desteklenecek prefix'ler ve karşılık gelen CSS özellikleri
-    const prefixToPropertyMap = {
-        'w': 'width',
-        'h': 'height',
-        'm': 'margin',
-        'mt': 'margin-top',
-        'mr': 'margin-right',
-        'mb': 'margin-bottom',
-        'ml': 'margin-left',
-        'mx': ['margin-left', 'margin-right'], // margin-x (horizontal)
-        'my': ['margin-top', 'margin-bottom'], // margin-y (vertical)
-        'p': 'padding',
-        'pt': 'padding-top',
-        'pr': 'padding-right',
-        'pb': 'padding-bottom',
-        'pl': 'padding-left',
-        'px': ['padding-left', 'padding-right'], // padding-x (horizontal)
-        'py': ['padding-top', 'padding-bottom'], // padding-y (vertical)
-        'max-w': 'max-width',
-        'max-h': 'max-height',
-        'min-w': 'min-width',
-        'min-h': 'min-height',
-        'top': 'top',
-        'right': 'right',
-        'bottom': 'bottom',
-        'left': 'left',
-        'z': 'z-index',
-        // Diğer prefix ve CSS özelliklerini burada ekleyebilirsiniz
-    };
 
     // Tüm prefix'ler için dinamik regex oluştur
     const dynamicRegex = new RegExp(`(${Object.keys(prefixToPropertyMap).join('|')})-\\[([^\\]]+)\\]`, 'g');
@@ -72,7 +43,6 @@ export function customCss(extractedClasses) {
             }
         }
     });
-    console.log("classes", classes);
 
     // CSS nesnesini string'e çevir
     return cssObjectToString(classes);
