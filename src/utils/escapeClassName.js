@@ -9,5 +9,6 @@ export function escapeClassName(className) {
         .replace(/\(/g, '\\(')      // '(' karakterini kaçırıyoruz
         .replace(/\)/g, '\\)')      // ')' karakterini kaçırıyoruz
         .replace(/%/g, '\\%')       // '%' karakterini kaçırıyoruz
-        .replace(/(\s*-\s*)/g, '-');// '-' karakterini boşluk olmadan kaçırıyoruz
+        .replace(/(\s*-\s*)/g, '-')// '-' karakterini boşluk olmadan kaçırıyoruz
+        .replace(/#/g, '\\#')      // '#' karakterini kaçırıyoruz
 }
