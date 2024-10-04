@@ -32,7 +32,7 @@ export function writeCssFile() {
     console.log(groupedClasses);
 
     // Custom class'ları işleyelim
-    const customCssResult = customCss(extractedClasses);
+    const customCssResult = customCss(groupedClasses.custom);
 
     // Statik class'ları işleyelim
     const baseCssResult = baseCss(groupedClasses.base, allClasses);

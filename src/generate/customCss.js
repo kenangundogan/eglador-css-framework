@@ -31,16 +31,11 @@ export function customCss(extractedClasses) {
             const cssProperty = prefixToPropertyMap[prefix];
             const escapedClassName = escapeClassName(`${prefix}-[${value}]`);
 
-            // Normal kurallar
-            if (Array.isArray(cssProperty)) {
-                cssProperty.forEach(property => {
-                    classes[escapedClassName] = classes[escapedClassName]
-                        ? `${classes[escapedClassName]} ${property}: ${value};`
-                        : `${property}: ${value};`;
-                });
-            } else {
-                classes[escapedClassName] = `${cssProperty}: ${value};`;
+            // eğer cssProperty'in ilk karakteri '-' ise, value'yu negatif yap
+            if (prefix[0] === '-') {
+                value = `-${value}`;
             }
+            classes[escapedClassName] = `${cssProperty}: ${value};`;
         }
     });
 

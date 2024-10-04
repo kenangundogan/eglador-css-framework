@@ -10,7 +10,6 @@ export function importantCss(important, allClasses) {
             const match = baseClass.match(/([a-zA-Z-]+)\[(.+)\]/);
             const prefix = match[1].replace(/^-|-$/g, '');
             const value = match[2];
-            console.log('prefix', prefix, 'value', value, 'prefix', prefix);
 
             // prefixToPropertyMap içinde prefix var mı kontrol et
             if (prefixToPropertyMap[prefix]) {

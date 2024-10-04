@@ -1,4 +1,5 @@
-export const prefixToPropertyMap = {
+// Orijinal haritamız
+export const possitivePrefixToPropertyMap = {
     'w': 'width',
     'h': 'height',
     'm': 'margin',
@@ -27,4 +28,22 @@ export const prefixToPropertyMap = {
     'bg': 'background-color',
     'text': 'color',
     'border': 'border-color',
-}
+};
+
+// Dinamik negatif versiyonları oluşturma fonksiyonu
+export const generateNegativeProperties = (map) => {
+    const negativeMap = {};
+    for (const key in map) {
+        if (map.hasOwnProperty(key)) {
+            // Negatif versiyonunu oluştur
+            negativeMap[`-${key}`] = map[key];
+        }
+    }
+    return negativeMap;
+};
+
+// Orijinal haritayı ve dinamik negatif haritayı birleştirelim
+export const prefixToPropertyMap = {
+    ...possitivePrefixToPropertyMap,
+    ...generateNegativeProperties(possitivePrefixToPropertyMap)
+};
