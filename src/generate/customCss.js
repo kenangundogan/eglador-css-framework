@@ -8,8 +8,13 @@ export function escapeClassName(className) {
     return className
         .replace(/[\[\]]/g, '\\$&')  // Sadece köşeli parantezleri kaçırıyoruz
         .replace(/:/g, '\\:')        // Responsive modifikasyonlar için ':' kaçırıyoruz
-        .replace(/\//g, '\\/')       // Virgülleri kaçırıyoruz (CSS değerleri içinde)
-        .replace(/\./g, '\\.');      // '.' karakterini kaçırıyoruz
+        .replace(/\//g, '\\/')       // '/' karakterini kaçırıyoruz
+        .replace(/\./g, '\\.')       // '.' karakterini kaçırıyoruz
+        .replace(/,/g, '\\2c ')      // Virgülleri class ismi içinde \2c olarak kaçırıyoruz
+        .replace(/\(/g, '\\(')       // Açılan parantezi kaçırıyoruz
+        .replace(/\)/g, '\\)')       // Kapanan parantezi kaçırıyoruz
+        .replace(/%/g, '\\%')        // Yüzde işaretini kaçırıyoruz
+        .replace(/(\s*-\s*)/g, '-')  // '-' işaretini boşluk olmadan kaçırıyoruz
 }
 
 export function customCss(extractedClasses) {

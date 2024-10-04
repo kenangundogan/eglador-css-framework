@@ -44,13 +44,15 @@ export function processCustomCss(restClass) {
             return null;
         }
 
-        // Eğer 'calc' veya 'max' fonksiyonları içeriyorsa aralardaki operatörlere boşluk ekleyelim
+        // Eğer 'calc' veya 'max' fonksiyonları içeriyorsa virgülleri kaçış karakteriyle değiştirelim
         if (value.includes('calc') || value.includes('max')) {
+            value = value.replace(/,/g, '\\2c '); // Virgülleri \2c ile değiştir
             value = value.replace(/([+-])/g, ' $1 '); // + ve - işaretleri arasına boşluk ekle
         }
 
-        // Virgülleri işlemeyelim, olduğu gibi bırakıyoruz
-        const escapedClassName = escapeClassName(`${propertyPrefix}-[${value}]`);
+        // Parantezleri ve özel karakterleri kaçış yapalım
+        const escapedClassName = escapeClassName(`${propertyPrefix}-[${value.replace(/\(/g, '\\(').replace(/\)/g, '\\)')}]`);
+
 
         // CSS çıktısını oluşturalım
         let cssRule = `${cssProperty}: ${value};`;

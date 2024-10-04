@@ -43,7 +43,6 @@ export function responsiveCss(extractedClasses, allClasses) {
             // restClass içinde '[' ve ']' karakterleri varsa bunlar custom class olabilir
             if (restClass.includes('[') && restClass.includes(']')) {
                 baseClassContent = processCustomCss(restClass);
-                console.log(baseClassContent);
             }
 
             // Base class'ı bulalım
