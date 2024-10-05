@@ -1,41 +1,29 @@
-import { escapeClassName } from './../utils/escapeClassName.js';
 import { prefixToPropertyMap } from './../properties/prefixToPropertyMap.js';
+import { formatMathExpressions } from '../utils/formatMathExpressions.js';
 
 export function processCustomCss(restClass) {
-
+    // Custom sınıf formatı: "prefix[value]"
     const match = restClass.match(/([a-zA-Z-]+)\[(.+)\]/);
-    if (match) {
-        let propertyPrefix = match[1]; // Örneğin: 'left'
-        let value = match[2]; // Örneğin: 'max(0px,calc(50%-45rem))'
 
-        // Başta veya sonda "-" varsa temizleyelim
-        propertyPrefix = propertyPrefix.replace(/^-|-$/g, '');
+    // Eğer sınıf bu formata uymuyorsa null döndür
+    if (!match) return null;
 
-        // CSS özelliğini bulalım
-        const cssProperty = prefixToPropertyMap[propertyPrefix];
+    // Eşleşen prefix (örn: 'left') ve value (örn: 'max(0px, calc(50%-45rem))') değerlerini al
+    let prefix = match[1];
+    let value = match[2];
 
-        if (!cssProperty) {
-            console.warn(`Tanımlanmamış prefix: ${propertyPrefix}`);
-            return null;
-        }
+    // Prefix'in başında veya sonunda "-" karakteri varsa temizleyelim
+    prefix = prefix.replace(/^-|-$/g, '');
 
-        // Eğer 'calc' veya 'max' fonksiyonları içeriyorsa virgülleri kaçış karakteriyle değiştirelim
-        if (value.includes('calc') || value.includes('max')) {
-            value = value.replace(/,/g, '\\2c '); // Virgülleri \2c ile değiştir
-            value = value.replace(/([+-])/g, ' $1 '); // + ve - işaretleri arasına boşluk ekle
-        }
+    // prefixToPropertyMap içinde bu prefix'e karşılık gelen CSS özelliğini bulalım
+    const cssProperty = prefixToPropertyMap[prefix];
 
-        // Parantezleri ve özel karakterleri kaçış yapalım
-        const escapedClassName = escapeClassName(`${propertyPrefix}-[${value.replace(/\(/g, '\\(').replace(/\)/g, '\\)')}]`);
+    // Eğer geçersiz bir prefix ise null döndür
+    if (!cssProperty) return null;
 
+    // Matematiksel ifadeleri (örn: calc, max) uygun şekilde formatlayalım
+    value = formatMathExpressions(value);
 
-        // CSS çıktısını oluşturalım
-        let cssRule = `${cssProperty}: ${value};`;
-
-        // Sonuç olarak class ismi ve CSS kuralını dönelim
-        // return `.${escapedClassName} { ${cssRule} }`;
-        return `${cssRule}`;
-    }
-
-    return null;
+    // CSS kuralını oluştur ve döndür (örn: 'left: max(0px, calc(50%-45rem));')
+    return `${cssProperty}: ${value};`;
 }

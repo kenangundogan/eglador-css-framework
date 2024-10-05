@@ -2,22 +2,29 @@ import { cssObjectToString } from '../utils/cssObjectToString.js';
 import { escapeClassName } from '../utils/escapeClassName.js';
 
 export function baseCss(base, allClasses) {
-    const baseCss = base.map(className => {
+    return base
+        .map(className => {
+            const escapedClass = escapeClassName(className);
 
-        if (escapeClassName(className).startsWith('space-') || escapeClassName(className).startsWith('-space-')) {
-            const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
-            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
-        }
+            // space- ve divide- prefix'lerini kontrol et
+            const isSpaceClass = escapedClass.startsWith('space-') || escapedClass.startsWith('-space-');
+            const isDivideClass = escapedClass.startsWith('divide-x') || escapedClass.startsWith('divide-y') ||
+                                  escapedClass.startsWith('-divide-x') || escapedClass.startsWith('-divide-y');
 
-        if (escapeClassName(className).startsWith('divide-x') || escapeClassName(className).startsWith('divide-y') || escapeClassName(className).startsWith('-divide-x') || escapeClassName(className).startsWith('-divide-y')) {
-            const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
-            return `.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
-        }
+            // space veya divide sınıfıysa, belirli bir formatta CSS kuralı oluştur
+            if (isSpaceClass || isDivideClass) {
+                const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
+                return `.${escapedClass} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+            }
 
-        if (allClasses[className]) {
-            return `.${escapeClassName(className)} { ${allClasses[className]} }`;
-        }
-    });
+            // Eğer sınıf allClasses içinde varsa, normal CSS kuralını döndür
+            if (allClasses[className]) {
+                return `.${escapedClass} { ${allClasses[className]} }`;
+            }
 
-    return baseCss.sort().join('\n');
+            return null; // Uygun sınıf bulunamazsa null döndür
+        })
+        .filter(Boolean)  // null değerleri filtrele
+        .sort()
+        .join('\n'); // CSS kurallarını string olarak döndür
 }
