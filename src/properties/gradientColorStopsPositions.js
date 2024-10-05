@@ -19,6 +19,3 @@ export function generateGradientColorStopsPositionsClasses() {
 
     return gradientColorStopsPositionsClasses;
 }
-
-// Örnek kullanım
-console.log(generateGradientColorStopsPositionsClasses());
