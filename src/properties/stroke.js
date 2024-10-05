@@ -1,14 +1,14 @@
 import tinycolor from 'tinycolor2';
 import { colors, colorRange, opacities } from './_color.js';
 
-export function generateDivideColorClasses() {
-    const divideColorClasses = {};
+export function generateStrokeClasses() {
+    const strokeColorClasses = {};
 
     // Renkler ve opacity'ler ile color sınıflarını oluştur
     for (const [colorName, { value: colorValue, hasRange, hasOpacity }] of Object.entries(colors)) {
         // Opacity olmadan temel sınıfı ekle
-        const className = `divide-${colorName} > * + *`;
-        divideColorClasses[className] = `border-color ${colorValue};`;
+        const className = `stroke-${colorName}`;
+        strokeColorClasses[className] = `stroke: ${colorValue};`;
 
         // Renk aralığına göre sınıfları ekle (hasRange varsa)
         if (hasRange) {
@@ -16,13 +16,13 @@ export function generateDivideColorClasses() {
                 const darkenedColor = tinycolor(colorValue).darken((index / colorRange.length) * 100).toRgbString();
 
                 // Opacity'siz varyasyon
-                divideColorClasses[`divide-${colorName}-${value} > * + *`] = `border-color ${darkenedColor};`;
+                strokeColorClasses[`stroke-${colorName}-${value}`] = `stroke: ${darkenedColor};`;
 
                 // Her bir range için opacity'li versiyonlar (hasOpacity varsa)
                 if (hasOpacity) {
                     for (const [opacityKey, opacityValue] of Object.entries(opacities)) {
                         const opacityColor = tinycolor(darkenedColor).setAlpha(opacityValue).toRgbString();
-                        divideColorClasses[`divide-${colorName}-${value}\/${opacityKey} > * + *`] = `border-color ${opacityColor};`;
+                        strokeColorClasses[`stroke-${colorName}-${value}\/${opacityKey}`] = `stroke: ${opacityColor};`;
                     }
                 }
             });
@@ -32,10 +32,10 @@ export function generateDivideColorClasses() {
         if (hasOpacity && !hasRange) {
             for (const [opacityKey, opacityValue] of Object.entries(opacities)) {
                 const opacityColor = tinycolor(colorValue).setAlpha(opacityValue).toRgbString();
-                divideColorClasses[`divide-${colorName}\/${opacityKey} > * + *`] = `border-color ${opacityColor};`;
+                strokeColorClasses[`stroke-${colorName}\/${opacityKey}`] = `stroke: ${opacityColor};`;
             }
         }
     }
 
-    return divideColorClasses;
+    return strokeColorClasses;
 }
