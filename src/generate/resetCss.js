@@ -1,7 +1,7 @@
-import config from './eglador.config.js';
-import { generateResetClasses } from './properties/reset.js';
+import config from '../eglador.config.js';
+import { generateResetClasses } from '../properties/reset.js';
 
-export function generateResetCss() {
+export function resetCss() {
     if (config.cssreset) {
         // Reset sınıflarını doğrudan al ve döndür
         const resetClasses = generateResetClasses();

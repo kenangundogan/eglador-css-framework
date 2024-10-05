@@ -15,7 +15,7 @@ export function generateDivideWidthClasses() {
 
         // divide-x sınıfları
         const classNameX = valueKey === 'default' ? 'divide-x' : `divide-x-${valueKey}`;
-        classes[`${classNameX} > * + *`] = {
+        classes[`${classNameX} > :not([hidden]) ~ :not([hidden])`] = {
             '--kg-divide-x-reverse': '0',
             'border-right-width': `calc(${value} * var(--kg-divide-x-reverse))`,
             'border-left-width': `calc(${value} * calc(1 - var(--kg-divide-x-reverse)))`,
@@ -23,7 +23,7 @@ export function generateDivideWidthClasses() {
 
         // divide-y sınıfları
         const classNameY = valueKey === 'default' ? 'divide-y' : `divide-y-${valueKey}`;
-        classes[`${classNameY} > * + *`] = {
+        classes[`${classNameY} > :not([hidden]) ~ :not([hidden])`] = {
             '--kg-divide-y-reverse': '0',
             'border-top-width': `calc(${value} * calc(1 - var(--kg-divide-y-reverse)))`,
             'border-bottom-width': `calc(${value} * var(--kg-divide-y-reverse))`,
@@ -31,10 +31,10 @@ export function generateDivideWidthClasses() {
     });
 
     // Reverse sınıflarını oluştur
-    classes['divide-x-reverse > * + *'] = {
+    classes['divide-x-reverse > :not([hidden]) ~ :not([hidden])'] = {
         '--kg-divide-x-reverse': '1',
     };
-    classes['divide-y-reverse > * + *'] = {
+    classes['divide-y-reverse > :not([hidden]) ~ :not([hidden])'] = {
         '--kg-divide-y-reverse': '1',
     };
 

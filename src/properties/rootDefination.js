@@ -1,5 +1,5 @@
 // rootDefination.js
-export function generateRootDefinationClasses() {
+export function rootDefinationCss() {
     return `
 *, ::before, ::after {
     --kg-border-spacing-x: 0;

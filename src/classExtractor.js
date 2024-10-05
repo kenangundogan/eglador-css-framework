@@ -4,11 +4,11 @@ const require = createRequire(import.meta.url);
 const glob = require('glob');
 import config from './eglador.config.js';
 
-// const classRegex = /['"`]([\w:-\s]+)['"`]/g;
-const classRegex = /class=["'`]([:\w\s\/%.-]+)["'`]/g;
+const classRegex = /class=["'`]([^"'`]+)["'`]/g;
+
 
 // Class'ları tarayıp toplama
-export function extractClassesFromFiles(allClasses) {
+export function extractClassesFromFiles() {
     const classesFound = new Set();
 
     // Belirtilen dosya yollarını tara
@@ -27,7 +27,6 @@ export function extractClassesFromFiles(allClasses) {
             }
         });
     });
-    console.log('classesFound', classesFound);
 
     return [...classesFound];
 }

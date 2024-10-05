@@ -73,7 +73,9 @@ import { generateListStyleImageClasses } from './properties/listStyleImage.js';
 import { generateListStylePositionClasses } from './properties/listStylePosition.js';
 import { generateListStyleTypeClasses } from './properties/listStyleType.js';
 import { generateTextAlignClasses } from './properties/textAlign.js';
+import { generateTextColorClasses } from './properties/textColor.js';
 import { generateTextDecorationClasses } from './properties/textDecoration.js';
+import { generateTextDecorationColorClasses } from './properties/textDecorationColor.js';
 import { generateTextDecorationStyleClasses } from './properties/textDecorationStyle.js';
 import { generateTextDecorationThicknessClasses } from './properties/textDecorationThickness.js';
 import { generateTextUnderlineOffsetClasses } from './properties/textUnderlineOffset.js';
@@ -90,26 +92,34 @@ import { generateContentClasses } from './properties/content.js';
 // Backgrounds
 import { generateBackgroundAttachmentClasses } from './properties/backgroundAttachment.js';
 import { generateBackgroundClipClasses } from './properties/backgroundClip.js';
+import { generateBackgroundColorClasses } from './properties/backgroundColor.js';
 import { generateBackgroundOriginClasses } from './properties/backgroundOrigin.js';
 import { generateBackgroundPositionClasses } from './properties/backgroundPosition.js';
 import { generateBackgroundRepeatClasses } from './properties/backgroundRepeat.js';
 import { generateBackgroundSizeClasses } from './properties/backgroundSize.js';
 import { generateBackgroundImageClasses } from './properties/backgroundImage.js';
+import { generateGradientColorStopsClasses } from './properties/gradientColorStops.js';
+import { generateGradientColorStopsPositionsClasses } from './properties/gradientColorStopsPositions.js';
 
 // Borders
 import { generateBorderRadiusClasses } from './properties/borderRadius.js';
 import { generateBorderWidthClasses } from './properties/borderWidth.js';
+import { generateBorderColorClasses } from './properties/borderColor.js';
 import { generateBorderStyleClasses } from './properties/borderStyle.js';
 import { generateDivideWidthClasses } from './properties/divideWidth.js';
+import { generateDivideColorClasses } from './properties/divideColor.js';
 import { generateDivideStyleClasses } from './properties/divideStyle.js';
 import { generateOutlineWidthClasses } from './properties/outlineWidth.js';
+import { generateOutlineColorClasses } from './properties/outlineColor.js';
 import { generateOutlineStyleClasses } from './properties/outlineStyle.js';
 import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
 import { generateRingWidthClasses } from './properties/ringWidth.js';
+import { generateRingColorClasses } from './properties/ringColor.js';
 import { generateRingOffsetWidthClasses } from './properties/ringOffsetWidth.js';
 
 // Effects
 import { generateBoxShadowClasses } from './properties/boxShadow.js';
+import { generateBoxShadowColorClasses } from './properties/boxShadowColor.js';
 import { generateOpacityClasses } from './properties/opacity.js';
 import { generateMixBlendModeClasses } from './properties/mixBlendMode.js';
 import { generateBackgroundBlendModeClasses } from './properties/backgroundBlendMode.js';
@@ -156,7 +166,9 @@ import { generateTransformOriginClasses } from './properties/transformOrigin.js'
 
 // Interactivity
 import { generateAppearanceClasses } from './properties/appearance.js';
+import { generateAccentColorClasses } from './properties/accentColor.js';
 import { generateCursorClasses } from './properties/cursor.js';
+import { generateCaretColorClasses } from './properties/caretColor.js';
 import { generatePointerEventClasses } from './properties/pointerEvent.js';
 import { generateResizeClasses } from './properties/resize.js';
 import { generateScrollBehaviorClasses } from './properties/scrollBehavior.js';
@@ -170,14 +182,14 @@ import { generateUserSelectClasses } from './properties/userSelect.js';
 import { generateWillChangeClasses } from './properties/willChange.js';
 
 // SVG
+import { generateFillClasses } from './properties/fill.js';
+import { generateStrokeClasses } from './properties/stroke.js';
 import { generateStrokeWidthClasses } from './properties/strokeWidth.js';
 
 // Accessibility
 import { generateScreenReadersClasses } from './properties/screenReaders.js';
 import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust.js';
 
-import { generateColorClasses } from './properties/color.js';
-import { generateBreakpointsClasses } from './properties/breakpoints.js';
 
 export function generateAllClasses() {
     return {
@@ -206,6 +218,7 @@ export function generateAllClasses() {
         ...generateFlexGrowClasses(),
         ...generateFlexShrinkClasses(),
         ...generateAppearanceClasses(),
+        ...generateAccentColorClasses(),
         ...generateObjectFitClasses(),
         ...generateObjectPositionClasses(),
         ...generateOpacityClasses(),
@@ -240,15 +253,21 @@ export function generateAllClasses() {
         ...generateBorderRadiusClasses(),
         ...generateBorderStyleClasses(),
         ...generateBorderWidthClasses(),
+        ...generateBorderColorClasses(),
         ...generateBackgroundAttachmentClasses(),
         ...generateBackgroundClipClasses(),
+        ...generateBackgroundColorClasses(),
         ...generateBackgroundImageClasses(),
+        ...generateGradientColorStopsClasses(),
+        ...generateGradientColorStopsPositionsClasses(),
         ...generateBackgroundOriginClasses(),
         ...generateBackgroundPositionClasses(),
         ...generateBackgroundRepeatClasses(),
         ...generateBackgroundSizeClasses(),
         ...generateTextAlignClasses(),
+        ...generateTextColorClasses(),
         ...generateTextDecorationClasses(),
+        ...generateTextDecorationColorClasses(),
         ...generateTextDecorationStyleClasses(),
         ...generateTextDecorationThicknessClasses(),
         ...generateTextIndentClasses(),
@@ -261,17 +280,21 @@ export function generateAllClasses() {
         ...generateListStyleTypeClasses(),
         ...generateContentClasses(),
         ...generateCursorClasses(),
+        ...generateCaretColorClasses(),
         ...generateHyphensClasses(),
         ...generateIsolationClasses(),
         ...generateColumnsClasses(),
         ...generateBoxSizingClasses(),
         ...generateBoxDecorationBreakClasses(),
         ...generateBoxShadowClasses(),
+        ...generateBoxShadowColorClasses(),
         ...generateOutlineOffsetClasses(),
         ...generateRingWidthClasses(),
+        ...generateRingColorClasses(),
         ...generateRingOffsetWidthClasses(),
         ...generateOutlineStyleClasses(),
         ...generateOutlineWidthClasses(),
+        ...generateOutlineColorClasses(),
         ...generateVerticalAlignClasses(),
         ...generateVisibilityClasses(),
         ...generateWordBreakClasses(),
@@ -288,6 +311,8 @@ export function generateAllClasses() {
         ...generateUserSelectClasses(),
         ...generateWillChangeClasses(),
         ...generatetouchActionClasses(),
+        ...generateFillClasses(),
+        ...generateStrokeClasses(),
         ...generateStrokeWidthClasses(),
         ...generateBreakAfterClasses(),
         ...generateBreakBeforeClasses(),
@@ -325,10 +350,9 @@ export function generateAllClasses() {
         ...generateTransitionDurationClasses(),
         ...generateTransitionTimingFunctionClasses(),
         ...generateTransitionDelayClasses(),
-        ...generateColorClasses(),
         ...generateSpaceClasses(),
         ...generateDivideStyleClasses(),
         ...generateDivideWidthClasses(),
-        ...generateBreakpointsClasses(),
+        ...generateDivideColorClasses(),
     };
 }

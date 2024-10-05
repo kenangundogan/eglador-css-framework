@@ -47,30 +47,29 @@ export function generateSpaceClasses() {
             const value = spaceValues[valueKey];
 
             // Pozitif space-x ve space-y sınıfları
-            classes[`space-${dir}-${valueKey} > * + *`] = {
+            classes[`space-${dir}-${valueKey} > :not([hidden]) ~ :not([hidden])`] = {
                 [`--kg-space-${dir}-reverse`]: '0',
-                [`margin-${dir === 'x' ? 'right' : 'top'}`]: `calc(${value} * var(--kg-space-${dir}-reverse))`,
-                [`margin-${dir === 'x' ? 'left' : 'bottom'}`]: `calc(${value} * calc(1 - var(--kg-space-${dir}-reverse)))`
+                [`margin-${dir === 'x' ? 'left' : 'top'}`]: `calc(${value} * calc(1 - var(--kg-space-${dir}-reverse)))`,
+                [`margin-${dir === 'x' ? 'right' : 'bottom'}`]: `calc(${value} * var(--kg-space-${dir}-reverse))`,
             };
 
             // Negatif space-x ve space-y sınıfları
-            if (valueKey !== '0' && valueKey !== 'px') {  // Negatif 0 ve px mantıksız olacağı için hariç tutuldu
-                const negativeValue = `-${value}`;
-                classes[`-space-${dir}-${valueKey} > * + *`] = {
-                    [`--kg-space-${dir}-reverse`]: '0',
-                    [`margin-${dir === 'x' ? 'right' : 'top'}`]: `calc(${negativeValue} * var(--kg-space-${dir}-reverse))`,
-                    [`margin-${dir === 'x' ? 'left' : 'bottom'}`]: `calc(${negativeValue} * calc(1 - var(--kg-space-${dir}-reverse)))`
-                };
-            }
+
+            const negativeValue = `-${value}`;
+            classes[`-space-${dir}-${valueKey} > :not([hidden]) ~ :not([hidden])`] = {
+                [`--kg-space-${dir}-reverse`]: '0',
+                [`margin-${dir === 'x' ? 'right' : 'bottom'}`]: `calc(${negativeValue} * var(--kg-space-${dir}-reverse))`,
+                [`margin-${dir === 'x' ? 'left' : 'top'}`]: `calc(${negativeValue} * calc(1 - var(--kg-space-${dir}-reverse)))`,
+            };
         });
     });
 
     // Reverse sınıflarını oluştur
     directions.forEach(dir => {
-        classes[`space-${dir}-reverse > * + *`] = {
+        classes[`space-${dir}-reverse > :not([hidden]) ~ :not([hidden])`] = {
             [`--kg-space-${dir}-reverse`]: '1',
         };
-        classes[`-space-${dir}-reverse > * + *`] = {
+        classes[`-space-${dir}-reverse > :not([hidden]) ~ :not([hidden])`] = {
             [`--kg-space-${dir}-reverse`]: '1',
         };
     });

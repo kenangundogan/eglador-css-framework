@@ -36,7 +36,8 @@ export function generatePaddingClasses() {
         '64': '16rem',      // 256px
         '72': '18rem',      // 288px
         '80': '20rem',      // 320px
-        '96': '24rem'       // 384px
+        '96': '24rem',      // 384px
+        'full': '100%',     // 100%
     };
 
     Object.keys(paddingValues).forEach(key => {
