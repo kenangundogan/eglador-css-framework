@@ -6,15 +6,21 @@ export function baseCss(base, allClasses) {
         .map(className => {
             const escapedClass = escapeClassName(className);
 
-            // space- ve divide- prefix'lerini kontrol et
+            // space- ve divide- sınıfları için kontrol yap
             const isSpaceClass = escapedClass.startsWith('space-') || escapedClass.startsWith('-space-');
-            const isDivideClass = escapedClass.startsWith('divide-x') || escapedClass.startsWith('divide-y') ||
-                                  escapedClass.startsWith('-divide-x') || escapedClass.startsWith('-divide-y');
+            const isDivideClass = escapedClass.startsWith('divide-x') || escapedClass.startsWith('divide-y') || escapedClass.startsWith('-divide-x') || escapedClass.startsWith('-divide-y');
+            const isDivideColorClass = escapedClass.startsWith('divide-');
 
-            // space veya divide sınıfıysa, belirli bir formatta CSS kuralı oluştur
+            // space- ve divide- sınıfları için belirli bir formatta CSS kuralı oluştur
             if (isSpaceClass || isDivideClass) {
                 const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
                 return `.${escapedClass} > :not([hidden]) ~ :not([hidden]) { ${cssObjectToString(cssObj)} }`;
+            }
+
+            // divide-color sınıfları için belirli bir formatta CSS kuralı oluştur
+            if (isDivideColorClass) {
+                const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
+                return `.${escapedClass} > :not([hidden]) ~ :not([hidden]) { ${cssObj} }`;
             }
 
             // Eğer sınıf allClasses içinde varsa, normal CSS kuralını döndür
