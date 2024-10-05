@@ -1,38 +1,49 @@
 export function generateBorderRadiusClasses() {
     const classes = {};
-    const borderRadiusScale = {
+
+    const sizes = {
         'none': '0px',
-        'sm': '0.125rem',
-        '': '0.25rem',
-        'md': '0.375rem',
-        'lg': '0.5rem',
-        'xl': '0.75rem',
-        '2xl': '1rem',
-        '3xl': '1.5rem',
+        'sm': '0.125rem',  // 2px
+        'DEFAULT': '0.25rem',  // 4px (standart rounded sınıfı)
+        'md': '0.375rem',  // 6px
+        'lg': '0.5rem',    // 8px
+        'xl': '0.75rem',   // 12px
+        '2xl': '1rem',   // 16px
+        '3xl': '1.5rem', // 24px
         'full': '9999px'
     };
 
-    const positionPrefix = ['', 's-', 'e-', 't-', 'r-', 'b-', 'l-', 'ss-', 'se-', 'ee-', 'es-', 'tl-', 'tr-', 'br-', 'bl-'];
+    const directions = {
+        '': '',  // genel 'rounded' için
+        't': ['top-left', 'top-right'],  // üst kenarlar
+        'r': ['top-right', 'bottom-right'],  // sağ kenarlar
+        'b': ['bottom-right', 'bottom-left'],  // alt kenarlar
+        'l': ['top-left', 'bottom-left'],  // sol kenarlar
+        's': ['start-start', 'end-start'],  // sol başlangıç (sol)
+        'e': ['start-end', 'end-end'],  // sağ son (sağ)
+        'tl': ['top-left'],  // sadece üst sol
+        'tr': ['top-right'],  // sadece üst sağ
+        'br': ['bottom-right'],  // sadece alt sağ
+        'bl': ['bottom-left'],  // sadece alt sol
+        'ss': ['start-start'],  // sadece start-start
+        'se': ['start-end'],  // sadece start-end
+        'ee': ['end-end'],  // sadece end-end
+        'es': ['end-start'],  // sadece end-start
+    };
 
-    positionPrefix.forEach((prefix) => {
-        Object.keys(borderRadiusScale).forEach((key) => {
-            const className = `rounded-${prefix}${key}`;
-            const borderRadiusValue = borderRadiusScale[key];
-            if (prefix === '') {
-                classes[className] = `border-radius: ${borderRadiusValue};`;
-            } else if (['s-', 'e-'].includes(prefix)) {
-                classes[className] = `
-                    border-${prefix === 's-' ? 'start-start-radius' : 'start-end-radius'}: ${borderRadiusValue};
-                    border-${prefix === 's-' ? 'end-start-radius' : 'end-end-radius'}: ${borderRadiusValue};
-                `;
+    // Border-radius değerleri oluştur
+    for (const [key, value] of Object.entries(sizes)) {
+        for (const [dirKey, dirValue] of Object.entries(directions)) {
+            const className = `rounded${dirKey ? '-' + dirKey : ''}${key !== 'DEFAULT' ? '-' + key : ''}`;
+
+            if (Array.isArray(dirValue)) {
+                // Eğer yön belirli bir köşe veya kenarsa, her iki taraf için de aynı değeri uygula
+                classes[className] = `border-${dirValue[0]}-radius: ${value}; border-${dirValue[1]}-radius: ${value};`;
             } else {
-                classes[className] = `
-                    border-${prefix === 't-' ? 'top-left-radius' : prefix === 'r-' ? 'top-right-radius' : prefix === 'b-' ? 'bottom-right-radius' : 'bottom-left-radius'}: ${borderRadiusValue};
-                    border-${prefix === 't-' ? 'top-right-radius' : prefix === 'r-' ? 'bottom-right-radius' : prefix === 'b-' ? 'bottom-left-radius' : 'top-left-radius'}: ${borderRadiusValue};
-                `;
+                // Genel border-radius
+                classes[className] = `border-radius: ${value};`;
             }
-        });
-    });
-
+        }
+    }
     return classes;
 }
