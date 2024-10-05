@@ -80,9 +80,11 @@ export function responsiveCss(extractedClasses, allClasses) {
 
     // Media query'leri oluşturan CSS çıktısı
     let mediaQueryCss = '';
-    Object.keys(mediaQueryGroups).forEach(breakpoint => {
-        mediaQueryCss += `@media (min-width: ${breakpoint}) { ${mediaQueryGroups[breakpoint].join(' ')} } `;
-    });
+    Object.keys(mediaQueryGroups)
+        .sort((a, b) => parseInt(a) - parseInt(b)) // Sıralama küçükten büyüğe
+        .forEach(breakpoint => {
+            mediaQueryCss += `@media (min-width: ${breakpoint}) { ${mediaQueryGroups[breakpoint].join(' ')} } `;
+        });
 
     return mediaQueryCss;
 }
