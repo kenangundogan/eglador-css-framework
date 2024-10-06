@@ -4,8 +4,42 @@ const require = createRequire(import.meta.url);
 const glob = require('glob');
 import config from './eglador.config.js';
 
-const classRegex = /class=["'`]([^"'`]+)["'`]/g;
+// Gelişmiş regex: class attribute'unu ve içeriğini yakalar
+const classRegex = /class=(["'])([^]*?)\1/g;
 
+// Sınıf adlarını ayıran fonksiyon
+function splitClassNames(classString) {
+    const classNames = [];
+    let current = '';
+    let bracketDepth = 0;
+    let inSingleQuote = false;
+    let inDoubleQuote = false;
+
+    for (let i = 0; i < classString.length; i++) {
+        const char = classString[i];
+        if (char === ' ' && bracketDepth === 0 && !inSingleQuote && !inDoubleQuote) {
+            if (current.length > 0) {
+                classNames.push(current);
+                current = '';
+            }
+        } else {
+            current += char;
+            if (char === '[' && !inSingleQuote && !inDoubleQuote) {
+                bracketDepth++;
+            } else if (char === ']' && !inSingleQuote && !inDoubleQuote) {
+                bracketDepth--;
+            } else if (char === "'" && !inDoubleQuote) {
+                inSingleQuote = !inSingleQuote;
+            } else if (char === '"' && !inSingleQuote) {
+                inDoubleQuote = !inDoubleQuote;
+            }
+        }
+    }
+    if (current.length > 0) {
+        classNames.push(current);
+    }
+    return classNames;
+}
 
 // Class'ları tarayıp toplama
 export function extractClassesFromFiles() {
@@ -17,16 +51,20 @@ export function extractClassesFromFiles() {
         files.forEach(filePath => {
             const fileContent = fs.readFileSync(filePath, 'utf8');
             let match;
+
+            // class attribute'larını yakala
             while ((match = classRegex.exec(fileContent)) !== null) {
-                const classNames = match[1].split(/\s+/);
+                const classString = match[2]; // Attribute değerini al
+                const classNames = splitClassNames(classString); // Sınıf adlarını ayır
                 classNames.forEach(className => {
                     if (className.trim()) {
-                        classesFound.add(className);
+                        classesFound.add(className.trim());
                     }
                 });
             }
         });
     });
 
+    console.log(classesFound);
     return [...classesFound];
 }

@@ -1,30 +1,23 @@
 import { escapeClassName } from '../utils/escapeClassName.js';
-import { prefixToPropertyMap } from './../properties/prefixToPropertyMap.js';
-import { formatMathExpressions } from '../utils/formatMathExpressions.js';
+import { processCustomClass } from '../utils/customCssProcessor.js';
 
 export function importantCss(important, allClasses) {
     return important
         .map(className => {
             const baseClass = className.split('!')[1];
+            const escapedClassName = escapeClassName('!' + baseClass);
 
-            if (baseClass.includes('[') && baseClass.includes(']')) {
-                const match = baseClass.match(/([a-zA-Z-]+)\[(.+)\]/);
-                if (match) {
-                    const prefix = match[1].replace(/^-|-$/g, '');
-                    let value = match[2];
-
-                    if (prefixToPropertyMap[prefix]) {
-                        const cssProperty = prefixToPropertyMap[prefix];
-                        value = formatMathExpressions(value);
-                        const cssRule = `${cssProperty}: ${value}`;
-                        return `.${escapeClassName(className)} { ${cssRule} !important; }`;
-                    }
-                }
+            // Custom sınıfı işlemek için helper fonksiyonunu kullanalım
+            const customClass = processCustomClass(baseClass);
+            if (customClass) {
+                // Custom sınıfın CSS kuralını `!important` ile birlikte döndür
+                return customClass.replace(escapeClassName(baseClass), escapedClassName).replace('; }', ' !important; }');
             }
 
+            // Eğer custom sınıf değilse normal işlemi yap
             if (allClasses[baseClass]) {
-                const cssRule = allClasses[baseClass].replace(/;/g, '');
-                return `.${escapeClassName(className)} { ${cssRule} !important; }`;
+                const cssRule = allClasses[baseClass].replace(/;/g, ''); // Fazladan noktayı kaldır
+                return `.${escapedClassName} { ${cssRule} !important; }`;
             }
 
             return null;
