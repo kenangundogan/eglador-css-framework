@@ -2,6 +2,7 @@
 export const possitivePrefixToPropertyMap = {
     'w': 'width',
     'h': 'height',
+    'size': ['width', 'height'],
     'm': 'margin',
     'mt': 'margin-top',
     'mr': 'margin-right',
@@ -24,12 +25,14 @@ export const possitivePrefixToPropertyMap = {
     'right': 'right',
     'bottom': 'bottom',
     'left': 'left',
+    'inset': 'inset',
     'z': 'z-index',
     'bg': 'background-color',
     'text': 'color',
     'border': 'border-color',
     'grid-cols': 'grid-template-columns',
     'text': 'font-size',
+    'leading': 'line-height',
 };
 
 // Dinamik negatif versiyonları oluşturma fonksiyonu
