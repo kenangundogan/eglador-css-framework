@@ -1,4 +1,7 @@
 export function escapeClassName(className) {
+    // Eğer sınıf ismi rakamla başlıyorsa, rakamı sıkı bir kaçışla kaçırıyoruz (boşluksuz)
+    className = className.replace(/^\d/, match => `\\3${match}`);
+
     return className
         .replace(/[\[\]]/g, '\\$&')  // Sadece köşeli parantezleri kaçırıyoruz
         .replace(/:/g, '\\:')        // ':' karakterini kaçırıyoruz
