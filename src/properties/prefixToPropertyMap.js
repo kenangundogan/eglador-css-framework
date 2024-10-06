@@ -28,6 +28,8 @@ export const possitivePrefixToPropertyMap = {
     'bg': 'background-color',
     'text': 'color',
     'border': 'border-color',
+    'grid-cols': 'grid-template-columns',
+    'text': 'font-size',
 };
 
 // Dinamik negatif versiyonları oluşturma fonksiyonu

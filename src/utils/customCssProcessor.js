@@ -7,14 +7,24 @@ export function processCustomClass(className) {
     if (className.includes('[') && className.includes(']')) {
         const match = className.match(/([a-zA-Z-]+)\[(.+)\]/);
         if (match) {
-            const prefix = match[1].replace(/^-|-$/g, '');
+            const originalPrefix = match[1];
+            const isNegative = originalPrefix.startsWith('-');
+            const prefix = originalPrefix.replace(/^-|-$/g, '');
             let value = match[2];
 
             if (prefixToPropertyMap[prefix]) {
                 const cssProperty = prefixToPropertyMap[prefix];
                 value = formatMathExpressions(value);
 
-                // Eğer cssProperty bir array ise, her bir özelliği işleyelim
+                // Burada '_' karakterlerini boşluklarla değiştiriyoruz
+                value = value.replace(/_/g, ' ');
+
+                // Eğer sınıf negatifse, değerin başına '-' ekliyoruz
+                if (isNegative) {
+                    value = `-${value}`;
+                }
+
+                // Eğer cssProperty bir dizi ise, her bir özelliği işleyelim
                 if (Array.isArray(cssProperty)) {
                     let arrayTotal = "";
                     cssProperty.forEach((prop) => {
