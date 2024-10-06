@@ -116,6 +116,7 @@ import { generateOutlineOffsetClasses } from './properties/outlineOffset.js';
 import { generateRingWidthClasses } from './properties/ringWidth.js';
 import { generateRingColorClasses } from './properties/ringColor.js';
 import { generateRingOffsetWidthClasses } from './properties/ringOffsetWidth.js';
+import { generateRingOffsetColorClasses } from './properties/ringOffsetColor.js';
 
 // Effects
 import { generateBoxShadowClasses } from './properties/boxShadow.js';
@@ -292,6 +293,7 @@ export function generateAllClasses() {
         ...generateRingWidthClasses(),
         ...generateRingColorClasses(),
         ...generateRingOffsetWidthClasses(),
+        ...generateRingOffsetColorClasses(),
         ...generateOutlineStyleClasses(),
         ...generateOutlineWidthClasses(),
         ...generateOutlineColorClasses(),
