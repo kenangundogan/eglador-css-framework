@@ -30,7 +30,7 @@ export function writeCssFile() {
 
     // Class'ları grupla
     const groupedClasses = groupClasses(extractedClasses);
-    // console.log(groupedClasses);
+    console.log(groupedClasses);
 
     // Custom class'ları işleyelim
     const customCssResult = customCss(groupedClasses.custom);

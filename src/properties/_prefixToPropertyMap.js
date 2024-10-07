@@ -31,8 +31,21 @@ export const possitivePrefixToPropertyMap = {
     'text': 'color',
     'border': 'border-color',
     'grid-cols': 'grid-template-columns',
+    'grid-rows': 'grid-template-rows',
+    'row-start': 'grid-row-start',
+    'row-end': 'grid-row-end',
+    'col-start': 'grid-column-start',
+    'col-end': 'grid-column-end',
     'text': 'font-size',
     'leading': 'line-height',
+    'translate-x': '--kg-translate-x',
+    'translate-y': '--kg-translate-y',
+    'rotate': '--kg-rotate',
+    'skew-x': '--kg-skew-x',
+    'skew-y': '--kg-skew-y',
+    'scale': ['--kg-scale-x', '--kg-scale-y'],
+    'scale-x': '--kg-scale-x',
+    'scale-y': '--kg-scale-y',
 };
 
 // Dinamik negatif versiyonları oluşturma fonksiyonu

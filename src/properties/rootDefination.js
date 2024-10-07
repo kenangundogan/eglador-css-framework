@@ -109,10 +109,6 @@ export function rootDefinationCss() {
     --kg-contain-style:  ;
 }
 
-*,::after,::before {
-    border: 0 solid #e5e7eb;
-    box-sizing: border-box
-}
 
 ::after,::before {
     --kg-content: ""

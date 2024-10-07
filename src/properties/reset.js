@@ -17,6 +17,11 @@ export function generateResetClasses() {
   border: 0 solid; /* 3 */
 }
 
+*,::after,::before {
+    border: 0 solid #e5e7eb;
+    box-sizing: border-box
+}
+
 /*
   1. Use a consistent sensible line-height in all browsers.
   2. Prevent adjustments of font size after orientation changes in iOS.
