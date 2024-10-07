@@ -1,19 +1,9 @@
-import { cssObjectToString } from './../utils/cssObjectToString.js';
-import { escapeClassName } from './../utils/escapeClassName.js';
-
 export function generateDivideStyleClasses() {
-    const divideClasses = {
-        'divide-solid': { 'border-style': 'solid' },
-        'divide-dashed': { 'border-style': 'dashed' },
-        'divide-dotted': { 'border-style': 'dotted' },
-        'divide-double': { 'border-style': 'double' },
-        'divide-none': { 'border-style': 'none' },
+    return {
+        'divide-solid > :not([hidden]) ~ :not([hidden])': 'border-style: solid;',
+        'divide-dashed > :not([hidden]) ~ :not([hidden])': 'border-style: dashed;',
+        'divide-dotted > :not([hidden]) ~ :not([hidden])': 'border-style: dotted;',
+        'divide-double > :not([hidden]) ~ :not([hidden])': 'border-style: double;',
+        'divide-none > :not([hidden]) ~ :not([hidden])': 'border-style: none;',
     };
-
-    return Object.entries(divideClasses)
-        .map(([className, cssObj]) => {
-            const escapedClassName = escapeClassName(className);
-            return `.${escapedClassName} > * + * { ${cssObjectToString(cssObj)} }`;
-        })
-        .join('\n');
 }
