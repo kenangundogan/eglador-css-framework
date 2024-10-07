@@ -1,5 +1,5 @@
 import { escapeClassName } from '../utils/escapeClassName.js';
-import { prefixToPropertyMap } from './../properties/prefixToPropertyMap.js';
+import { prefixToPropertyMap } from '../properties/_prefixToPropertyMap.js';
 import { formatMathExpressions } from '../utils/formatMathExpressions.js';
 
 // Custom sınıf işleme fonksiyonu
