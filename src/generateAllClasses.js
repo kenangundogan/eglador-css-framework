@@ -1,5 +1,6 @@
 // Layout
 import { generateAspectRatioClasses } from './properties/aspectRatio.js';
+import { generateAspectRatioCustomClasses } from './properties/aspectRatioCustom.js';
 import { generateColumnsClasses } from './properties/columns.js';
 import { generateBreakAfterClasses } from './properties/breakAfter.js';
 import { generateBreakBeforeClasses } from './properties/breakBefore.js';
@@ -195,6 +196,7 @@ import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust
 export function generateAllClasses() {
     return {
         ...generateAspectRatioClasses(),
+        ...generateAspectRatioCustomClasses(),
         ...generateOverflowClasses(),
         ...generateOverscrollBehaviorClasses(),
         ...generatePositionClasses(),

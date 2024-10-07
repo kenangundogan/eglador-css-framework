@@ -10,6 +10,7 @@ export function baseCss(base, allClasses) {
             const isSpaceClass = escapedClass.startsWith('space-') || escapedClass.startsWith('-space-');
             const isDivideClass = escapedClass.startsWith('divide-x') || escapedClass.startsWith('divide-y') || escapedClass.startsWith('-divide-x') || escapedClass.startsWith('-divide-y');
             const isDivideColorClass = escapedClass.startsWith('divide-');
+            const isAspectRatioClass = escapedClass.match(/^aspect-w-(\d+)$/);
 
             // space- ve divide- sınıfları için belirli bir formatta CSS kuralı oluştur
             if (isSpaceClass || isDivideClass) {
@@ -21,6 +22,13 @@ export function baseCss(base, allClasses) {
             if (isDivideColorClass) {
                 const cssObj = allClasses[className + ' > :not([hidden]) ~ :not([hidden])'];
                 return `.${escapedClass} > :not([hidden]) ~ :not([hidden]) { ${cssObj} }`;
+            }
+
+            // aspect-ratio sınıfları için belirli bir formatta CSS kuralı oluştur
+            if (isAspectRatioClass) {
+                const cssObj = allClasses[className];
+                const cssObjRegx = allClasses[className + ' > *'];
+                return `.${escapedClass} { ${cssObj} } .${escapedClass} > * { ${cssObjRegx} }`;
             }
 
             // Eğer sınıf allClasses içinde varsa, normal CSS kuralını döndür
