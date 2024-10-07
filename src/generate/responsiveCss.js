@@ -1,8 +1,8 @@
 import { escapeClassName } from '../utils/escapeClassName.js';
 
-import { generateBreakpointsClasses } from '../properties/breakpoints.js';
-import { generatePseudoClasses } from '../properties/pseudoClasses.js';
-import { generatePseudoElements } from '../properties/pseudoElements.js';
+import { generateBreakpointsClasses } from '../properties/_breakpoints.js';
+import { generatePseudoClasses } from '../properties/_pseudoClasses.js';
+import { generatePseudoElements } from '../properties/_pseudoElements.js';
 import { processCustomCss } from './customCssProcessor.js';
 
 export function responsiveCss(extractedClasses, allClasses) {
