@@ -4,12 +4,15 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "testtest": "node src/test.js",
         "build": "node src/buildCss.js"
     },
     "author": "",
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "css.escape": "^1.5.1",
+        "cssesc": "^3.0.0",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
         "tinycolor2": "^1.6.0"
