@@ -48,14 +48,14 @@ const propertyMap = {
         return { 'margin-top': value, 'margin-bottom': value };
     },
 
-    'space-y': function (value) {
+    'space-y > :not([hidden]) ~ :not([hidden]) ': function (value) {
         return {
             '--kg-space-y-reverse': '0',
             'margin-top': `calc(${value} * calc(1 - var(--kg-space-y-reverse)))`,
             'margin-bottom': `calc(${value} * var(--kg-space-y-reverse))`
         };
     },
-    'space-x': function (value) {
+    'space-x > :not([hidden]) ~ :not([hidden]) ': function (value) {
         return {
             '--kg-space-x-reverse': '0',
             'margin-right': `calc(${value} * var(--kg-space-x-reverse))`,
@@ -216,14 +216,14 @@ const propertyMap = {
             return { 'border-width': value };
         }
     },
-    'divide-x': function (value) {
+    'divide-x > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-divide-x-reverse': '0',
             'border-right-width': `calc(${value} * var(--kg-divide-x-reverse))`,
             'border-left-width': `calc(${value} * calc(1 - var(--kg-divide-x-reverse)))`
         };
     },
-    'divide-y': function (value) {
+    'divide-y > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-divide-y-reverse': '0',
             'border-top-width': `calc(${value} * calc(1 - var(--kg-divide-y-reverse)))`,
@@ -292,119 +292,119 @@ const propertyMap = {
     'blur': function (value) {
         return {
             '--kg-blur': `blur(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'brightness': function (value) {
         return {
             '--kg-brightness': `brightness(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'contrast': function (value) {
         return {
             '--kg-contrast': `contrast(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'drop-shadow': function (value) {
         return {
             '--kg-drop-shadow': `drop-shadow(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'grayscale': function (value) {
         return {
             '--kg-grayscale': `grayscale(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'hue-rotate': function (value) {
         return {
             '--kg-hue-rotate': `hue-rotate(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'invert': function (value) {
         return {
             '--kg-invert': `invert(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'saturate': function (value) {
         return {
             '--kg-saturate': `saturate(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
     'sepia': function (value) {
         return {
             '--kg-sepia': `sepia(${value})`,
-            'filter': 'var(--kg-filter)'
+            'filter': 'var(--kg-blur) var(--kg-brightness) var(--kg-contrast) var(--kg-grayscale) var(--kg-hue-rotate) var(--kg-invert) var(--kg-saturate) var(--kg-sepia) var(--kg-drop-shadow)'
         };
     },
 
     'backdrop-blur': function (value) {
         return {
             '--kg-backdrop-blur': `blur(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-brightness': function (value) {
         return {
             '--kg-backdrop-brightness': `brightness(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-contrast': function (value) {
         return {
             '--kg-backdrop-contrast': `contrast(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-grayscale': function (value) {
         return {
             '--kg-backdrop-grayscale': `grayscale(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-hue-rotate': function (value) {
         return {
             '--kg-backdrop-hue-rotate': `hue-rotate(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-invert': function (value) {
         return {
             '--kg-backdrop-invert': `invert(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-opacity': function (value) {
         return {
             '--kg-backdrop-opacity': `opacity(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-saturate': function (value) {
         return {
             '--kg-backdrop-saturate': `saturate(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
     'backdrop-sepia': function (value) {
         return {
             '--kg-backdrop-sepia': `sepia(${value})`,
-            '-webkit-backdrop-filter': 'var(--kg-backdrop-filter)',
-            'backdrop-filter': 'var(--kg-backdrop-filter)'
+            '-webkit-backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)',
+            'backdrop-filter': 'var(--kg-backdrop-blur) var(--kg-backdrop-brightness) var(--kg-backdrop-contrast) var(--kg-backdrop-grayscale) var(--kg-backdrop-hue-rotate) var(--kg-backdrop-invert) var(--kg-backdrop-opacity) var(--kg-backdrop-saturate) var(--kg-backdrop-sepia)'
         };
     },
 
@@ -432,49 +432,49 @@ const propertyMap = {
         return {
             '--kg-scale-x': value,
             '--kg-scale-y': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'scale-x': function (value) {
         return {
             '--kg-scale-x': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'scale-y': function (value) {
         return {
             '--kg-scale-y': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'rotate': function (value) {
         return {
             '--kg-rotate': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'translate-x': function (value) {
         return {
             '--kg-translate-x': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'translate-y': function (value) {
         return {
             '--kg-translate-y': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'skew-x': function (value) {
         return {
             '--kg-skew-x': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'skew-y': function (value) {
         return {
             '--kg-skew-y': value,
-            'transform': 'var(--kg-transform)'
+            'transform': 'translate(var(--kg-translate-x), var(--kg-translate-y)) rotate(var(--kg-rotate)) skewX(var(--kg-skew-x)) skewY(var(--kg-skew-y)) scaleX(var(--kg-scale-x)) scaleY(var(--kg-scale-y))'
         };
     },
     'origin': function (value) { return { 'transform-origin': value }; },
@@ -495,8 +495,6 @@ const propertyMap = {
     }
 };
 
-
-
 function processColor(value) {
     if (value.startsWith('#') && value.length === 7) {
         const r = parseInt(value.slice(1, 3), 16);
@@ -516,7 +514,6 @@ function processColorWithOpacity(value, opacity) {
     }
     return value;
 }
-
 
 function parseKgClass(className) {
     const regex = /^([^\s]+)-\[(.+)\]$/;
@@ -539,7 +536,15 @@ function parseKgClass(className) {
         .replace(/_/g, ' ');
 
     // Matematiksel operatörlerin etrafına boşluk ekle
-    // value = value.replace(/([+\-*/])/g, ' $1 ');
+    function addSpacesAroundOperators(value) {
+        // calc() fonksiyonlarını bulmak için regex kullan
+        return value.replace(/calc\(([^)]+)\)/g, (match, inner) => {
+            // İçerideki matematiksel operatörlerin etrafına boşluk ekle
+            const spacedInner = inner.replace(/([+\-*/])/g, ' $1 ');
+            return `calc(${spacedInner})`;
+        });
+    }
+    value = addSpacesAroundOperators(value);
 
     // Parantezlerin etrafındaki gereksiz boşlukları temizle
     value = value.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
@@ -583,12 +588,7 @@ function escapeClassName(className) {
 }
 
 
-
-
-// custom.html dosyasını oku ve class'ları al
-const customHtml = fs.readFileSync('./../custom.html', 'utf-8');
-
-// customHtml içindeki tüm class'ları al
+const customHtml = fs.readFileSync('./dist/custom.html', 'utf-8');
 
 const regex = /class="([^"]+)"/g;
 const classes = new Set();
@@ -601,10 +601,9 @@ while ((match = regex.exec(customHtml)) !== null) {
 }
 
 classes.forEach(element => {
-    // export custom.css
     const cssOutput = parseKgClass(element);
     if (cssOutput) {
-        fs.appendFileSync('./../custom.css', cssOutput + '\n\n');
+        fs.appendFileSync('./dist/custom.css', cssOutput + '\n\n');
     }
 });
 
