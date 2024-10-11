@@ -160,6 +160,7 @@ import { generateTransitionDelayClasses } from './properties/transitionDelay.js'
 // import { generateAnimationClasses } from './properties/animation.js';
 
 // Transforms
+import { generateTransformClasses } from './properties/transform.js';
 import { generateTransformScaleClasses } from './properties/transformScale.js';
 import { generateTransformRotateClasses } from './properties/transformRotate.js';
 import { generateTransformTranslateClasses } from './properties/transformTranslate.js';
@@ -342,6 +343,7 @@ export function generateAllClasses() {
         ...generateBackdropSaturateClasses(),
         ...generateBackdropSepiaClasses(),
         ...generateBorderCollapseClasses(),
+        ...generateTransformClasses(),
         ...generateTransformScaleClasses(),
         ...generateTransformRotateClasses(),
         ...generateTransformTranslateClasses(),
