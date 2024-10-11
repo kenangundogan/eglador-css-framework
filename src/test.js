@@ -14,6 +14,7 @@ const propertyMap = {
     'basis': function (value) { return { 'flex-basis': value }; },
     'flex': function (value) { return { 'flex': value }; },
     'grow': function (value) { return { 'flex-grow': value }; },
+    'flex-shrink': function (value) { return { 'flex-shrink': value }; },
     'shrink': function (value) { return { 'flex-shrink': value }; },
     'order': function (value) { return { 'order': value }; },
     'grid-cols': function (value) { return { 'grid-template-columns': value }; },
@@ -216,14 +217,14 @@ const propertyMap = {
             return { 'border-width': value };
         }
     },
-    'divide-x > :not([hidden]) ~ :not([hidden])': function (value) {
+    'divide-x > :not([hidden]) ~ :not([hidden]) ': function (value) {
         return {
             '--kg-divide-x-reverse': '0',
             'border-right-width': `calc(${value} * var(--kg-divide-x-reverse))`,
             'border-left-width': `calc(${value} * calc(1 - var(--kg-divide-x-reverse)))`
         };
     },
-    'divide-y > :not([hidden]) ~ :not([hidden])': function (value) {
+    'divide-y > :not([hidden]) ~ :not([hidden]) ': function (value) {
         return {
             '--kg-divide-y-reverse': '0',
             'border-top-width': `calc(${value} * calc(1 - var(--kg-divide-y-reverse)))`,
@@ -552,13 +553,62 @@ function parseKgClass(className) {
     // Çift boşlukları tek boşluğa indir
     value = value.replace(/\s+/g, ' ').trim();
 
+    let declarations = {};
+
+    // Eğer property "space-x" veya "space-y" ile başlıyorsa, propertyMap'ten uygun değeri al
+    if (property.startsWith('space-') || property.startsWith('divide-')) {
+        console.log(property);
+        const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
+        console.log(spacePropertyKey);
+        const cssProperties = propertyMap[spacePropertyKey];
+
+        if (cssProperties) {
+            const declarations = cssProperties(value);
+
+            // CSS sınıf adını escape etme
+            const escapedClassName = escapeClassName(className);
+
+            // CSS çıktısını oluşturma
+            let cssOutput = `.${escapedClassName} > :not([hidden]) ~ :not([hidden]) {\n`;
+            for (const [prop, val] of Object.entries(declarations)) {
+                cssOutput += `  ${prop}: ${val};\n`;
+            }
+            cssOutput += '}';
+            return cssOutput;
+        }
+    }
+
+    // Eğer property içinde "before:content" veya "after:content" varsa, propertyMap'ten uygun değeri al
+    if (property.startsWith('before:content') || property.startsWith('after:content')) {
+        const pseudoPropertyKey = `${property}`;
+        const cssProperties = propertyMap[pseudoPropertyKey];
+
+        if (cssProperties) {
+            const declarations = cssProperties(value);
+
+            // CSS sınıf adını escape etme
+            const escapedClassName = escapeClassName(className);
+
+            // CSS çıktısını oluşturma
+            let cssOutput = `.${escapedClassName}::${property.split(':')[0]} {\n`;
+            for (const [prop, val] of Object.entries(declarations)) {
+                cssOutput += `  ${prop}: ${val};\n`;
+            }
+            cssOutput += '}';
+            return cssOutput;
+        }
+
+        return null;
+
+    }
+
+
+    // Diğer durumlar için mevcut mantığı kullan
     const cssProperties = propertyMap[property];
 
     if (!cssProperties) {
         return null; // Eşleşme bulunamadı
     }
-
-    let declarations = {};
 
     if (typeof cssProperties === 'function') {
         declarations = cssProperties(value);
@@ -567,6 +617,7 @@ function parseKgClass(className) {
     } else {
         declarations = cssProperties;
     }
+
 
     // CSS sınıf adını escape etme
     const escapedClassName = escapeClassName(className);
@@ -583,7 +634,6 @@ function parseKgClass(className) {
 
 function escapeClassName(className) {
     let result = cssesc(className).replace(/\\,/g, '\\2c ');
-    console.log(result);
     return result;
 }
 
