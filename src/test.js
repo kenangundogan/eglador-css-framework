@@ -516,50 +516,47 @@ function processColorWithOpacity(value, opacity) {
     return value;
 }
 
+function addSpacesAroundOperators(value) {
+    return value.replace(/calc\(([^)]+)\)/g, (match, inner) => {
+        const spacedInner = inner.replace(/([+\-*/])/g, ' $1 ');
+        return `calc(${spacedInner})`;
+    });
+}
+
+function specialCharToOriginal(value) {
+    return value
+        .replace(/\\\//g, '/') // Slash'leri escape etme
+        .replace(/\\:/g, ':') // İki noktaları escape etme
+        .replace(/\\;/g, ';') // Noktalı virgülleri escape etme
+        .replace(/\\,/g, ',') // Virgülleri escape etme
+        .replace(/\\\./g, '.') // Noktaları escape etme
+        .replace(/_/g, ' ') // Alt çizgileri boşlukla değiştir
+        .replace(/\(\s+/g, '(').replace(/\s+\)/g, ')') // Boşlukları parantezlerin içinden kaldır
+        .replace(/\s+/g, ' ').trim(); // Birden fazla boşluğu tek boşlukla değiştir ve baştaki ve sondaki boşlukları kaldır
+}
+
+function escapeClassName(className) {
+    let result = cssesc(className).replace(/\\,/g, '\\2c ');
+    return result;
+}
+
 function parseKgClass(className) {
     const regex = /^([^\s]+)-\[(.+)\]$/;
     const match = className.match(regex);
 
     if (!match) {
-        return null; // Uygun formatta değil
+        return null;
     }
 
     let property = match[1];
     let value = match[2];
-
-    // Değer içindeki özel karakterleri orijinal hallerine çevir
-    value = value
-        .replace(/\\\//g, '/')
-        .replace(/\\:/g, ':')
-        .replace(/\\;/g, ';')
-        .replace(/\\,/g, ',')
-        .replace(/\\\./g, '.')
-        .replace(/_/g, ' ');
-
-    // Matematiksel operatörlerin etrafına boşluk ekle
-    function addSpacesAroundOperators(value) {
-        // calc() fonksiyonlarını bulmak için regex kullan
-        return value.replace(/calc\(([^)]+)\)/g, (match, inner) => {
-            // İçerideki matematiksel operatörlerin etrafına boşluk ekle
-            const spacedInner = inner.replace(/([+\-*/])/g, ' $1 ');
-            return `calc(${spacedInner})`;
-        });
-    }
-    value = addSpacesAroundOperators(value);
-
-    // Parantezlerin etrafındaki gereksiz boşlukları temizle
-    value = value.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
-
-    // Çift boşlukları tek boşluğa indir
-    value = value.replace(/\s+/g, ' ').trim();
-
     let declarations = {};
 
-    // Eğer property "space-x" veya "space-y" ile başlıyorsa, propertyMap'ten uygun değeri al
+    value = specialCharToOriginal(value);
+    value = addSpacesAroundOperators(value);
+
     if (property.startsWith('space-') || property.startsWith('divide-')) {
-        console.log(property);
         const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
-        console.log(spacePropertyKey);
         const cssProperties = propertyMap[spacePropertyKey];
 
         if (cssProperties) {
@@ -578,7 +575,6 @@ function parseKgClass(className) {
         }
     }
 
-    // Eğer property içinde "before:content" veya "after:content" varsa, propertyMap'ten uygun değeri al
     if (property.startsWith('before:content') || property.startsWith('after:content')) {
         const pseudoPropertyKey = `${property}`;
         const cssProperties = propertyMap[pseudoPropertyKey];
@@ -602,12 +598,10 @@ function parseKgClass(className) {
 
     }
 
-
-    // Diğer durumlar için mevcut mantığı kullan
     const cssProperties = propertyMap[property];
 
     if (!cssProperties) {
-        return null; // Eşleşme bulunamadı
+        return null;
     }
 
     if (typeof cssProperties === 'function') {
@@ -618,8 +612,6 @@ function parseKgClass(className) {
         declarations = cssProperties;
     }
 
-
-    // CSS sınıf adını escape etme
     const escapedClassName = escapeClassName(className);
 
     // CSS çıktısını oluşturma
@@ -630,11 +622,6 @@ function parseKgClass(className) {
     cssOutput += '}';
 
     return cssOutput;
-}
-
-function escapeClassName(className) {
-    let result = cssesc(className).replace(/\\,/g, '\\2c ');
-    return result;
 }
 
 
