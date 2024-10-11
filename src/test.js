@@ -551,9 +551,16 @@ function parseKgClass(className) {
     let property = match[1];
     let value = match[2];
     let declarations = {};
+    let isImportant = '';
+
+    if (property.startsWith('!')) {
+        property = property.slice(1);
+        isImportant = ' !important';
+    }
 
     value = specialCharToOriginal(value);
     value = addSpacesAroundOperators(value);
+
 
     if (property.startsWith('space-') || property.startsWith('divide-')) {
         const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
@@ -604,20 +611,14 @@ function parseKgClass(className) {
         return null;
     }
 
-    if (typeof cssProperties === 'function') {
-        declarations = cssProperties(value);
-    } else if (typeof cssProperties === 'string') {
-        declarations[cssProperties] = value;
-    } else {
-        declarations = cssProperties;
-    }
+    declarations = cssProperties(value);
 
     const escapedClassName = escapeClassName(className);
 
     // CSS çıktısını oluşturma
     let cssOutput = `.${escapedClassName} {\n`;
     for (const [prop, val] of Object.entries(declarations)) {
-        cssOutput += `  ${prop}: ${val};\n`;
+        cssOutput += `  ${prop}: ${val} ${isImportant};\n`;
     }
     cssOutput += '}';
 
