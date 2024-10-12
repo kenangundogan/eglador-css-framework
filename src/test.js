@@ -540,6 +540,120 @@ function escapeClassName(className) {
     return result;
 }
 
+// Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
+function extractPseudo(property) {
+    const pseudoClasses = ['hover', 'focus', 'active'];
+    const pseudoElements = ['before', 'after'];
+
+    // Pseudo-class kontrolü
+    for (const pseudoClass of pseudoClasses) {
+        if (property.startsWith(`${pseudoClass}:`)) {
+            return {
+                pseudoType: 'class',
+                pseudoValue: pseudoClass,
+                property: property.slice(pseudoClass.length + 1), // Pseudo-class'ı çıkar
+            };
+        }
+    }
+
+    // Pseudo-element kontrolü
+    for (const pseudoElement of pseudoElements) {
+        if (property.startsWith(`${pseudoElement}:`)) {
+            return {
+                pseudoType: 'element',
+                pseudoValue: pseudoElement,
+                property: property.slice(pseudoElement.length + 1), // Pseudo-element'i çıkar
+            };
+        }
+    }
+
+    // Ne pseudo-class ne pseudo-element ise
+    return {
+        pseudoType: null,
+        pseudoValue: null,
+        property,
+    };
+}
+
+// Pseudo-class ve Pseudo-element'leri ayırmak için recursive fonksiyon
+function extractMultiplePseudos(property) {
+    let pseudoSelector = '';
+    let remainingProperty = property;
+    let pseudoType, pseudoValue;
+
+    do {
+        ({ pseudoType, pseudoValue, property: remainingProperty } = extractPseudo(remainingProperty));
+
+        if (pseudoType === 'class') {
+            pseudoSelector += `:${pseudoValue}`;
+        } else if (pseudoType === 'element') {
+            pseudoSelector += `::${pseudoValue}`;
+        }
+    } while (pseudoType);
+
+    return {
+        pseudoSelector,
+        property: remainingProperty,
+    };
+}
+
+// !important kontrolü için yardımcı fonksiyon
+function checkImportant(property) {
+    if (property.startsWith('!')) {
+        return {
+            property: property.slice(1),
+            isImportant: ' !important',
+        };
+    }
+    return {
+        property: property,
+        isImportant: '',
+    };
+}
+
+// CSS çıktılarını oluşturmak için yardımcı fonksiyon
+function generateCSSOutput(selector, declarations, isImportant, addContent = false) {
+    let cssOutput = `${selector} {\n`;
+    if (addContent) {
+        cssOutput += `  content: var(--kg-content);\n`;
+    }
+    for (const [prop, val] of Object.entries(declarations)) {
+        cssOutput += `  ${prop}: ${val}${isImportant};\n`;
+    }
+    cssOutput += '}';
+    return cssOutput;
+}
+
+// space- ve divide- işlemleri için fonksiyon
+function handleSpaceOrDivide(property, className, value) {
+    const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
+    const cssProperties = propertyMap[spacePropertyKey];
+
+    if (cssProperties) {
+        const declarations = cssProperties(value);
+        return generateCSSOutput(`.${escapeClassName(className)} > :not([hidden]) ~ :not([hidden])`, declarations, '');
+    }
+
+    return null;
+}
+
+// before:content ve after:content işlemleri için fonksiyon
+function handlePseudoContent(property, className, value, pseudoSelector) {
+    const cssProperties = propertyMap[property];
+    if (cssProperties) {
+        const declarations = cssProperties(value);
+        return generateCSSOutput(
+            `.${escapeClassName(className)}${pseudoSelector}`,
+            declarations,
+            '',
+            true // content eklemek için flag
+        );
+    }
+
+    return null;
+}
+
+// Ana parse fonksiyonu
 function parseKgClass(className) {
     const regex = /^([^\s]+)-\[(.+)\]$/;
     const match = className.match(regex);
@@ -548,81 +662,35 @@ function parseKgClass(className) {
         return null;
     }
 
-    let property = match[1];
-    let value = match[2];
-    let declarations = {};
-    let isImportant = '';
+    // Pseudo-class ve pseudo-element'leri ayırmak için recursive fonksiyonu kullan
+    let { pseudoSelector, property } = extractMultiplePseudos(match[1]);
 
-    if (property.startsWith('!')) {
-        property = property.slice(1);
-        isImportant = ' !important';
-    }
-
-    value = specialCharToOriginal(value);
+    let { property: cleanProperty, isImportant } = checkImportant(property);
+    let value = specialCharToOriginal(match[2]);
     value = addSpacesAroundOperators(value);
 
-
-    if (property.startsWith('space-') || property.startsWith('divide-')) {
-        const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
-        const cssProperties = propertyMap[spacePropertyKey];
-
-        if (cssProperties) {
-            const declarations = cssProperties(value);
-
-            // CSS sınıf adını escape etme
-            const escapedClassName = escapeClassName(className);
-
-            // CSS çıktısını oluşturma
-            let cssOutput = `.${escapedClassName} > :not([hidden]) ~ :not([hidden]) {\n`;
-            for (const [prop, val] of Object.entries(declarations)) {
-                cssOutput += `  ${prop}: ${val};\n`;
-            }
-            cssOutput += '}';
-            return cssOutput;
-        }
+    // space- ve divide- işlemleri için dışarı yönlendirme
+    if (cleanProperty.startsWith('space-') || cleanProperty.startsWith('divide-')) {
+        return handleSpaceOrDivide(cleanProperty, className, value);
     }
 
-    if (property.startsWith('before:content') || property.startsWith('after:content')) {
-        const pseudoPropertyKey = `${property}`;
-        const cssProperties = propertyMap[pseudoPropertyKey];
-
-        if (cssProperties) {
-            const declarations = cssProperties(value);
-
-            // CSS sınıf adını escape etme
-            const escapedClassName = escapeClassName(className);
-
-            // CSS çıktısını oluşturma
-            let cssOutput = `.${escapedClassName}::${property.split(':')[0]} {\n`;
-            for (const [prop, val] of Object.entries(declarations)) {
-                cssOutput += `  ${prop}: ${val};\n`;
-            }
-            cssOutput += '}';
-            return cssOutput;
-        }
-
-        return null;
-
+    // before:content ve after:content işlemleri için dışarı yönlendirme
+    if (cleanProperty.startsWith('before:content') || cleanProperty.startsWith('after:content')) {
+        return handlePseudoContent(cleanProperty, className, value, pseudoSelector);
     }
 
-    const cssProperties = propertyMap[property];
-
+    // Genel CSS property işlemi
+    const cssProperties = propertyMap[cleanProperty];
     if (!cssProperties) {
         return null;
     }
 
-    declarations = cssProperties(value);
-
-    const escapedClassName = escapeClassName(className);
-
-    // CSS çıktısını oluşturma
-    let cssOutput = `.${escapedClassName} {\n`;
-    for (const [prop, val] of Object.entries(declarations)) {
-        cssOutput += `  ${prop}: ${val} ${isImportant};\n`;
-    }
-    cssOutput += '}';
-
-    return cssOutput;
+    return generateCSSOutput(
+        `.${escapeClassName(className)}${pseudoSelector}`,
+        cssProperties(value),
+        isImportant,
+        pseudoSelector.includes('::before') || pseudoSelector.includes('::after') // before/after varsa content ekle
+    );
 }
 
 
