@@ -542,8 +542,61 @@ function escapeClassName(className) {
 
 // Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
 function extractPseudo(property) {
-    const pseudoClasses = ['hover', 'focus', 'active'];
-    const pseudoElements = ['before', 'after'];
+    const pseudoClasses = [
+        'hover',        // Fare üzerine gelince
+        'focus',        // Eleman odaklanınca
+        'active',       // Tıklanınca aktif hale gelince
+        'visited',      // Ziyaret edilen linkler için
+        'link',         // Ziyaret edilmemiş linkler için
+        'focus-visible',// Klavye ile focuslanınca
+        'focus-within', // İçeriği focuslanınca
+        'checked',      // Checkbox, radio button vb. seçili olunca
+        'disabled',     // Disable edilen elementler için
+        'enabled',      // Enable edilen elementler için
+        'required',     // Form input'ları required olunca
+        'optional',     // Form input'ları optional olunca
+        'read-only',    // Salt okunur elemanlar için
+        'read-write',   // Düzenlenebilir elemanlar için
+        'placeholder-shown', // Placeholder'ı görünen input'lar için
+        'target',       // URL fragment ile eşleşen elemanlar için (#section1)
+        'first-child',  // İlk çocuk eleman için
+        'last-child',   // Son çocuk eleman için
+        'nth-child',    // Belirtilen sıradaki çocuk eleman için
+        'nth-last-child', // Belirtilen sıradaki son çocuk eleman için
+        'first-of-type',// İlk tip eleman için
+        'last-of-type', // Son tip eleman için
+        'nth-of-type',  // Belirtilen sıradaki tip eleman için
+        'nth-last-of-type', // Belirtilen sıradaki son tip eleman için
+        'only-child',   // Tek çocuk eleman için
+        'only-of-type', // Tek tip eleman için
+        'empty',        // İçeriği olmayan elemanlar için
+        'not',          // Belirtilen elemanı seçmeyenler için
+        'root',         // Belge kök elemanı için
+        'indeterminate',// Seçili olmayan form elementleri için
+        'default',      // Default durumdaki elemanlar için (submit button vb.)
+        'valid',        // Geçerli form elemanları için
+        'invalid',      // Geçersiz form elemanları için
+        'in-range',     // Geçerli aralıktaki input'lar için
+        'out-of-range', // Geçersiz aralıktaki input'lar için
+        'fullscreen'    // Tam ekran modunda olan elemanlar için
+    ];
+
+    const pseudoElements = [
+        'before',   // Elemanın öncesine içerik ekler
+        'after',    // Elemanın sonrasına içerik ekler
+        'first-letter', // İlk harfe stil uygular
+        'first-line',   // İlk satıra stil uygular
+        'selection',    // Seçilen metni stiller
+        'placeholder',  // Placeholder stilini uygular
+        'backdrop',     // Tam ekran modunda modal arka planı stilini uygular
+        'marker',       // Liste işaretleyicisini stiller
+        'file-selector-button', // File input butonunu stiller
+        'part',         // Shadow DOM'da bir bölüm stiller
+        'slotted',      // Shadow DOM'a eklenen içerikler için stil uygular
+        'cue',          // WebVTT altyazı stilleri için kullanılır
+        'cue-region'    // WebVTT altyazı bölgesini stiller
+    ];
+
 
     // Pseudo-class kontrolü
     for (const pseudoClass of pseudoClasses) {
