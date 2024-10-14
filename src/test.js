@@ -736,8 +736,17 @@ function parseKgClass(className) {
     // İşlenen class'ları ekleyin
     processedClasses.add(className);
 
+    let isStarClass = false;
+    let adjustedClassName = className;
+
+    // Eğer className '*:' ile başlıyorsa, bunu işaretleyelim
+    if (className.startsWith('*:')) {
+        isStarClass = true;
+        adjustedClassName = className.slice(2); // '*:' kısmını çıkar
+    }
+
     const regex = /^([^\s]+)-\[(.+)\]$/;
-    const match = className.match(regex);
+    const match = adjustedClassName.match(regex);
 
     if (!match) {
         return null;
@@ -769,8 +778,17 @@ function parseKgClass(className) {
     let cssOutput = '';
 
     for (let pseudoSelector of pseudoSelectors) {
+        let selector;
+
+        if (isStarClass) {
+            // '*:' ile başlayan class'lar için seçici '.classname > *' olmalı
+            selector = `.${escapeClassName(className)} > *${pseudoSelector}`;
+        } else {
+            selector = `.${escapeClassName(className)}${pseudoSelector}`;
+        }
+
         cssOutput += generateCSSOutput(
-            `.${escapeClassName(className)}${pseudoSelector}`,
+            selector,
             cssProperties(value),
             isImportant,
             pseudoSelector.includes('::before') || pseudoSelector.includes('::after') // before/after varsa content ekle
