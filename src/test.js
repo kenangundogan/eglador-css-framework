@@ -540,16 +540,27 @@ function escapeClassName(className) {
     return result;
 }
 
+function toUnicodeString(str) {
+    return str.split('').map(char => {
+        const code = char.charCodeAt(0);
+        if (code > 127) {
+            return `\\${code.toString(16).toUpperCase()}`;
+        }
+        return char;
+    }).join('');
+}
+
+
 // Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
 function extractPseudo(property) {
     const pseudoClasses = {
         'hover': ':hover', // Fare imleci eleman üzerinde durduğunda uygulanır
+        'focus-visible': ':focus-visible', // Klavye ile focuslanınca uygulanır
+        'focus-within': ':focus-within', // İçerik odaklandığında uygulanır
         'focus': ':focus', // Eleman odaklandığında (örneğin input kutusu odaklandığında) uygulanır
         'active': ':active', // Eleman tıklanıp aktif olduğunda uygulanır
         'visited': ':visited', // Ziyaret edilen linkler için uygulanır
         'link': ':link', // Ziyaret edilmemiş linkler için uygulanır
-        'focus-visible': ':focus-visible', // Klavye ile focuslanınca uygulanır
-        'focus-within': ':focus-within', // İçerik odaklandığında uygulanır
         'checked': ':checked', // Checkbox veya radio button gibi elemanlar seçildiğinde uygulanır
         'disabled': ':disabled', // Disable (devre dışı) edilmiş form elemanları için uygulanır
         'enabled': ':enabled', // Enable (etkin) durumdaki form elemanları için uygulanır
@@ -559,8 +570,8 @@ function extractPseudo(property) {
         'read-write': ':read-write', // Düzenlenebilir elemanlar için uygulanır
         'placeholder-shown': ':placeholder-shown', // Placeholder gösterildiğinde uygulanır (input elemanları için)
         'target': ':target', // URL'de # ile belirtilen fragment'a hedeflenen eleman için uygulanır
-        'first-child': ':first-child', // İlk çocuk eleman için uygulanır
-        'last-child': ':last-child', // Son çocuk eleman için uygulanır
+        'first': ':first-child', // İlk çocuk eleman için uygulanır
+        'last': ':last-child', // Son çocuk eleman için uygulanır
         'nth-child': ':nth-child', // Belirli sıradaki çocuk eleman için uygulanır (örnek: nth-child(2) -> 2. çocuk)
         'nth-last-child': ':nth-last-child', // Belirli sıradaki son çocuk eleman için uygulanır
         'first-of-type': ':first-of-type', // Aynı tipteki ilk eleman için uygulanır (örneğin, ilk `<p>` elemanı)
@@ -571,7 +582,13 @@ function extractPseudo(property) {
         'only-of-type': ':only-of-type', // Tek tipteki eleman için uygulanır (örneğin, sadece bir `<div>` varsa)
         'empty': ':empty', // İçeriği olmayan elemanlar için uygulanır
         'odd': ':nth-child(odd)', // Tek sıra numarasındaki elemanlar için uygulanır (örnek: 1., 3., 5. eleman)
-        'even': ':nth-child(even)' // Çift sıra numarasındaki elemanlar için uygulanır (örnek: 2., 4., 6. eleman)
+        'even': ':nth-child(even)', // Çift sıra numarasındaki elemanlar için uygulanır (örnek: 2., 4., 6. eleman)
+        'autofill': ':autofill', // Form elemanlarına otomatik doldurma işlemi başladığında uygulanır,
+        'invalid': ':invalid', // Geçersiz form elemanları için uygulanır
+        'valid': ':valid', // Geçerli form elemanları için uygulanır
+        'indeterminate': ':indeterminate', // Checkbox veya radio button gibi elemanlar için uygulanır
+        'out-of-range': ':out-of-range', // Belirli aralık dışındaki form elemanları için uygulanır
+        'in-range': ':in-range', // Belirli aralık içindeki form elemanları için uygulanır
     };
 
 
@@ -625,14 +642,12 @@ function extractMultiplePseudos(property) {
 
     do {
         ({ pseudoType, pseudoValue, property: remainingProperty } = extractPseudo(remainingProperty));
-
         if (pseudoType === 'class') {
             pseudoSelector += `${pseudoValue}`;
         } else if (pseudoType === 'element') {
             pseudoSelector += `${pseudoValue}`;
         }
     } while (pseudoType);
-
     return {
         pseudoSelector,
         property: remainingProperty,
@@ -687,11 +702,11 @@ function handleSpaceOrDivide(property, className, value) {
 // before:content ve after:content işlemleri için fonksiyon
 function handlePseudoContent(property, className, value, pseudoSelector) {
     const cssProperties = propertyMap[property];
-
     // Eğer content tanımlanmışsa, özel content işlemi yapılmalı
     if (property === 'content') {
+        console.log(className);
         return `
-            .${escapeClassName(className)}${pseudoSelector} {
+            .${escapeClassName(toUnicodeString(className))}${pseudoSelector} {
                 --kg-content: ${value};
                 content: var(--kg-content);
             }
@@ -721,19 +736,16 @@ function parseKgClass(className) {
         return null;
     }
 
-    // Pseudo-class veya pseudo-element'i key-value yapısından ayır
-    let { pseudoType, pseudoValue, property } = extractPseudo(match[1]);
+    // Pseudo-class veya pseudo-element'leri key-value yapısından recursive olarak ayır
+    let { pseudoSelector, property } = extractMultiplePseudos(match[1]);
 
     let { property: cleanProperty, isImportant } = checkImportant(property);
     let value = specialCharToOriginal(match[2]);
     value = addSpacesAroundOperators(value);
 
-    // Pseudo-class veya pseudo-element varsa, className sonuna ekle
-    let pseudoSelector = '';
-    if (pseudoType === 'class') {
-        pseudoSelector = pseudoValue;
-    } else if (pseudoType === 'element') {
-        pseudoSelector = pseudoValue;
+    // space- ve divide- işlemleri için kontrol ekleyin
+    if (cleanProperty.startsWith('space-') || cleanProperty.startsWith('divide-')) {
+        return handleSpaceOrDivide(cleanProperty, className, value);
     }
 
     // Pseudo-element için content özelliğini kontrol et ve ekle
