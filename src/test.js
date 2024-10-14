@@ -85,7 +85,7 @@ const propertyMap = {
         if (/^#|rgba?\(|hsla?\(|hsl\(|var\(--/.test(value)) {
             return {
                 '--kg-text-opacity': '1',
-                'color': `${processColor(value)}`
+                'color': `${processColor(value, '--kg-text-opacity')}`
             };
         } else {
             return { 'font-size': value };
@@ -125,7 +125,7 @@ const propertyMap = {
         if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return {
                 '--kg-bg-opacity': '1',
-                'background-color': `${processColor(value)}`
+                'background-color': `${processColor(value, '--kg-bg-opacity')}`
             };
         } else if (value.startsWith('url(')) {
             return { 'background-image': value };
@@ -211,7 +211,7 @@ const propertyMap = {
         if (value.startsWith('#') || value.startsWith('rgb')) {
             return {
                 '--kg-border-opacity': '1',
-                'border-color': `${processColor(value)}`
+                'border-color': `${processColor(value, '--kg-border-opacity')}`
             };
         } else {
             return { 'border-width': value };
@@ -235,7 +235,7 @@ const propertyMap = {
         if (value.startsWith('#') || value.startsWith('rgb')) {
             return {
                 '--kg-divide-opacity': '1',
-                'border-color': `${processColor(value)}`
+                'border-color': `${processColor(value, '--kg-divide-opacity')}`
             };
         } else {
             return { 'border-width': value };
@@ -255,7 +255,7 @@ const propertyMap = {
         if (value.startsWith('#') || value.startsWith('rgb')) {
             return {
                 '--kg-ring-opacity': '1',
-                '--kg-ring-color': `${processColor(value)}`
+                '--kg-ring-color': `${processColor(value, '--kg-ring-opacity')}`
             };
         } else {
             return {
@@ -496,12 +496,12 @@ const propertyMap = {
     }
 };
 
-function processColor(value) {
+function processColor(value, opacity) {
     if (value.startsWith('#') && value.length === 7) {
         const r = parseInt(value.slice(1, 3), 16);
         const g = parseInt(value.slice(3, 5), 16);
         const b = parseInt(value.slice(5, 7), 16);
-        return `rgb(${r} ${g} ${b} / var(--kg-text-opacity))`;
+        return `rgb(${r} ${g} ${b} / var(${opacity}))`;
     }
     return value;
 }
