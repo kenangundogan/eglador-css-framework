@@ -543,74 +543,75 @@ function escapeClassName(className) {
 // Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
 function extractPseudo(property) {
     const pseudoClasses = {
-        'hover': ':hover', // Fare imleci eleman üzerinde durduğunda uygulanır
-        'focus-visible': ':focus-visible', // Klavye ile focuslanınca uygulanır
-        'focus-within': ':focus-within', // İçerik odaklandığında uygulanır
-        'focus': ':focus', // Eleman odaklandığında (örneğin input kutusu odaklandığında) uygulanır
-        'active': ':active', // Eleman tıklanıp aktif olduğunda uygulanır
-        'visited': ':visited', // Ziyaret edilen linkler için uygulanır
-        'link': ':link', // Ziyaret edilmemiş linkler için uygulanır
-        'checked': ':checked', // Checkbox veya radio button gibi elemanlar seçildiğinde uygulanır
-        'disabled': ':disabled', // Disable (devre dışı) edilmiş form elemanları için uygulanır
-        'enabled': ':enabled', // Enable (etkin) durumdaki form elemanları için uygulanır
-        'required': ':required', // Gerekli (required) form elemanları için uygulanır
-        'optional': ':optional', // Opsiyonel (required olmayan) form elemanları için uygulanır
-        'read-only': ':read-only', // Salt okunur (readonly) elemanlar için uygulanır
-        'read-write': ':read-write', // Düzenlenebilir elemanlar için uygulanır
-        'placeholder-shown': ':placeholder-shown', // Placeholder gösterildiğinde uygulanır (input elemanları için)
-        'target': ':target', // URL'de # ile belirtilen fragment'a hedeflenen eleman için uygulanır
-        'first': ':first-child', // İlk çocuk eleman için uygulanır
-        'last': ':last-child', // Son çocuk eleman için uygulanır
-        'nth-child': ':nth-child', // Belirli sıradaki çocuk eleman için uygulanır (örnek: nth-child(2) -> 2. çocuk)
-        'nth-last-child': ':nth-last-child', // Belirli sıradaki son çocuk eleman için uygulanır
-        'first-of-type': ':first-of-type', // Aynı tipteki ilk eleman için uygulanır (örneğin, ilk `<p>` elemanı)
-        'last-of-type': ':last-of-type', // Aynı tipteki son eleman için uygulanır
-        'nth-of-type': ':nth-of-type', // Belirli sıradaki aynı tipteki eleman için uygulanır
-        'nth-last-of-type': ':nth-last-of-type', // Belirli sıradaki aynı tipteki son eleman için uygulanır
-        'only-child': ':only-child', // Tek çocuk eleman için uygulanır (eğer bir ebeveynin sadece bir çocuğu varsa)
-        'only-of-type': ':only-of-type', // Tek tipteki eleman için uygulanır (örneğin, sadece bir `<div>` varsa)
-        'empty': ':empty', // İçeriği olmayan elemanlar için uygulanır
-        'odd': ':nth-child(odd)', // Tek sıra numarasındaki elemanlar için uygulanır (örnek: 1., 3., 5. eleman)
-        'even': ':nth-child(even)', // Çift sıra numarasındaki elemanlar için uygulanır (örnek: 2., 4., 6. eleman)
-        'autofill': ':autofill', // Form elemanlarına otomatik doldurma işlemi başladığında uygulanır,
-        'invalid': ':invalid', // Geçersiz form elemanları için uygulanır
-        'valid': ':valid', // Geçerli form elemanları için uygulanır
-        'indeterminate': ':indeterminate', // Checkbox veya radio button gibi elemanlar için uygulanır
-        'out-of-range': ':out-of-range', // Belirli aralık dışındaki form elemanları için uygulanır
-        'in-range': ':in-range', // Belirli aralık içindeki form elemanları için uygulanır
+        'hover': () => [':hover'],
+        'focus-visible': () => [':focus-visible'],
+        'focus-within': () => [':focus-within'],
+        'focus': () => [':focus'],
+        'active': () => [':active'],
+        'visited': () => [':visited'],
+        'link': () => [':link'],
+        'checked': () => [':checked'],
+        'disabled': () => [':disabled'],
+        'enabled': () => [':enabled'],
+        'required': () => [':required'],
+        'optional': () => [':optional'],
+        'read-only': () => [':read-only'],
+        'read-write': () => [':read-write'],
+        'placeholder-shown': () => [':placeholder-shown'],
+        'target': () => [':target'],
+        'nth-child': () => [':nth-child'],
+        'nth-last-child': () => [':nth-last-child'],
+        'first-of-type': () => [':first-of-type'],
+        'last-of-type': () => [':last-of-type'],
+        'nth-of-type': () => [':nth-of-type'],
+        'nth-last-of-type': () => [':nth-last-of-type'],
+        'only-child': () => [':only-child'],
+        'only-of-type': () => [':only-of-type'],
+        'empty': () => [':empty'],
+        'odd': () => [':nth-child(odd)'],
+        'even': () => [':nth-child(even)'],
+        'autofill': () => [':autofill'],
+        'invalid': () => [':invalid'],
+        'valid': () => [':valid'],
+        'indeterminate': () => [':indeterminate'],
+        'out-of-range': () => [':out-of-range'],
+        'in-range': () => [':in-range'],
+        'first': () => [':first-child'],
+        'last': () => [':last-child'],
     };
-
 
     const pseudoElements = {
-        'before': '::before', // Elemanın öncesine içerik ekler, örneğin bir simge eklemek için kullanılabilir
-        'after': '::after', // Elemanın sonrasına içerik ekler, örneğin bir simge veya stil eklemek için kullanılabilir
-        'first-letter': '::first-letter', // Elemanın ilk harfi için özel stil uygulamak için kullanılır
-        'first-line': '::first-line', // Elemanın ilk satırına özel stil uygulamak için kullanılır
-        'selection': '::selection', // Seçilen (highlight edilen) metin için stil uygulamak için kullanılır
-        'placeholder': '::placeholder', // Form input elemanlarının placeholder'ına stil uygulamak için kullanılır
-        'backdrop': '::backdrop', // Tam ekran modunda (fullscreen) olan içeriklerin arka planını stilize etmek için kullanılır
-        'marker': '::marker', // Liste elemanlarının işaretleyicilerine (bullet points) stil uygulamak için kullanılır
-        'file-selector-button': '::file-selector-button' // File input butonlarına stil uygulamak için kullanılır
+        'before': () => ['::before'],
+        'after': () => ['::after'],
+        'first-letter': () => ['::first-letter'],
+        'first-line': () => ['::first-line'],
+        'selection': () => ['::selection'],
+        'placeholder': () => ['::placeholder'],
+        'backdrop': () => ['::backdrop'],
+        'marker': () => ['::marker', ' *::marker'],
+        'file-selector-button': () => ['::file-selector-button'],
     };
 
-    // Pseudo-class kontrolü
-    for (const [pseudoClassKey, pseudoClassSelector] of Object.entries(pseudoClasses)) {
-        if (property.startsWith(`${pseudoClassKey}`)) {
+    // Pseudo-element kontrolü
+    for (const [pseudoElementKey, pseudoElementFunc] of Object.entries(pseudoElements)) {
+        if (property.startsWith(`${pseudoElementKey}`)) {
+            const pseudoValue = pseudoElementFunc();
             return {
-                pseudoType: 'class',
-                pseudoValue: pseudoClassSelector,
-                property: property.slice(pseudoClassKey.length + 1), // Pseudo-class'ı çıkar
+                pseudoType: 'element',
+                pseudoValue,
+                property: property.slice(pseudoElementKey.length + 1), // Remove pseudo-element
             };
         }
     }
 
-    // Pseudo-element kontrolü
-    for (const [pseudoElementKey, pseudoElementSelector] of Object.entries(pseudoElements)) {
-        if (property.startsWith(`${pseudoElementKey}`)) {
+    // Pseudo-class kontrolü
+    for (const [pseudoClassKey, pseudoClassFunc] of Object.entries(pseudoClasses)) {
+        if (property.startsWith(`${pseudoClassKey}`)) {
+            const pseudoValue = pseudoClassFunc();
             return {
-                pseudoType: 'element',
-                pseudoValue: pseudoElementSelector,
-                property: property.slice(pseudoElementKey.length + 1), // Pseudo-element'i çıkar
+                pseudoType: 'class',
+                pseudoValue,
+                property: property.slice(pseudoClassKey.length + 1), // Remove pseudo-class
             };
         }
     }
@@ -625,20 +626,24 @@ function extractPseudo(property) {
 
 // Pseudo-class ve Pseudo-element'leri ayırmak için recursive fonksiyon
 function extractMultiplePseudos(property) {
-    let pseudoSelector = '';
+    let pseudoSelectors = [''];
     let remainingProperty = property;
     let pseudoType, pseudoValue;
 
     do {
         ({ pseudoType, pseudoValue, property: remainingProperty } = extractPseudo(remainingProperty));
-        if (pseudoType === 'class') {
-            pseudoSelector += `${pseudoValue}`;
-        } else if (pseudoType === 'element') {
-            pseudoSelector += `${pseudoValue}`;
+        if (pseudoType === 'class' || pseudoType === 'element') {
+            let newPseudoSelectors = [];
+            for (let existing of pseudoSelectors) {
+                for (let newPseudo of pseudoValue) {
+                    newPseudoSelectors.push(existing + newPseudo);
+                }
+            }
+            pseudoSelectors = newPseudoSelectors;
         }
     } while (pseudoType);
     return {
-        pseudoSelector,
+        pseudoSelectors,
         property: remainingProperty,
     };
 }
@@ -731,7 +736,6 @@ function parseKgClass(className) {
     // İşlenen class'ları ekleyin
     processedClasses.add(className);
 
-
     const regex = /^([^\s]+)-\[(.+)\]$/;
     const match = className.match(regex);
 
@@ -740,7 +744,7 @@ function parseKgClass(className) {
     }
 
     // Pseudo-class veya pseudo-element'leri key-value yapısından recursive olarak ayır
-    let { pseudoSelector, property } = extractMultiplePseudos(match[1]);
+    let { pseudoSelectors, property } = extractMultiplePseudos(match[1]);
 
     let { property: cleanProperty, isImportant } = checkImportant(property);
     let value = specialCharToOriginal(match[2]);
@@ -753,7 +757,7 @@ function parseKgClass(className) {
 
     // Pseudo-element için content özelliğini kontrol et ve ekle
     if (cleanProperty.startsWith('content')) {
-        return handlePseudoContent(cleanProperty, className, value, pseudoSelector);
+        return handlePseudoContent(cleanProperty, className, value, pseudoSelectors.join(''));
     }
 
     // Genel CSS property işlemi
@@ -762,12 +766,18 @@ function parseKgClass(className) {
         return null;
     }
 
-    return generateCSSOutput(
-        `.${escapeClassName(className)}${pseudoSelector}`,
-        cssProperties(value),
-        isImportant,
-        pseudoSelector.includes('::before') || pseudoSelector.includes('::after') // before/after varsa content ekle
-    );
+    let cssOutput = '';
+
+    for (let pseudoSelector of pseudoSelectors) {
+        cssOutput += generateCSSOutput(
+            `.${escapeClassName(className)}${pseudoSelector}`,
+            cssProperties(value),
+            isImportant,
+            pseudoSelector.includes('::before') || pseudoSelector.includes('::after') // before/after varsa content ekle
+        ) + '\n';
+    }
+
+    return cssOutput.trim();
 }
 
 
@@ -784,10 +794,12 @@ while ((match = regex.exec(customHtml)) !== null) {
     });
 }
 
+// custom.css dosyasın'ın içini temizle önce
+fs.writeFileSync('./dist/custom.css', '');
+
 classes.forEach(element => {
     const cssOutput = parseKgClass(element);
     if (cssOutput) {
         fs.appendFileSync('./dist/custom.css', cssOutput + '\n\n');
     }
 });
-
