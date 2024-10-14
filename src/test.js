@@ -540,17 +540,6 @@ function escapeClassName(className) {
     return result;
 }
 
-function toUnicodeString(str) {
-    return str.split('').map(char => {
-        const code = char.charCodeAt(0);
-        if (code > 127) {
-            return `\\${code.toString(16).toUpperCase()}`;
-        }
-        return char;
-    }).join('');
-}
-
-
 // Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
 function extractPseudo(property) {
     const pseudoClasses = {
@@ -702,11 +691,12 @@ function handleSpaceOrDivide(property, className, value) {
 // before:content ve after:content işlemleri için fonksiyon
 function handlePseudoContent(property, className, value, pseudoSelector) {
     const cssProperties = propertyMap[property];
+
     // Eğer content tanımlanmışsa, özel content işlemi yapılmalı
     if (property === 'content') {
-        console.log(className);
+
         return `
-            .${escapeClassName(toUnicodeString(className))}${pseudoSelector} {
+            .${escapeClassName(className)}${pseudoSelector} {
                 --kg-content: ${value};
                 content: var(--kg-content);
             }
@@ -727,8 +717,21 @@ function handlePseudoContent(property, className, value, pseudoSelector) {
     return null;
 }
 
+// İşlenen class'ları saklamak için bir Set oluşturun
+const processedClasses = new Set();
+
 // Ana parse fonksiyonu
 function parseKgClass(className) {
+
+    // Eğer daha önce işlenmişse, tekrar işleme gerek yok
+    if (processedClasses.has(className)) {
+        return null;
+    }
+
+    // İşlenen class'ları ekleyin
+    processedClasses.add(className);
+
+
     const regex = /^([^\s]+)-\[(.+)\]$/;
     const match = className.match(regex);
 
