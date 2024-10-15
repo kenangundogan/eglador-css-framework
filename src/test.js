@@ -1,5 +1,7 @@
 import fs from 'fs';
 import cssesc from 'css.escape';
+import tinycolor from 'tinycolor2';
+
 const propertyMap = {
     'aspect': function (value) { return { 'aspect-ratio': value }; },
     'columns': function (value) { return { 'columns': value }; },
@@ -49,14 +51,14 @@ const propertyMap = {
         return { 'margin-top': value, 'margin-bottom': value };
     },
 
-    'space-y > :not([hidden]) ~ :not([hidden]) ': function (value) {
+    'space-y > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-space-y-reverse': '0',
             'margin-top': `calc(${value} * calc(1 - var(--kg-space-y-reverse)))`,
             'margin-bottom': `calc(${value} * var(--kg-space-y-reverse))`
         };
     },
-    'space-x > :not([hidden]) ~ :not([hidden]) ': function (value) {
+    'space-x > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-space-x-reverse': '0',
             'margin-right': `calc(${value} * var(--kg-space-x-reverse))`,
@@ -208,7 +210,7 @@ const propertyMap = {
     'border-e': function (value) { return { 'border-inline-end-width': value }; },
 
     'border': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return {
                 '--kg-border-opacity': '1',
                 'border-color': `${processColor(value, '--kg-border-opacity')}`
@@ -217,14 +219,14 @@ const propertyMap = {
             return { 'border-width': value };
         }
     },
-    'divide-x > :not([hidden]) ~ :not([hidden]) ': function (value) {
+    'divide-x > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-divide-x-reverse': '0',
             'border-right-width': `calc(${value} * var(--kg-divide-x-reverse))`,
             'border-left-width': `calc(${value} * calc(1 - var(--kg-divide-x-reverse)))`
         };
     },
-    'divide-y > :not([hidden]) ~ :not([hidden]) ': function (value) {
+    'divide-y > :not([hidden]) ~ :not([hidden])': function (value) {
         return {
             '--kg-divide-y-reverse': '0',
             'border-top-width': `calc(${value} * calc(1 - var(--kg-divide-y-reverse)))`,
@@ -232,7 +234,7 @@ const propertyMap = {
         };
     },
     'divide': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return {
                 '--kg-divide-opacity': '1',
                 'border-color': `${processColor(value, '--kg-divide-opacity')}`
@@ -243,7 +245,7 @@ const propertyMap = {
     },
 
     'outline': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return { 'outline-color': value };
         } else {
             return { 'outline-width': value };
@@ -252,7 +254,7 @@ const propertyMap = {
     'outline-offset': function (value) { return { 'outline-offset': value }; },
 
     'ring': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return {
                 '--kg-ring-opacity': '1',
                 '--kg-ring-color': `${processColor(value, '--kg-ring-opacity')}`
@@ -266,7 +268,7 @@ const propertyMap = {
         }
     },
     'ring-offset': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return { '--kg-ring-offset-color': value };
         } else {
             return { '--kg-ring-offset-width': value };
@@ -274,7 +276,7 @@ const propertyMap = {
     },
 
     'shadow': function (value) {
-        if (value.startsWith('#') || value.startsWith('rgb')) {
+        if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('hsl')) {
             return {
                 '--kg-shadow-color': value,
                 '--kg-shadow': 'var(--kg-shadow-colored)',
@@ -290,6 +292,7 @@ const propertyMap = {
     },
     'opacity': function (value) { return { 'opacity': value }; },
 
+    // Filter utilities
     'blur': function (value) {
         return {
             '--kg-blur': `blur(${value})`,
@@ -345,6 +348,7 @@ const propertyMap = {
         };
     },
 
+    // Backdrop filter utilities
     'backdrop-blur': function (value) {
         return {
             '--kg-backdrop-blur': `blur(${value})`,
@@ -429,6 +433,7 @@ const propertyMap = {
     'delay': function (value) { return { 'transition-delay': value }; },
     'animate': function (value) { return { 'animation': value }; },
 
+    // Transform utilities
     'scale': function (value) {
         return {
             '--kg-scale-x': value,
@@ -496,22 +501,20 @@ const propertyMap = {
     }
 };
 
-function processColor(value, opacity) {
-    if (value.startsWith('#') && value.length === 7) {
-        const r = parseInt(value.slice(1, 3), 16);
-        const g = parseInt(value.slice(3, 5), 16);
-        const b = parseInt(value.slice(5, 7), 16);
-        return `rgb(${r} ${g} ${b} / var(${opacity}))`;
+function processColor(value, opacityVar) {
+    const color = tinycolor(value);
+    if (color.isValid()) {
+        const rgb = color.toRgb();
+        return `rgb(${rgb.r} ${rgb.g} ${rgb.b} / var(${opacityVar}))`;
     }
     return value;
 }
 
 function processColorWithOpacity(value, opacity) {
-    if (value.startsWith('#') && value.length === 7) {
-        const r = parseInt(value.slice(1, 3), 16);
-        const g = parseInt(value.slice(3, 5), 16);
-        const b = parseInt(value.slice(5, 7), 16);
-        return `rgb(${r} ${g} ${b} / ${opacity})`;
+    const color = tinycolor(value).setAlpha(opacity);
+    if (color.isValid()) {
+        const rgb = color.toRgb();
+        return `rgb(${rgb.r} ${rgb.g} ${rgb.b} / ${opacity})`;
     }
     return value;
 }
@@ -523,7 +526,7 @@ function addSpacesAroundOperators(value) {
     });
 }
 
-function specialCharToOriginal(value) {
+function sanitizeValue(value) {
     return value
         .replace(/\\\//g, '/') // Slash'leri escape etme
         .replace(/\\:/g, ':') // İki noktaları escape etme
@@ -536,8 +539,7 @@ function specialCharToOriginal(value) {
 }
 
 function escapeClassName(className) {
-    let result = cssesc(className).replace(/\\,/g, '\\2c ');
-    return result;
+    return cssesc(className).replace(/\\,/g, '\\2c ');
 }
 
 // Pseudo-class ve Pseudo-element'leri ayırmak için yardımcı fonksiyon
@@ -630,18 +632,13 @@ function extractMultiplePseudos(property) {
     let remainingProperty = property;
     let pseudoType, pseudoValue;
 
-    do {
+    while (true) {
         ({ pseudoType, pseudoValue, property: remainingProperty } = extractPseudo(remainingProperty));
-        if (pseudoType === 'class' || pseudoType === 'element') {
-            let newPseudoSelectors = [];
-            for (let existing of pseudoSelectors) {
-                for (let newPseudo of pseudoValue) {
-                    newPseudoSelectors.push(existing + newPseudo);
-                }
-            }
-            pseudoSelectors = newPseudoSelectors;
-        }
-    } while (pseudoType);
+        if (!pseudoType) break;
+
+        pseudoSelectors = pseudoSelectors.map(sel => sel + pseudoValue.join(''));
+    }
+
     return {
         pseudoSelectors,
         property: remainingProperty,
@@ -682,7 +679,7 @@ function generateCSSOutput(selector, declarations, isImportant, addContent = fal
 
 // space- ve divide- işlemleri için fonksiyon
 function handleSpaceOrDivide(property, className, value) {
-    const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden]) `;
+    const spacePropertyKey = `${property} > :not([hidden]) ~ :not([hidden])`;
     const cssProperties = propertyMap[spacePropertyKey];
 
     if (cssProperties) {
@@ -756,7 +753,8 @@ function parseKgClass(className) {
     let { pseudoSelectors, property } = extractMultiplePseudos(match[1]);
 
     let { property: cleanProperty, isImportant } = checkImportant(property);
-    let value = specialCharToOriginal(match[2]);
+    let value = match[2];
+    value = sanitizeValue(value);
     value = addSpacesAroundOperators(value);
 
     // space- ve divide- işlemleri için kontrol ekleyin
@@ -798,15 +796,14 @@ function parseKgClass(className) {
     return cssOutput.trim();
 }
 
-
-
 const customHtml = fs.readFileSync('./dist/custom.html', 'utf-8');
 
-const regex = /class="([^"]+)"/g;
+const classRegex = /class=(["'])(.*?)\1|class=([^\s>]+)/g;
 const classes = new Set();
 let match;
-while ((match = regex.exec(customHtml)) !== null) {
-    const classList = match[1].split(' ');
+while ((match = classRegex.exec(customHtml)) !== null) {
+    const classAttribute = match[2] || match[3];
+    const classList = classAttribute.split(/\s+/);
     classList.forEach((className) => {
         classes.add(className);
     });
@@ -815,9 +812,13 @@ while ((match = regex.exec(customHtml)) !== null) {
 // custom.css dosyasın'ın içini temizle önce
 fs.writeFileSync('./dist/custom.css', '');
 
+let cssOutputs = '';
+
 classes.forEach(element => {
     const cssOutput = parseKgClass(element);
     if (cssOutput) {
-        fs.appendFileSync('./dist/custom.css', cssOutput + '\n\n');
+        cssOutputs += cssOutput + '\n\n';
     }
 });
+
+fs.writeFileSync('./dist/custom.css', cssOutputs);
