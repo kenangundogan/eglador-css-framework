@@ -2,6 +2,14 @@ import fs from 'fs';
 import cssesc from 'css.escape';
 import tinycolor from 'tinycolor2';
 
+const breakpoints = {
+    'sm': '640px',
+    'md': '768px',
+    'lg': '1024px',
+    'xl': '1280px',
+    '2xl': '1536px',
+};
+
 const propertyMap = {
     'aspect': function (value) { return { 'aspect-ratio': value }; },
     'columns': function (value) { return { 'columns': value }; },
@@ -601,7 +609,7 @@ function extractPseudo(property) {
             return {
                 pseudoType: 'element',
                 pseudoValue,
-                property: property.slice(pseudoElementKey.length + 1), // Remove pseudo-element
+                property: property.slice(pseudoElementKey.length), // Pseudo-element'i kaldır
             };
         }
     }
@@ -613,7 +621,7 @@ function extractPseudo(property) {
             return {
                 pseudoType: 'class',
                 pseudoValue,
-                property: property.slice(pseudoClassKey.length + 1), // Remove pseudo-class
+                property: property.slice(pseudoClassKey.length), // Pseudo-class'ı kaldır
             };
         }
     }
@@ -699,8 +707,8 @@ function handlePseudoContent(property, className, value, pseudoSelector) {
 
         return `
             .${escapeClassName(className)}${pseudoSelector} {
-                --kg-content: ${value};
-                content: var(--kg-content);
+            --kg-content: ${value};
+            content: var(--kg-content);
             }
         `;
     }
@@ -722,12 +730,16 @@ function handlePseudoContent(property, className, value, pseudoSelector) {
 // İşlenen class'ları saklamak için bir Set oluşturun
 const processedClasses = new Set();
 
+// CSS çıktıları breakpoint'lere göre gruplamak için nesneler ekledim
+const breakpointCssMap = {};
+const defaultCssOutputs = [];
+
 // Ana parse fonksiyonu
 function parseKgClass(className) {
 
     // Eğer daha önce işlenmişse, tekrar işleme gerek yok
     if (processedClasses.has(className)) {
-        return null;
+        return;
     }
 
     // İşlenen class'ları ekleyin
@@ -742,58 +754,106 @@ function parseKgClass(className) {
         adjustedClassName = className.slice(2); // '*:' kısmını çıkar
     }
 
-    const regex = /^([^\s]+)-\[(.+)\]$/;
-    const match = adjustedClassName.match(regex);
+    // Class ismini ':' karakterine göre bölüyoruz
+    const classParts = adjustedClassName.split(':');
+    let breakpoint = null;
+    let pseudoPrefixes = [];
+    let propertyAndValue = classParts.pop(); // Son kısım property ve value
 
-    if (!match) {
-        return null;
-    }
+    // Breakpoint ve pseudo-class'ları ayırıyoruz
+    classParts.forEach(part => {
+        if (breakpoints[part]) {
+            breakpoint = part;
+        } else {
+            pseudoPrefixes.push(part);
+        }
+    });
 
-    // Pseudo-class veya pseudo-element'leri key-value yapısından recursive olarak ayır
-    let { pseudoSelectors, property } = extractMultiplePseudos(match[1]);
+    // Pseudo-class ve pseudo-element'leri property'den ayırıyoruz
+    let { pseudoSelectors, property } = extractMultiplePseudos(propertyAndValue);
+
+    // Önceki pseudo-selectors ile birleştiriyoruz
+    pseudoPrefixes.forEach(prefix => {
+        const { pseudoValue } = extractPseudo(prefix);
+        if (pseudoValue) {
+            pseudoSelectors = pseudoSelectors.map(sel => pseudoValue.join('') + sel);
+        }
+    });
 
     let { property: cleanProperty, isImportant } = checkImportant(property);
+    const regex = /^([^\s]+)-\[(.+)\]$/;
+    const match = cleanProperty.match(regex);
+
+    if (!match) {
+        return;
+    }
+
+    cleanProperty = match[1];
     let value = match[2];
+
     value = sanitizeValue(value);
     value = addSpacesAroundOperators(value);
 
     // space- ve divide- işlemleri için kontrol ekleyin
     if (cleanProperty.startsWith('space-') || cleanProperty.startsWith('divide-')) {
-        return handleSpaceOrDivide(cleanProperty, className, value);
+        const cssOutput = handleSpaceOrDivide(cleanProperty, className, value);
+        if (cssOutput) {
+            if (breakpoint) {
+                if (!breakpointCssMap[breakpoint]) breakpointCssMap[breakpoint] = [];
+                breakpointCssMap[breakpoint].push(cssOutput);
+            } else {
+                defaultCssOutputs.push(cssOutput);
+            }
+        }
+        return;
     }
 
     // Pseudo-element için content özelliğini kontrol et ve ekle
     if (cleanProperty.startsWith('content')) {
-        return handlePseudoContent(cleanProperty, className, value, pseudoSelectors.join(''));
+        const cssOutput = handlePseudoContent(cleanProperty, className, value, pseudoSelectors.join(''));
+        if (cssOutput) {
+            if (breakpoint) {
+                if (!breakpointCssMap[breakpoint]) breakpointCssMap[breakpoint] = [];
+                breakpointCssMap[breakpoint].push(cssOutput);
+            } else {
+                defaultCssOutputs.push(cssOutput);
+            }
+        }
+        return;
     }
 
     // Genel CSS property işlemi
     const cssProperties = propertyMap[cleanProperty];
     if (!cssProperties) {
-        return null;
+        return;
     }
 
-    let cssOutput = '';
+    let selector = `.${escapeClassName(className)}`;
+    if (isStarClass) {
+        selector += ' > *';
+    }
+    if (pseudoSelectors.length > 0) {
+        selector += pseudoSelectors.join('');
+    }
 
-    for (let pseudoSelector of pseudoSelectors) {
-        let selector;
+    const declarations = cssProperties(value);
 
-        if (isStarClass) {
-            // '*:' ile başlayan class'lar için seçici '.classname > *' olmalı
-            selector = `.${escapeClassName(className)} > *${pseudoSelector}`;
+    let cssOutput = generateCSSOutput(
+        selector,
+        declarations,
+        isImportant,
+        pseudoSelectors.some(ps => ps.includes('::before') || ps.includes('::after'))
+    );
+
+    // CSS çıktısını oluşturduktan sonra breakpoint kontrolü yapıyoruz
+    if (cssOutput) {
+        if (breakpoint) {
+            if (!breakpointCssMap[breakpoint]) breakpointCssMap[breakpoint] = [];
+            breakpointCssMap[breakpoint].push(cssOutput);
         } else {
-            selector = `.${escapeClassName(className)}${pseudoSelector}`;
+            defaultCssOutputs.push(cssOutput);
         }
-
-        cssOutput += generateCSSOutput(
-            selector,
-            cssProperties(value),
-            isImportant,
-            pseudoSelector.includes('::before') || pseudoSelector.includes('::after') // before/after varsa content ekle
-        ) + '\n';
     }
-
-    return cssOutput.trim();
 }
 
 const customHtml = fs.readFileSync('./dist/custom.html', 'utf-8');
@@ -809,16 +869,27 @@ while ((match = classRegex.exec(customHtml)) !== null) {
     });
 }
 
-// custom.css dosyasın'ın içini temizle önce
+// custom.css dosyasını temizleyin
 fs.writeFileSync('./dist/custom.css', '');
 
+classes.forEach(element => {
+    parseKgClass(element);
+});
+
+// Tüm class'ları işledikten sonra CSS çıktıları oluşturuyoruz
 let cssOutputs = '';
 
-classes.forEach(element => {
-    const cssOutput = parseKgClass(element);
-    if (cssOutput) {
-        cssOutputs += cssOutput + '\n\n';
-    }
-});
+// Önce default CSS çıktıları ekleyin
+if (defaultCssOutputs.length > 0) {
+    cssOutputs += defaultCssOutputs.join('\n\n') + '\n\n';
+}
+
+// Breakpoint'lere göre CSS çıktıları ekleyin
+for (const [breakpoint, cssArray] of Object.entries(breakpointCssMap)) {
+    const minWidth = breakpoints[breakpoint];
+    cssOutputs += `@media (min-width: ${minWidth}) {\n`;
+    cssOutputs += cssArray.map(css => css.split('\n').map(line => '  ' + line).join('\n')).join('\n\n') + '\n';
+    cssOutputs += '}\n\n';
+}
 
 fs.writeFileSync('./dist/custom.css', cssOutputs);
