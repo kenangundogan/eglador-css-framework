@@ -5,7 +5,8 @@ const glob = require('glob');
 import config from './eglador.config.js';
 
 // Gelişmiş regex: class attribute'unu ve içeriğini yakalar
-const classRegex = /class=(["'])([^]*?)\1/g;
+const classRegex = /class=(["'])([\s\S]*?)\1/g;  // [^]* yerine [\s\S]* kullanarak her türlü karakteri kapsar
+
 
 // Sınıf adlarını ayıran fonksiyon
 function splitClassNames(classString) {

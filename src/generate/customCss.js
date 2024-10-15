@@ -34,8 +34,8 @@ export function customCss(customClasses) {
             adjustedClassName = className.slice(2); // '*:' kısmını çıkar
         }
 
-        // Class ismini ':' karakterine göre bölüyoruz
-        const classParts = adjustedClassName.split(':');
+        // Class ismini ':' karakterine göre bölüyoruz ama [ ] içindekileri hariç tutuyor
+        const classParts = adjustedClassName.split(/:(?![^\[]*\])/);
         let breakpoint = null;
         let pseudoPrefixes = [];
         let propertyAndValue = classParts.pop(); // Son kısım property ve value
@@ -268,10 +268,10 @@ export function customCss(customClasses) {
         // Eğer content tanımlanmışsa, özel content işlemi yapılmalı
         if (property === 'content') {
             return `
-.${escapeClassName(className)}${pseudoSelector} {
-  --kg-content: ${value};
-  content: var(--kg-content);
-}`;
+                .${escapeClassName(className)}${pseudoSelector} {
+                --kg-content: ${value};
+                content: var(--kg-content);
+                }`;
         }
 
         // Diğer özellikler için normal CSS işlemi
