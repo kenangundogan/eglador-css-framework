@@ -48,4 +48,5 @@ export const pseudoElements = {
     'backdrop': () => ['::backdrop'],
     'marker': () => ['::marker', ' *::marker'],
     'file': () => ['::file-selector-button'],
+    'open': () => ['[open]'],
 };
