@@ -7,11 +7,7 @@ import { extractClassesFromFiles } from '../classExtractor.js';
 import { groupClasses } from '../classGroups.js';
 import { generateAllClasses } from '../generateAllClasses.js';
 import { baseCss } from '../generate/baseCss.js';
-import { importantCss } from '../generate/importantCss.js';
-import { responsiveCss } from '../generate/responsiveCss.js';
 import { customCss } from '../generate/customCss.js';
-import { pseudoCss } from '../generate/pseudoCss.js';
-import { pseudoElementCss } from '../generate/pseudoElementCss.js';
 
 // Tüm class'ları toplayıp CSS dosyasına yazan fonksiyon
 export function writeCssFile() {
@@ -30,30 +26,17 @@ export function writeCssFile() {
 
     // Class'ları grupla
     const groupedClasses = groupClasses(extractedClasses);
-    console.log(groupedClasses);
-
-    // Custom class'ları işleyelim
-    const customCssResult = customCss(groupedClasses.custom);
 
     // Statik class'ları işleyelim
     const baseCssResult = baseCss(groupedClasses.base, allClasses);
 
-    // Important class'ları işleyelim
-    const importantCssResult = importantCss(groupedClasses.important, allClasses);
-
-    // pseudoClasses class'ları işleyelim
-    const pseudoCssResult = pseudoCss(groupedClasses.pseudoClasses, allClasses);
-
-    // pseudoElement class'ları işleyelim
-    const pseudoElementCssResult = pseudoElementCss(groupedClasses.pseudoElements, allClasses);
-
-    // Media query class'larını işleyelim
-    const responsiveCssResult = responsiveCss(groupedClasses.responsive, allClasses);
+    // Custom class'ları işleyelim
+    const customCssResult = customCss(groupedClasses.custom);
 
     // CSS dosyasını belirtilen input dosyasını oku ve içeriğini al
     const inputCssContent = readCssFile();
 
     // CSS dosyasını belirlenen output dosyasına yaz
-    fs.writeFileSync(config.output, `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${importantCssResult}\n${customCssResult}\n${pseudoCssResult}\n${pseudoElementCssResult}\n${responsiveCssResult}\n${inputCssContent}`);
+    fs.writeFileSync(config.output, `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`);
     console.log(`CSS file generated successfully at ${config.output}`);
 }
