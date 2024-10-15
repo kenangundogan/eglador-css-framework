@@ -22,18 +22,35 @@ function processPseudoClassesAndElements(selector, cssRule) {
     return `${selector} {\n  ${cssRule}\n}`;
 }
 
-// Pseudo-class ve medya sorgularını ayrıştırma fonksiyonu
+// Tema ve medya sorgularını işlemek için yardımcı fonksiyon
+function getThemeSelector(themeClass) {
+    const themeSelectors = {
+        'dark': ':is(.dark *)',
+        'light': ':is(.light *)',
+        // Diğer tema sınıflarını burada ekleyebilirsiniz
+    };
+    return themeSelectors[themeClass] || '';
+}
+
+// Pseudo-class, tema ve medya sorgularını ayrıştırma fonksiyonu
 function extractClassParts(className) {
     const breakpoints = generateBreakpointsClasses; // Breakpoint'ler bir nesne
     const pseudoClassesList = Object.keys(pseudoClasses);
     const pseudoElementsList = Object.keys(pseudoElements);
 
     let mediaClass = null;
+    let themeClass = null;
     let pseudoClassesInClassName = [];
     let baseClass = className;
 
     let parts = className.split(':');
     let index = 0;
+
+    // Tema sınıfı kontrolü
+    if (getThemeSelector(parts[index])) {
+        themeClass = parts[index];
+        index++;
+    }
 
     // Medya sınıfı kontrolü
     if (breakpoints[parts[index]]) {
@@ -57,17 +74,20 @@ function extractClassParts(className) {
         baseClass = baseClass.slice(1);
     }
 
-    return { mediaClass, baseClass, isImportant, pseudoClassesInClassName };
+    return { themeClass, mediaClass, baseClass, isImportant, pseudoClassesInClassName };
 }
 
 // Seçici oluşturma fonksiyonu
-function buildSelector(className, isStarClass, pseudoSelectors) {
+function buildSelector(className, isStarClass, pseudoSelectors, themeSelector) {
     let selector = `.${escapeClassName(className)}`;
     if (isStarClass) {
         selector += ' > *';
     }
     if (pseudoSelectors.length > 0) {
         selector += pseudoSelectors.join('');
+    }
+    if (themeSelector) {
+        selector += themeSelector;
     }
     return selector;
 }
@@ -99,7 +119,7 @@ export function baseCss(base, allClasses) {
             adjustedClassName = className.slice(2); // '*:' kısmını çıkar
         }
 
-        const { mediaClass, baseClass, isImportant, pseudoClassesInClassName } = extractClassParts(adjustedClassName);
+        const { themeClass, mediaClass, baseClass, isImportant, pseudoClassesInClassName } = extractClassParts(adjustedClassName);
 
         // space- ve divide- işlemleri için kontrol ekleyin
         let lookupBaseClass = baseClass;
@@ -111,7 +131,7 @@ export function baseCss(base, allClasses) {
         }
 
         // Eğer space- veya divide- sınıfıysa, selector'u güncelle
-        let selector = buildSelector(className, isStarClass, []);
+        let selector = buildSelector(className, isStarClass, [], getThemeSelector(themeClass));
 
         if (isSpaceOrDivide) {
             selector += ' > :not([hidden]) ~ :not([hidden])';
@@ -126,10 +146,11 @@ export function baseCss(base, allClasses) {
                     return '';
                 }
             });
-            selector = buildSelector(className, isStarClass, pseudoSelectors);
+            selector = buildSelector(className, isStarClass, pseudoSelectors, getThemeSelector(themeClass));
         }
 
         // allClasses içinde sınıfı bul
+
         const cssRuleContent = allClasses[lookupBaseClass];
 
         if (cssRuleContent) {
@@ -145,7 +166,7 @@ export function baseCss(base, allClasses) {
                     .join('\n  ');
             } else {
                 // Hatalı bir tür ise, uyarı ver
-                console.warn(`Unsupported cssRuleContent type for class ${className}`);
+                // console.warn(`Unsupported cssRuleContent type for class ${className}`);
                 return;
             }
 
@@ -155,25 +176,26 @@ export function baseCss(base, allClasses) {
             // CSS kuralını oluştur
             const css = processPseudoClassesAndElements(selector, cssRule);
 
-            // Medya sınıfı varsa, medya sorgusuna ekle
+            // Medya sorgusu oluşturma
             if (mediaClass) {
                 const breakpointValue = breakpoints[mediaClass];
-                if (!mediaQueries[breakpointValue]) {
-                    mediaQueries[breakpointValue] = '';
+                const mediaQueryKey = `@media (min-width: ${breakpointValue})`;
+                if (!mediaQueries[mediaQueryKey]) {
+                    mediaQueries[mediaQueryKey] = '';
                 }
-                mediaQueries[breakpointValue] += css + '\n';
+                mediaQueries[mediaQueryKey] += css + '\n';
             } else {
                 cssOutput += css + '\n';
             }
         } else {
-            console.log(`${lookupBaseClass} sınıfı allClasses içinde bulunamadı.`);
+            // console.log(`${lookupBaseClass} sınıfı allClasses içinde bulunamadı.`);
         }
     });
 
     // Medya sorgularını CSS çıktısına ekle
-    Object.keys(mediaQueries).forEach(breakpointValue => {
-        if (mediaQueries[breakpointValue].trim() !== '') {
-            cssOutput += `@media (min-width: ${breakpointValue}) {\n${mediaQueries[breakpointValue]}}\n`;
+    Object.keys(mediaQueries).forEach(mediaQueryKey => {
+        if (mediaQueries[mediaQueryKey].trim() !== '') {
+            cssOutput += `${mediaQueryKey} {\n${mediaQueries[mediaQueryKey]}}\n`;
         }
     });
 
