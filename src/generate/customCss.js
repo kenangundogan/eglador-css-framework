@@ -1,9 +1,10 @@
 // src/generate/customCss.js
 
-import cssesc from 'css.escape';
 import { generateBreakpointsClasses } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo class'ları içe aktar
 import { propertyMap } from '../properties/_propertyMap.js'; // Property map'ini içe aktar
+import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
+import { sanitizeValue } from '../utils/sanitizeValue.js'; // sanitizeValue fonksiyonunu içe aktar
 
 export function customCss(customClasses) {
     let cssOutput = '';
@@ -151,22 +152,6 @@ export function customCss(customClasses) {
             const spacedInner = inner.replace(/([+\-*/])/g, ' $1 ');
             return `calc(${spacedInner})`;
         });
-    }
-
-    function sanitizeValue(value) {
-        return value
-            .replace(/\\\//g, '/') // Slash'leri escape etme
-            .replace(/\\:/g, ':') // İki noktaları escape etme
-            .replace(/\\;/g, ';') // Noktalı virgülleri escape etme
-            .replace(/\\,/g, ',') // Virgülleri escape etme
-            .replace(/\\\./g, '.') // Noktaları escape etme
-            .replace(/_/g, ' ') // Alt çizgileri boşlukla değiştir
-            .replace(/\(\s+/g, '(').replace(/\s+\)/g, ')') // Boşlukları parantezlerin içinden kaldır
-            .replace(/\s+/g, ' ').trim(); // Birden fazla boşluğu tek boşlukla değiştir ve baştaki ve sondaki boşlukları kaldır
-    }
-
-    function escapeClassName(className) {
-        return cssesc(className).replace(/\\,/g, '\\2c ');
     }
 
     function extractPseudo(property) {

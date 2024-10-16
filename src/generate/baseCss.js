@@ -1,13 +1,9 @@
 // src/generate/baseCss.js
 
-import cssesc from 'css.escape';
 import { generateBreakpointsClasses } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo sınıfları içe aktar
+import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
 
-// Class ismi kaçışlama fonksiyonu
-function escapeClassName(className) {
-    return cssesc(className).replace(/\\,/g, '\\2c ');
-}
 
 // Başında '!' olan class isimlerine 'important' ekleyen fonksiyon
 function processImportant(isImportant, cssRule) {
