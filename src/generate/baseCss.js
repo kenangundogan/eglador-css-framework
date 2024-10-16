@@ -2,17 +2,28 @@ import { breakpoints } from './../properties/_breakpoints.js'; // Breakpoint'ler
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo sınıfları içe aktar
 import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
 
+function createClassIndex(allClasses) {
+    const classIndex = {};
+
+    Object.keys(allClasses).forEach(className => {
+        const [baseClassPart] = className.split(' >');
+        if (!classIndex[baseClassPart]) {
+            classIndex[baseClassPart] = [];
+        }
+        classIndex[baseClassPart].push(className);
+    });
+    return classIndex;
+}
+
+
 
 // Başında '!' olan class isimlerine 'important' ekleyen fonksiyon
-function processImportant(isImportant, cssRule) {
-    if (isImportant) {
-        return `${cssRule.replace(/;$/, '')} !important;`;
-    }
-    return cssRule;
+function addImportantFlag(isImportant, cssRule) {
+    return isImportant ? `${cssRule.replace(/;$/, '')} !important;` : cssRule;
 }
 
 // Pseudo-class ve pseudo-element işleyen fonksiyon
-function processPseudoClassesAndElements(selector, cssRule) {
+function formatCssRule(selector, cssRule) {
     return `${selector} {\n  ${cssRule}\n}`;
 }
 
@@ -21,13 +32,12 @@ function getThemeSelector(themeClass) {
     const themeSelectors = {
         'dark': ':is(.dark *)',
         'light': ':is(.light *)',
-        // Diğer tema sınıflarını burada ekleyebilirsiniz
     };
     return themeSelectors[themeClass] || '';
 }
 
 // Pseudo-class, tema ve medya sorgularını ayrıştırma fonksiyonu
-function extractClassParts(className) {
+function parseClassName(className) {
     const pseudoClassesList = Object.keys(pseudoClasses);
     const pseudoElementsList = Object.keys(pseudoElements);
 
@@ -71,7 +81,7 @@ function extractClassParts(className) {
 }
 
 // Seçici oluşturma fonksiyonu
-function buildSelector(className, isStarClass, pseudoSelectors, themeSelector) {
+function createSelector(className, isStarClass, pseudoSelectors, themeSelector) {
     let selector = `.${escapeClassName(className)}`;
     if (isStarClass) {
         selector += ' > *';
@@ -85,49 +95,31 @@ function buildSelector(className, isStarClass, pseudoSelectors, themeSelector) {
     return selector;
 }
 
-export function baseCss(base, allClasses) {
+export function baseCss(baseClasses, allClasses) {
     let cssOutput = '';
     const mediaQueries = {};
-
-    // İşlenen class'ları saklamak için bir Set oluşturun
     const processedClasses = new Set();
 
-    base.forEach(className => {
-        // Eğer daha önce işlenmişse, tekrar işleme gerek yok
-        if (processedClasses.has(className)) {
-            return;
-        }
+    // İndeks nesnesini oluşturun
+    const classIndex = createClassIndex(allClasses);
 
-        // İşlenen class'ları ekleyin
+    baseClasses.forEach(className => {
+        if (processedClasses.has(className)) return;
         processedClasses.add(className);
 
         let isStarClass = false;
         let adjustedClassName = className;
 
-        // Eğer className '*:' ile başlıyorsa, bunu işaretleyelim
         if (className.startsWith('*:')) {
             isStarClass = true;
-            adjustedClassName = className.slice(2); // '*:' kısmını çıkar
+            adjustedClassName = className.slice(2);
         }
 
-        const { themeClass, mediaClass, baseClass, isImportant, pseudoClassesInClassName } = extractClassParts(adjustedClassName);
+        const { themeClass, mediaClass, baseClass, isImportant, pseudoClassesInClassName } = parseClassName(adjustedClassName);
 
-        // space- ve divide- işlemleri için kontrol ekleyin
-        let lookupBaseClass = baseClass;
-        let isSpaceOrDivide = false;
+        let selector = createSelector(className, isStarClass, [], getThemeSelector(themeClass));
 
-        if (lookupBaseClass.startsWith('space-') || lookupBaseClass.startsWith('-space-') ||
-            lookupBaseClass.startsWith('divide-') || lookupBaseClass.startsWith('-divide-')) {
-            isSpaceOrDivide = true;
-        }
-
-        // Eğer space- veya divide- sınıfıysa, selector'u güncelle
-        let selector = buildSelector(className, isStarClass, [], getThemeSelector(themeClass));
-
-        if (isSpaceOrDivide) {
-            selector += ' > :not([hidden]) ~ :not([hidden])';
-            lookupBaseClass += ' > :not([hidden]) ~ :not([hidden])';
-        } else if (pseudoClassesInClassName.length > 0) {
+        if (pseudoClassesInClassName.length > 0) {
             const pseudoSelectors = pseudoClassesInClassName.map(pseudo => {
                 if (pseudoClasses[pseudo]) {
                     return pseudoClasses[pseudo]().join('');
@@ -137,49 +129,57 @@ export function baseCss(base, allClasses) {
                     return '';
                 }
             });
-            selector = buildSelector(className, isStarClass, pseudoSelectors, getThemeSelector(themeClass));
+            selector = createSelector(className, isStarClass, pseudoSelectors, getThemeSelector(themeClass));
         }
 
-        // allClasses içinde sınıfı bul
+        // İndeksten ilgili tüm sınıfları alın
+        const matchingClassNames = classIndex[baseClass];
 
-        const cssRuleContent = allClasses[lookupBaseClass];
+        if (matchingClassNames && matchingClassNames.length > 0) {
+            // Tüm eşleşen sınıfların CSS kurallarını birleştirin
+            let combinedCssRuleContent = '';
 
-        if (cssRuleContent) {
-            let cssRule = '';
+            matchingClassNames.forEach(matchingClassName => {
+                let cssRuleContent = allClasses[matchingClassName];
+                let cssRule = '';
 
-            if (typeof cssRuleContent === 'string') {
-                // Eğer cssRuleContent bir string ise, doğrudan kullan
-                cssRule = cssRuleContent;
-            } else if (typeof cssRuleContent === 'object') {
-                // Eğer cssRuleContent bir nesne ise, CSS özelliklerini stringe dönüştür
-                cssRule = Object.entries(cssRuleContent)
-                    .map(([prop, val]) => `${prop}: ${val};`)
-                    .join('\n  ');
-            } else {
-                // Hatalı bir tür ise, uyarı ver
-                // console.warn(`Unsupported cssRuleContent type for class ${className}`);
-                return;
-            }
+                if (typeof cssRuleContent === 'string') {
+                    cssRule = cssRuleContent;
+                } else if (typeof cssRuleContent === 'object') {
+                    cssRule = Object.entries(cssRuleContent)
+                        .map(([prop, val]) => `${prop}: ${val};`)
+                        .join('\n  ');
+                } else {
+                    return;
+                }
 
-            // Important işlemi
-            cssRule = processImportant(isImportant, cssRule);
+                // Important işlemi
+                cssRule = addImportantFlag(isImportant, cssRule);
 
-            // CSS kuralını oluştur
-            const css = processPseudoClassesAndElements(selector, cssRule);
+                // Child selector varsa seçiciye ekleyin
+                if (matchingClassName !== baseClass) {
+                    const childSelectorPart = matchingClassName.slice(baseClass.length);
+                    const fullSelector = selector + childSelectorPart;
+                    combinedCssRuleContent += formatCssRule(fullSelector, cssRule) + '\n';
+                } else {
+                    // Tam eşleşme için orijinal seçiciyi kullanın
+                    combinedCssRuleContent += formatCssRule(selector, cssRule) + '\n';
+                }
+            });
 
-            // Medya sorgusu oluşturma
+            // CSS kurallarını çıktı olarak ekleyin
             if (mediaClass) {
                 const breakpointValue = breakpoints[mediaClass];
                 const mediaQueryKey = `@media (min-width: ${breakpointValue})`;
                 if (!mediaQueries[mediaQueryKey]) {
                     mediaQueries[mediaQueryKey] = '';
                 }
-                mediaQueries[mediaQueryKey] += css + '\n';
+                mediaQueries[mediaQueryKey] += combinedCssRuleContent;
             } else {
-                cssOutput += css + '\n';
+                cssOutput += combinedCssRuleContent;
             }
         } else {
-            // console.log(`${lookupBaseClass} sınıfı allClasses içinde bulunamadı.`);
+            // console.log(`${baseClass} ------- sınıfı allClasses içinde bulunamadı.`);
         }
     });
 
@@ -192,3 +192,5 @@ export function baseCss(base, allClasses) {
 
     return cssOutput;
 }
+
+
