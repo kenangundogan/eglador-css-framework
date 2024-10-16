@@ -1,4 +1,3 @@
-// eglador.config.js
 export default {
     contents: [
         './dist/**/*.html',
@@ -6,7 +5,7 @@ export default {
         './dist/**/*.php',
         './dist/**/*.tsx'
     ],
-    cssreset: true, // CSS reset dosyası eklensin mi?
-    input: './dist/input.css',  // input dosya yolu
-    output: './dist/output.css' // output dosya yolu
+    cssreset: true,
+    input: './dist/input.css',
+    output: './dist/output.css'
 };

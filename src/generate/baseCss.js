@@ -1,6 +1,4 @@
-// src/generate/baseCss.js
-
-import { generateBreakpointsClasses } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
+import { breakpoints } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo sınıfları içe aktar
 import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
 
@@ -30,7 +28,6 @@ function getThemeSelector(themeClass) {
 
 // Pseudo-class, tema ve medya sorgularını ayrıştırma fonksiyonu
 function extractClassParts(className) {
-    const breakpoints = generateBreakpointsClasses; // Breakpoint'ler bir nesne
     const pseudoClassesList = Object.keys(pseudoClasses);
     const pseudoElementsList = Object.keys(pseudoElements);
 
@@ -91,8 +88,6 @@ function buildSelector(className, isStarClass, pseudoSelectors, themeSelector) {
 export function baseCss(base, allClasses) {
     let cssOutput = '';
     const mediaQueries = {};
-
-    const breakpoints = generateBreakpointsClasses; // Breakpoint'ler bir nesne
 
     // İşlenen class'ları saklamak için bir Set oluşturun
     const processedClasses = new Set();

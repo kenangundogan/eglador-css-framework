@@ -1,6 +1,6 @@
 // src/generate/customCss.js
 
-import { generateBreakpointsClasses } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
+import { breakpoints } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo class'ları içe aktar
 import { propertyMap } from '../properties/_propertyMap.js'; // Property map'ini içe aktar
 import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
@@ -9,8 +9,6 @@ import { sanitizeValue } from '../utils/sanitizeValue.js'; // sanitizeValue fonk
 export function customCss(customClasses) {
     let cssOutput = '';
     const mediaQueries = {};
-
-    const breakpoints = generateBreakpointsClasses; // generateBreakpointsClasses bir nesne
 
     // İşlenen class'ları saklamak için bir Set oluşturun
     const processedClasses = new Set();

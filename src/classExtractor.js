@@ -4,11 +4,8 @@ const require = createRequire(import.meta.url);
 const glob = require('glob');
 import config from './eglador.config.js';
 
-// Gelişmiş regex: class attribute'unu ve içeriğini yakalar
-const classRegex = /class=(["'])([\s\S]*?)\1/g;  // [^]* yerine [\s\S]* kullanarak her türlü karakteri kapsar
+const classRegex = /class=(["'])([\s\S]*?)\1/g;
 
-
-// Sınıf adlarını ayıran fonksiyon
 function splitClassNames(classString) {
     const classNames = [];
     let current = '';
@@ -42,21 +39,19 @@ function splitClassNames(classString) {
     return classNames;
 }
 
-// Class'ları tarayıp toplama
+
 export function extractClassesFromFiles() {
     const classesFound = new Set();
 
-    // Belirtilen dosya yollarını tara
     config.contents.forEach(content => {
         const files = glob.sync(content);
         files.forEach(filePath => {
             const fileContent = fs.readFileSync(filePath, 'utf8');
             let match;
 
-            // class attribute'larını yakala
             while ((match = classRegex.exec(fileContent)) !== null) {
-                const classString = match[2]; // Attribute değerini al
-                const classNames = splitClassNames(classString); // Sınıf adlarını ayır
+                const classString = match[2];
+                const classNames = splitClassNames(classString);
                 classNames.forEach(className => {
                     if (className.trim()) {
                         classesFound.add(className.trim());

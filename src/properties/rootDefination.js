@@ -1,4 +1,3 @@
-// rootDefination.js
 export function rootDefinationCss() {
     return `
 *, ::before, ::after {
