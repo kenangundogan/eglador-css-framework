@@ -1,5 +1,9 @@
 import fs from 'fs';
 import config from '../eglador.config.js';
+import postcss from 'postcss';
+import cssnano from 'cssnano';
+import autoprefixer from 'autoprefixer';
+import sortMediaQueries from 'postcss-sort-media-queries';
 import { readCssFile } from '../read/readCssFile.js';
 import { rootDefinationCss } from '../properties/rootDefination.js';
 import { resetCss } from '../generate/resetCss.js';
@@ -36,7 +40,16 @@ export function writeCssFile() {
     // CSS dosyasını belirtilen input dosyasını oku ve içeriğini al
     const inputCssContent = readCssFile();
 
-    // CSS dosyasını belirlenen output dosyasına yaz
-    fs.writeFileSync(config.output, `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`);
-    console.log(`CSS file generated successfully at ${config.output}`);
+    // Tüm CSS'i birleştir
+    let combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`;
+
+    // PostCSS ile optimize et
+    postcss([
+        cssnano(),
+        autoprefixer(),
+        sortMediaQueries(),
+    ]).process(combinedCss, { from: undefined }).then(result => {
+        fs.writeFileSync(config.output, result.css);
+        console.log(`CSS file generated and optimized successfully at ${config.output}`);
+    });
 }

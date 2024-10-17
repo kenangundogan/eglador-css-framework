@@ -13,7 +13,6 @@ const themeVariants = {
 
 export function customCss(customClasses) {
     let cssOutput = '';
-    const mediaQueries = {};
 
     // İşlenen sınıfları takip etmek için bir Set oluştur
     const processedClasses = new Set();
@@ -148,9 +147,7 @@ export function customCss(customClasses) {
             );
 
             // CSS çıktısını uygun yere ekle
-            if (cssRule) {
-                addCssRule(breakpoint, cssRule);
-            }
+            addCssRule(breakpoint, cssRule);
         });
     }
 
@@ -158,10 +155,7 @@ export function customCss(customClasses) {
     function addCssRule(breakpoint, cssRule) {
         if (breakpoint) {
             const breakpointValue = breakpoints[breakpoint];
-            if (!mediaQueries[breakpointValue]) {
-                mediaQueries[breakpointValue] = '';
-            }
-            mediaQueries[breakpointValue] += cssRule + '\n';
+            cssOutput += `@media (min-width: ${breakpointValue}) {\n${cssRule}}\n`;
         } else {
             cssOutput += cssRule + '\n';
         }
@@ -320,11 +314,6 @@ export function customCss(customClasses) {
     // 'customClasses' parametresinden sınıfları çıkar
     customClasses.forEach(className => {
         parseKgClass(className);
-    });
-
-    // Medya sorgularını CSS çıktısına ekle
-    Object.keys(mediaQueries).forEach(breakpointValue => {
-        cssOutput += `@media (min-width: ${breakpointValue}) {\n${mediaQueries[breakpointValue]}}\n`;
     });
 
     return cssOutput;

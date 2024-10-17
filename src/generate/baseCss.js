@@ -15,8 +15,6 @@ function createClassIndex(allClasses) {
     return classIndex;
 }
 
-
-
 // Başında '!' olan class isimlerine 'important' ekleyen fonksiyon
 function addImportantFlag(isImportant, cssRule) {
     return isImportant ? `${cssRule.replace(/;$/, '')} !important;` : cssRule;
@@ -27,7 +25,7 @@ function formatCssRule(selector, cssRule) {
     return `${selector} {\n  ${cssRule}\n}`;
 }
 
-// Tema ve medya sorgularını işlemek için yardımcı fonksiyon
+// Tema seçicisini döndüren fonksiyon
 function getThemeSelector(themeClass) {
     const themeSelectors = {
         'dark': ':is(.dark *)',
@@ -97,7 +95,6 @@ function createSelector(className, isStarClass, pseudoSelectors, themeSelector) 
 
 export function baseCss(baseClasses, allClasses) {
     let cssOutput = '';
-    const mediaQueries = {};
     const processedClasses = new Set();
 
     // İndeks nesnesini oluşturun
@@ -170,11 +167,7 @@ export function baseCss(baseClasses, allClasses) {
             // CSS kurallarını çıktı olarak ekleyin
             if (mediaClass) {
                 const breakpointValue = breakpoints[mediaClass];
-                const mediaQueryKey = `@media (min-width: ${breakpointValue})`;
-                if (!mediaQueries[mediaQueryKey]) {
-                    mediaQueries[mediaQueryKey] = '';
-                }
-                mediaQueries[mediaQueryKey] += combinedCssRuleContent;
+                cssOutput += `@media (min-width: ${breakpointValue}) {\n${combinedCssRuleContent}}\n`;
             } else {
                 cssOutput += combinedCssRuleContent;
             }
@@ -183,14 +176,5 @@ export function baseCss(baseClasses, allClasses) {
         }
     });
 
-    // Medya sorgularını CSS çıktısına ekle
-    Object.keys(mediaQueries).forEach(mediaQueryKey => {
-        if (mediaQueries[mediaQueryKey].trim() !== '') {
-            cssOutput += `${mediaQueryKey} {\n${mediaQueries[mediaQueryKey]}}\n`;
-        }
-    });
-
     return cssOutput;
 }
-
-
