@@ -11,11 +11,17 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "autoprefixer": "^10.4.20",
         "css.escape": "^1.5.1",
         "cssesc": "^3.0.0",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
+        "postcss": "^8.4.47",
+        "postcss-sort-media-queries": "^5.2.0",
         "tinycolor2": "^1.6.0"
     },
-    "type": "module"
+    "type": "module",
+    "devDependencies": {
+        "cssnano": "^7.0.6"
+    }
 }
