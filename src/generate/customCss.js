@@ -1,10 +1,10 @@
 // src/generate/customCss.js
 
-import { breakpoints } from './../properties/_breakpoints.js'; // Import breakpoints
-import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Import pseudo selectors
-import { propertyMap } from '../properties/_propertyMap.js'; // Import property map
-import { escapeClassName } from '../utils/escapeClassName.js'; // Import escapeClassName function
-import { sanitizeValue } from '../utils/sanitizeValue.js'; // Import sanitizeValue function
+import { breakpoints } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
+import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo seçicileri içe aktar
+import { propertyMap } from '../properties/_propertyMap.js'; // Özellik haritasını içe aktar
+import { escapeClassName } from '../utils/escapeClassName.js'; // escapeClassName fonksiyonunu içe aktar
+import { sanitizeValue } from '../utils/sanitizeValue.js'; // sanitizeValue fonksiyonunu içe aktar
 
 const themeVariants = {
     'dark': ':is(.dark *)',
@@ -15,38 +15,38 @@ export function customCss(customClasses) {
     let cssOutput = '';
     const mediaQueries = {};
 
-    // Create a Set to keep track of processed classes
+    // İşlenen sınıfları takip etmek için bir Set oluştur
     const processedClasses = new Set();
 
-    // Main parse function
+    // Ana parse fonksiyonu
     function parseKgClass(className) {
 
-        // If already processed, skip
+        // Eğer daha önce işlendiyse, atla
         if (processedClasses.has(className)) {
             return;
         }
 
-        // Add to processed classes
+        // İşlenen sınıflara ekle
         processedClasses.add(className);
 
         let isStarClass = false;
         let adjustedClassName = className;
 
-        // Check if className starts with '*:'
+        // Eğer sınıf ismi '*:' ile başlıyorsa
         if (className.startsWith('*:')) {
             isStarClass = true;
-            adjustedClassName = className.slice(2); // Remove '*:'
+            adjustedClassName = className.slice(2); // '*:' kısmını çıkar
         }
 
-        // Split class name by ':' but ignore colons inside brackets
+        // Sınıf ismini ':' karakterine göre böl, ancak köşeli parantez içindeki ':' karakterlerini yok say
         const classParts = adjustedClassName.split(/:(?![^\[]*\])/);
         let breakpoint = null;
         let pseudoPrefixes = [];
         let themeVariantSelector = null;
 
-        let propertyAndValue = classParts.pop(); // The last part is property and value
+        let propertyAndValue = classParts.pop(); // Son parça özellik ve değer
 
-        // Separate breakpoints, theme variants, and pseudo-classes
+        // Breakpoint'leri, tema varyantlarını ve pseudo-sınıfları ayır
         classParts.forEach(part => {
             if (breakpoints[part]) {
                 breakpoint = part;
@@ -57,20 +57,26 @@ export function customCss(customClasses) {
             }
         });
 
-        // Extract pseudo-selectors and property
+        // Pseudo-seçicileri ve özelliği çıkar
         let { pseudoSelectors, property } = extractMultiplePseudos(propertyAndValue);
 
-        // Combine pseudo-prefixes with pseudo-selectors
+        // Pseudo-prefix'leri pseudo-seçicilerle birleştir
         pseudoPrefixes.forEach(prefix => {
             const { pseudoValue } = extractPseudo(prefix);
             if (pseudoValue) {
-                pseudoSelectors = pseudoSelectors.map(sel => pseudoValue.join('') + sel);
+                const newPseudoSelectors = [];
+                pseudoSelectors.forEach(sel => {
+                    pseudoValue.forEach(pv => {
+                        newPseudoSelectors.push(pv + sel);
+                    });
+                });
+                pseudoSelectors = newPseudoSelectors;
             }
         });
 
         let { property: cleanProperty, isImportant } = checkImportant(property);
 
-        // Update regex to handle negative values
+        // Negatif değerleri işlemek için regex'i güncelle
         const regex = /^(-?[^\s]+)-\[(.+)\]$/;
         const match = cleanProperty.match(regex);
 
@@ -81,7 +87,7 @@ export function customCss(customClasses) {
         cleanProperty = match[1];
         let value = match[2];
 
-        // Handle negative property names
+        // Negatif özellik isimlerini işlemek için
         if (cleanProperty.startsWith('-')) {
             cleanProperty = cleanProperty.slice(1);
             value = '-' + value;
@@ -91,61 +97,64 @@ export function customCss(customClasses) {
         value = addSpacesAroundOperators(value);
         value = addSpacesAroundCommas(value);
 
-        // Add check for space- and divide-
+        // 'space-' ve 'divide-' kontrolü
         if (cleanProperty.startsWith('space-') || cleanProperty.startsWith('divide-')) {
             const cssRule = handleSpaceOrDivide(cleanProperty, className, value);
             if (cssRule) {
-                // Add CSS output to appropriate place
+                // CSS çıktısını uygun yere ekle
                 addCssRule(breakpoint, cssRule);
             }
             return;
         }
 
-        // Check and add content property for pseudo-element
+        // Pseudo-element için 'content' özelliğini kontrol et ve ekle
         if (cleanProperty.startsWith('content')) {
-            const cssRule = handlePseudoContent(cleanProperty, className, value, pseudoSelectors.join(''));
+            const cssRule = handlePseudoContent(cleanProperty, className, value, pseudoSelectors);
             if (cssRule) {
-                // Add CSS output to appropriate place
+                // CSS çıktısını uygun yere ekle
                 addCssRule(breakpoint, cssRule);
             }
             return;
         }
 
-        // General CSS property handling
+        // Genel CSS özelliği işleme
         const cssProperties = propertyMap[cleanProperty];
         if (!cssProperties) {
             return;
         }
 
-        let selector = `.${escapeClassName(className)}`;
-        if (isStarClass) {
-            selector += ' > *';
-        }
-        if (pseudoSelectors.length > 0) {
-            selector += pseudoSelectors.join('');
-        }
-
-        // Adjust selector with theme variant if present
-        if (themeVariantSelector) {
-            selector = `${themeVariantSelector} ${selector}`;
-        }
-
         const declarations = cssProperties(value);
 
-        let cssRule = generateCSSOutput(
-            selector,
-            declarations,
-            isImportant,
-            pseudoSelectors.some(ps => ps.includes('::before') || ps.includes('::after'))
-        );
+        // Her bir pseudo-seçici için ayrı CSS kuralı oluştur
+        pseudoSelectors.forEach(pseudoSelector => {
+            let selector = `.${escapeClassName(className)}`;
+            if (isStarClass) {
+                selector += ' > *';
+            }
+            if (pseudoSelector.length > 0) {
+                selector += pseudoSelector;
+            }
 
-        // Add CSS output to appropriate place
-        if (cssRule) {
-            addCssRule(breakpoint, cssRule);
-        }
+            // Tema varyantı varsa, seçiciye ekle
+            if (themeVariantSelector) {
+                selector = `${themeVariantSelector} ${selector}`;
+            }
+
+            let cssRule = generateCSSOutput(
+                selector,
+                declarations,
+                isImportant,
+                pseudoSelector.includes('::before') || pseudoSelector.includes('::after')
+            );
+
+            // CSS çıktısını uygun yere ekle
+            if (cssRule) {
+                addCssRule(breakpoint, cssRule);
+            }
+        });
     }
 
-    // Helper function to add CSS rule to appropriate place
+    // CSS kuralını uygun yere ekleyen yardımcı fonksiyon
     function addCssRule(breakpoint, cssRule) {
         if (breakpoint) {
             const breakpointValue = breakpoints[breakpoint];
@@ -167,35 +176,36 @@ export function customCss(customClasses) {
 
     // 1fr,3fr,1fr -> 1fr 3fr 1fr
     function addSpacesAroundCommas(value) {
-        return value.replace(/([0-9.]+fr),?/g, '$1 ');
+        // tüm fr aralarındaki virgülleri boşlukla değiştir
+        return value.replace(/(fr),/g, '$1 ').replace(/,(\d)/g, ', $1');
     }
 
     function extractPseudo(property) {
-        // Pseudo-element check
+        // Pseudo-element kontrolü
         for (const [pseudoElementKey, pseudoElementFunc] of Object.entries(pseudoElements)) {
             if (property.startsWith(`${pseudoElementKey}`)) {
                 const pseudoValue = pseudoElementFunc();
                 return {
                     pseudoType: 'element',
                     pseudoValue,
-                    property: property.slice(pseudoElementKey.length), // Remove pseudo-element
+                    property: property.slice(pseudoElementKey.length), // Pseudo-element'i kaldır
                 };
             }
         }
 
-        // Pseudo-class check
+        // Pseudo-class kontrolü
         for (const [pseudoClassKey, pseudoClassFunc] of Object.entries(pseudoClasses)) {
             if (property.startsWith(`${pseudoClassKey}`)) {
                 const pseudoValue = pseudoClassFunc();
                 return {
                     pseudoType: 'class',
                     pseudoValue,
-                    property: property.slice(pseudoClassKey.length), // Remove pseudo-class
+                    property: property.slice(pseudoClassKey.length), // Pseudo-class'ı kaldır
                 };
             }
         }
 
-        // Neither pseudo-class nor pseudo-element
+        // Ne pseudo-class ne pseudo-element ise
         return {
             pseudoType: null,
             pseudoValue: null,
@@ -206,13 +216,22 @@ export function customCss(customClasses) {
     function extractMultiplePseudos(property) {
         let pseudoSelectors = [''];
         let remainingProperty = property;
-        let pseudoType, pseudoValue;
 
         while (true) {
-            ({ pseudoType, pseudoValue, property: remainingProperty } = extractPseudo(remainingProperty));
+            const result = extractPseudo(remainingProperty);
+            const { pseudoType, pseudoValue } = result;
+            remainingProperty = result.property;
+
             if (!pseudoType) break;
 
-            pseudoSelectors = pseudoSelectors.map(sel => sel + pseudoValue.join(''));
+            // Yeni pseudoSelectors seti oluştur
+            const newPseudoSelectors = [];
+            pseudoSelectors.forEach(sel => {
+                pseudoValue.forEach(pv => {
+                    newPseudoSelectors.push(sel + pv);
+                });
+            });
+            pseudoSelectors = newPseudoSelectors;
         }
 
         return {
@@ -237,12 +256,12 @@ export function customCss(customClasses) {
     function generateCSSOutput(selector, declarations, isImportant, addContent = false) {
         let cssOutput = `${selector} {\n`;
 
-        // If pseudo-element, add content
+        // Eğer pseudo-element ise, content ekle
         if (addContent) {
             cssOutput += `  content: var(--kg-content);\n`;
         }
 
-        // Add other CSS properties
+        // Diğer CSS özelliklerini ekle
         for (const [prop, val] of Object.entries(declarations)) {
             cssOutput += `  ${prop}: ${val}${isImportant};\n`;
         }
@@ -267,38 +286,43 @@ export function customCss(customClasses) {
         return null;
     }
 
-    function handlePseudoContent(property, className, value, pseudoSelector) {
+    function handlePseudoContent(property, className, value, pseudoSelectors) {
         const cssProperties = propertyMap[property];
 
-        // If content is defined, special handling is needed
+        // Eğer content tanımlanmışsa, özel işlem yap
         if (property === 'content') {
-            return `
+            const cssRules = pseudoSelectors.map(pseudoSelector => `
 .${escapeClassName(className)}${pseudoSelector} {
   --kg-content: ${value};
   content: var(--kg-content);
-}`;
+}`).join('\n');
+            return cssRules;
         }
 
-        // For other properties, normal CSS handling
+        // Diğer özellikler için normal CSS işlemi
         if (cssProperties) {
             const declarations = cssProperties(value);
-            return generateCSSOutput(
-                `.${escapeClassName(className)}${pseudoSelector}`,
-                declarations,
-                '',
-                true // flag to add content
-            );
+            const cssRules = pseudoSelectors.map(pseudoSelector => {
+                let selector = `.${escapeClassName(className)}${pseudoSelector}`;
+                return generateCSSOutput(
+                    selector,
+                    declarations,
+                    '',
+                    true // content eklemek için flag
+                );
+            }).join('\n');
+            return cssRules;
         }
 
         return null;
     }
 
-    // Extract classes from 'customClasses' parameter
+    // 'customClasses' parametresinden sınıfları çıkar
     customClasses.forEach(className => {
         parseKgClass(className);
     });
 
-    // Append media queries to CSS output
+    // Medya sorgularını CSS çıktısına ekle
     Object.keys(mediaQueries).forEach(breakpointValue => {
         cssOutput += `@media (min-width: ${breakpointValue}) {\n${mediaQueries[breakpointValue]}}\n`;
     });
