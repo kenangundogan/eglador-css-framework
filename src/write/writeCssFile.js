@@ -13,43 +13,23 @@ import { generateAllClasses } from '../generateAllClasses.js';
 import { baseCss } from '../generate/baseCss.js';
 import { customCss } from '../generate/customCss.js';
 
-// Tüm class'ları toplayıp CSS dosyasına yazan fonksiyon
 export function writeCssFile() {
 
-    // Root defination class'larını oluştur
     const rootDefinationCssResult = rootDefinationCss();
-
-    // CSS reset dosyasını oluştur
     const resetCssResult = resetCss();
-
-    // Tüm base class'ları al
     const allClasses = generateAllClasses();
-
-    // Dosyalardan kullanılan class'ları topla
     const extractedClasses = extractClassesFromFiles();
-
-    // Class'ları grupla
     const groupedClasses = groupClasses(extractedClasses);
-
-    // Statik class'ları işleyelim
     const baseCssResult = baseCss(groupedClasses.base, allClasses);
-
-    // Custom class'ları işleyelim
     const customCssResult = customCss(groupedClasses.custom);
-
-    // CSS dosyasını belirtilen input dosyasını oku ve içeriğini al
     const inputCssContent = readCssFile();
-
-    // Tüm CSS'i birleştir
     let combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`;
 
-    // PostCSS ile optimize et
     postcss([
-        cssnano(),
         autoprefixer(),
         sortMediaQueries(),
+        cssnano(),
     ]).process(combinedCss, { from: undefined }).then(result => {
         fs.writeFileSync(config.output, result.css);
-        console.log(`CSS file generated and optimized successfully at ${config.output}`);
     });
 }
