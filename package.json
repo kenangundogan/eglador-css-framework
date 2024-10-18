@@ -16,12 +16,15 @@
         "cssesc": "^3.0.0",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
-        "postcss": "^8.4.47",
         "postcss-sort-media-queries": "^5.2.0",
         "tinycolor2": "^1.6.0"
     },
     "type": "module",
     "devDependencies": {
-        "cssnano": "^7.0.6"
+        "cssnano": "^7.0.6",
+        "postcss": "^8.4.47",
+        "postcss-sorting": "^8.0.2",
+        "prettier": "^3.3.3",
+        "prettier-plugin-css-order": "^2.1.2"
     }
 }
