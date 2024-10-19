@@ -93,6 +93,15 @@ function createSelector(className, isStarClass, pseudoSelectors, themeSelector) 
     return selector;
 }
 
+// Pseudo-element işleyici fonksiyonu
+function addContentIfNeeded(pseudoSelectors, cssRule) {
+    // Pseudo-elementlerden biri 'before' veya 'after' ise, content ekle
+    if (pseudoSelectors.includes('::before') || pseudoSelectors.includes('::after')) {
+        cssRule = `content: var(--kg-content);\n  ` + cssRule;
+    }
+    return cssRule;
+}
+
 export function baseCss(baseClasses, allClasses) {
     let cssOutput = '';
     const processedClasses = new Set();
@@ -116,8 +125,9 @@ export function baseCss(baseClasses, allClasses) {
 
         let selector = createSelector(className, isStarClass, [], getThemeSelector(themeClass));
 
+        let pseudoSelectors = [];
         if (pseudoClassesInClassName.length > 0) {
-            const pseudoSelectors = pseudoClassesInClassName.map(pseudo => {
+            pseudoSelectors = pseudoClassesInClassName.map(pseudo => {
                 if (pseudoClasses[pseudo]) {
                     return pseudoClasses[pseudo]().join('');
                 } else if (pseudoElements[pseudo]) {
@@ -150,6 +160,9 @@ export function baseCss(baseClasses, allClasses) {
                     return;
                 }
 
+                // Pseudo-elementlere content ekleme
+                cssRule = addContentIfNeeded(pseudoSelectors.join(''), cssRule);
+
                 // Important işlemi
                 cssRule = addImportantFlag(isImportant, cssRule);
 
@@ -178,3 +191,4 @@ export function baseCss(baseClasses, allClasses) {
 
     return cssOutput;
 }
+
