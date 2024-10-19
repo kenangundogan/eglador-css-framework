@@ -1,8 +1,7 @@
 export function generateAspectRatioCustomClasses() {
-    const maxRatio = 16; // Maksimum oran değeri
+    const maxRatio = 16;
     const classes = {};
 
-    // Genişlik oranları için döngü
     for (let w = 1; w <= maxRatio; w++) {
         classes[`aspect-w-${w}`] = `
             position: relative;
@@ -15,7 +14,6 @@ export function generateAspectRatioCustomClasses() {
         `;
     }
 
-    // Yükseklik oranları için döngü
     for (let h = 1; h <= maxRatio; h++) {
         classes[`aspect-h-${h}`] = `--kg-aspect-h: ${h};`;
     }
