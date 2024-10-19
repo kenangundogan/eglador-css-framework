@@ -61,5 +61,5 @@ export function extractClassesFromFiles() {
         });
     });
 
-    return [...classesFound];
+    return [...classesFound].sort();
 }
