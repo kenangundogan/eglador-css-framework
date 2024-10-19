@@ -308,7 +308,6 @@ export const propertyMap = {
     },
     'opacity': function (value) { return { 'opacity': value }; },
 
-    // Filter utilities
     'blur': function (value) {
         return {
             '--kg-blur': `blur(${value})`,
@@ -364,7 +363,6 @@ export const propertyMap = {
         };
     },
 
-    // Backdrop filter utilities
     'backdrop-blur': function (value) {
         return {
             '--kg-backdrop-blur': `blur(${value})`,
@@ -449,7 +447,6 @@ export const propertyMap = {
     'delay': function (value) { return { 'transition-delay': value }; },
     'animate': function (value) { return { 'animation': value }; },
 
-    // Transform utilities
     'scale': function (value) {
         return {
             '--kg-scale-x': value,
