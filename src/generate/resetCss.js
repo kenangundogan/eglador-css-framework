@@ -1,8 +1,7 @@
-import config from '../eglador.config.js';
 import { generateResetClasses } from '../properties/_reset.js';
 
-export function resetCss() {
-    if (config.cssreset) {
+export function resetCss(project) {
+    if (project.cssreset) {
         return generateResetClasses();
     }
     return '';

@@ -1,5 +1,4 @@
 import fs from 'fs';
-import config from '../eglador.config.js';
 import postcss from 'postcss';
 import cssnano from 'cssnano';
 import autoprefixer from 'autoprefixer';
@@ -14,22 +13,24 @@ import { baseCss } from '../generate/baseCss.js';
 import { customCss } from '../generate/customCss.js';
 
 export function writeCssFile() {
+    const projectClasses = extractClassesFromFiles();
 
-    const rootDefinationCssResult = rootDefinationCss();
-    const resetCssResult = resetCss();
-    const allClasses = generateAllClasses();
-    const extractedClasses = extractClassesFromFiles();
-    const groupedClasses = groupClasses(extractedClasses);
-    const baseCssResult = baseCss(groupedClasses.base, allClasses);
-    const customCssResult = customCss(groupedClasses.custom);
-    const inputCssContent = readCssFile();
-    let combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`;
+    projectClasses.forEach(({ project, classes }) => {
+        const rootDefinationCssResult = rootDefinationCss();
+        const resetCssResult = resetCss(project);
+        const allClasses = generateAllClasses();
+        const groupedClasses = groupClasses(classes);
+        const baseCssResult = baseCss(groupedClasses.base, allClasses);
+        const customCssResult = customCss(groupedClasses.custom);
+        const inputCssContent = readCssFile(project);
+        let combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`;
 
-    postcss([
-        autoprefixer(),
-        sortMediaQueries(),
-        cssnano(),
-    ]).process(combinedCss, { from: undefined }).then(result => {
-        fs.writeFileSync(config.output, result.css);
+        postcss([
+            autoprefixer(),
+            sortMediaQueries(),
+            cssnano(),
+        ]).process(combinedCss, { from: undefined }).then(result => {
+            fs.writeFileSync(project.output, result.css);
+        });
     });
 }
