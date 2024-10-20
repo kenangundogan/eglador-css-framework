@@ -1,10 +1,10 @@
 export function generateAlignSelfClasses() {
     return {
-        'align-auto': 'align-self: auto;',
-        'align-start': 'align-self: flex-start;',
-        'align-end': 'align-self: flex-end;',
-        'align-center': 'align-self: center;',
-        'align-stretch': 'align-self: stretch;',
-        'align-baseline': 'align-self: baseline;'
+        'self-auto': 'align-self: auto;',
+        'self-start': 'align-self: flex-start;',
+        'self-end': 'align-self: flex-end;',
+        'self-center': 'align-self: center;',
+        'self-stretch': 'align-self: stretch;',
+        'self-baseline': 'align-self: baseline;',
     };
 }

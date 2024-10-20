@@ -1,18 +1,38 @@
 {
-    "name": "eglador",
+    "name": "eglador-css-framework",
     "version": "1.0.0",
-    "main": "index.js",
+    "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+    "license": "MIT",
+    "main": "src/index.js",
+    "repository": "https://github.com/kenangundogan/eglador-css-framework.git",
+    "bugs": "https://github.com/kenangundogan/eglador-css-framework/issues",
+    "homepage": "",
+    "bin": {
+        "eglador": "src/index.js",
+        "egladorcss": "src/index.js"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "node src/buildCss.js"
+        "build": "node src/index.js"
     },
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    "files": [
+        "src/*"
+    ],
     "dependencies": {
+        "autoprefixer": "^10.4.20",
+        "css.escape": "^1.5.1",
+        "cssesc": "^3.0.0",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
+        "postcss-sort-media-queries": "^5.2.0",
         "tinycolor2": "^1.6.0"
     },
-    "type": "module"
+    "type": "module",
+    "devDependencies": {
+        "cssnano": "^7.0.6",
+        "postcss": "^8.4.47",
+        "postcss-sorting": "^8.0.2",
+        "prettier": "^3.3.3",
+        "prettier-plugin-css-order": "^2.1.2"
+    }
 }

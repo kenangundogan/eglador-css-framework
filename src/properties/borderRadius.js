@@ -21,14 +21,14 @@ export function generateBorderRadiusClasses() {
         'l': ['top-left', 'bottom-left'],  // sol kenarlar
         's': ['start-start', 'end-start'],  // sol başlangıç (sol)
         'e': ['start-end', 'end-end'],  // sağ son (sağ)
-        'tl': ['top-left'],  // sadece üst sol
-        'tr': ['top-right'],  // sadece üst sağ
-        'br': ['bottom-right'],  // sadece alt sağ
-        'bl': ['bottom-left'],  // sadece alt sol
-        'ss': ['start-start'],  // sadece start-start
-        'se': ['start-end'],  // sadece start-end
-        'ee': ['end-end'],  // sadece end-end
-        'es': ['end-start'],  // sadece end-start
+        'tl': 'top-left',  // sadece üst sol
+        'tr': 'top-right',  // sadece üst sağ
+        'br': 'bottom-right',  // sadece alt sağ
+        'bl': 'bottom-left',  // sadece alt sol
+        'ss': 'start-start',  // sadece start-start
+        'se': 'start-end',  // sadece start-end
+        'ee': 'end-end',  // sadece end-end
+        'es': 'end-start',  // sadece end-start
     };
 
     // Border-radius değerleri oluştur
