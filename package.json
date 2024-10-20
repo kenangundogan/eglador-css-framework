@@ -1,15 +1,23 @@
 {
-    "name": "eglador",
+    "name": "eglador-css-framework",
     "version": "1.0.0",
-    "main": "index.js",
+    "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+    "license": "MIT",
+    "main": "src/index.js",
+    "repository": "https://github.com/kenangundogan/eglador-css-framework.git",
+    "bugs": "https://github.com/kenangundogan/eglador-css-framework/issues",
+    "homepage": "",
+    "bin": {
+        "eglador": "src/index.js",
+        "egladorcss": "src/index.js"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "testtest": "node src/test.js",
-        "build": "node src/buildCss.js"
+        "build": "node src/index.js"
     },
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    "files": [
+        "src/*"
+    ],
     "dependencies": {
         "autoprefixer": "^10.4.20",
         "css.escape": "^1.5.1",
