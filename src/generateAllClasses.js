@@ -1,5 +1,6 @@
 // Layout
 import { generateAspectRatioClasses } from './properties/aspectRatio.js';
+import { generateAspectRatioCustomClasses } from './properties/aspectRatioCustom.js';
 import { generateColumnsClasses } from './properties/columns.js';
 import { generateBreakAfterClasses } from './properties/breakAfter.js';
 import { generateBreakBeforeClasses } from './properties/breakBefore.js';
@@ -159,6 +160,7 @@ import { generateTransitionDelayClasses } from './properties/transitionDelay.js'
 // import { generateAnimationClasses } from './properties/animation.js';
 
 // Transforms
+import { generateTransformClasses } from './properties/transform.js';
 import { generateTransformScaleClasses } from './properties/transformScale.js';
 import { generateTransformRotateClasses } from './properties/transformRotate.js';
 import { generateTransformTranslateClasses } from './properties/transformTranslate.js';
@@ -195,6 +197,7 @@ import { generateForcedColorAdjustClasses } from './properties/forcedColorAdjust
 export function generateAllClasses() {
     return {
         ...generateAspectRatioClasses(),
+        ...generateAspectRatioCustomClasses(),
         ...generateOverflowClasses(),
         ...generateOverscrollBehaviorClasses(),
         ...generatePositionClasses(),
@@ -340,6 +343,7 @@ export function generateAllClasses() {
         ...generateBackdropSaturateClasses(),
         ...generateBackdropSepiaClasses(),
         ...generateBorderCollapseClasses(),
+        ...generateTransformClasses(),
         ...generateTransformScaleClasses(),
         ...generateTransformRotateClasses(),
         ...generateTransformTranslateClasses(),

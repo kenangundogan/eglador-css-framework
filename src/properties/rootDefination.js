@@ -1,4 +1,3 @@
-// rootDefination.js
 export function rootDefinationCss() {
     return `
 *, ::before, ::after {
@@ -107,6 +106,11 @@ export function rootDefinationCss() {
     --kg-contain-layout:  ;
     --kg-contain-paint:  ;
     --kg-contain-style:  ;
+}
+
+
+::after,::before {
+    --kg-content: ""
 }
     `;
 }
