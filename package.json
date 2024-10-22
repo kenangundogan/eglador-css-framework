@@ -8,8 +8,7 @@
     "bugs": "https://github.com/kenangundogan/eglador-css-framework/issues",
     "homepage": "",
     "bin": {
-        "eglador": "src/index.js",
-        "egladorcss": "src/index.js"
+        "eglador": "src/cli.js"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
