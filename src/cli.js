@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createConfigFile } from './createConfigFile.js';
+import './checkPackageJson.js';
 
 // Argüman kontrolü (init komutu için)
 const args = process.argv.slice(2);
