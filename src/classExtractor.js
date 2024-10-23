@@ -1,8 +1,17 @@
 import fs from 'fs';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const glob = require('glob');
-import config from './eglador.config.js';
+import { pathToFileURL } from 'url';
+import { glob } from 'glob';  // glob modülünü import ile kullanıyoruz
+
+// Dinamik olarak yapılandırma dosyasını yükle
+const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
+
+let config;
+try {
+    config = await import(configPath);  // Dinamik import ile config dosyasını içe aktar
+} catch (err) {
+    console.error('Error loading eglador.config.js:', err);
+    process.exit(1);
+}
 
 const classRegex = /class=(["'])([\s\S]*?)\1/g;
 
@@ -42,7 +51,7 @@ function splitClassNames(classString) {
 export function extractClassesFromFiles() {
     const projectClasses = [];
 
-    config.projects.forEach(project => {
+    config.default.projects.forEach(project => {
         const classesFound = new Set();
         const files = glob.sync(project.contents); // Dosya desenlerini eşleştir ve dosya yollarını al
         files.forEach(filePath => {
