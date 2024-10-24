@@ -6,15 +6,15 @@ import chokidar from 'chokidar';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { pathToFileURL } from 'url';
-import { writeCssFile } from './write/writeCssFile.js';
-import fg from 'fast-glob'; // fast-glob ile glob pattern'lerini genişleteceğiz
+import fg from 'fast-glob';
 
 const execAsync = promisify(exec);
 const args = process.argv.slice(2);
+console.log(args);
 
 (async () => {
     if (args[0] === 'init') {
-        createConfigFile();
+        await createConfigFile();
     } else if (args[0] === '--watch') {
         const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
         let config;
@@ -66,19 +66,22 @@ const args = process.argv.slice(2);
                         } catch (err) {
                             console.error(`Error in Project ${project.name}: ${err.stderr || err}`);
                         }
-                    }).on('add', (path) => {
-                        console.log(`File ${path} has been added and is now being watched.`);
-                    }).on('change', (path) => {
-                        console.log(`File ${path} has been changed.`);
-                    });
+                    }).on('add', (path) => { console.log(`File ${path} has been added.`) })
+                        .on('change', (path) => { console.log(`File ${path} has been changed.`) })
+                        .on('unlink', (path) => { console.log(`File ${path} has been removed.`) })
+                        .on('addDir', (path) => { console.log(`Directory ${path} has been added`) })
+                        .on('unlinkDir', (path) => { console.log(`Directory ${path} has been removed`) })
+                        .on('error', (error) => { console.error(`Watcher error: ${error}`) })
+                        .on('ready', () => { console.log('Initial scan complete. Ready for changes.') });
+                        // .on('raw', (event, path, details) => {console.log('Raw event info:', event, path, details)});
                 } catch (err) {
                     console.error(`Error setting up watcher for project ${project.name}: ${err}`);
                 }
             }
         }
     } else {
-        // Run the main function from index.js for CSS compilation
         try {
+            const { writeCssFile } = await import('./write/writeCssFile.js');
             writeCssFile();
         } catch (err) {
             console.error('Error executing index.js:', err);
