@@ -14,6 +14,7 @@ export function createConfigFile() {
 export default {
     projects: [
         {
+            name: 'primary',
             contents: [
                 './dist/**/*.html',
                 './dist/**/*.js',
