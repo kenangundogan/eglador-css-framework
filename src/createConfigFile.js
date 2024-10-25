@@ -22,8 +22,20 @@ export default {
                 './dist/**/*.tsx'
             ],
             cssreset: true,
-            input: './dist/css/input.css',
-            output: './dist/css/output.css'
+            input: './dist/css/input1.css',
+            output: './dist/css/output1.css'
+        },
+        {
+            name: 'secondary',
+            contents: [
+                './dist/**/*.html',
+                './dist/**/*.js',
+                './dist/**/*.php',
+                './dist/**/*.tsx'
+            ],
+            cssreset: true,
+            input: './dist/css/input2.css',
+            output: './dist/css/output2.css'
         }
     ]
 };
