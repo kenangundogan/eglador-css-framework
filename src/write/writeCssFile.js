@@ -1,5 +1,6 @@
 import fs from 'fs';
 import postcss from 'postcss';
+import postcssImport from 'postcss-import';
 import cssnano from 'cssnano';
 import autoprefixer from 'autoprefixer';
 import sortMediaQueries from 'postcss-sort-media-queries';
@@ -23,14 +24,27 @@ export function writeCssFile() {
         const baseCssResult = baseCss(groupedClasses.base, allClasses);
         const customCssResult = customCss(groupedClasses.custom);
         const inputCssContent = readCssFile(project);
-        let combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${inputCssContent}`;
 
+        // Önce inputCssContent üzerinde @import'ları çözmek için işlem yapalım
         postcss([
-            autoprefixer(),
-            sortMediaQueries(),
-            cssnano(),
-        ]).process(combinedCss, { from: undefined }).then(result => {
-            fs.writeFileSync(project.output, result.css);
-        });
+            postcssImport() // Handles @import statements first
+        ])
+            .process(inputCssContent, { from: project.input })
+            .then(importProcessedResult => {
+                // @import'ları çözülmüş input CSS'i diğer CSS içerikleri ile birleştirelim
+                const combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${importProcessedResult.css}`;
+                return postcss([
+                    autoprefixer(),
+                    sortMediaQueries(),
+                    cssnano(),
+                ]).process(combinedCss, { from: undefined, to: project.output });
+            })
+            .then(finalResult => {
+                fs.writeFileSync(project.output, finalResult.css);
+                console.log('CSS processing complete.');
+            })
+            .catch(error => {
+                console.error('Error processing CSS:', error);
+            });
     });
 }

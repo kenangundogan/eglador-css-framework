@@ -46,6 +46,7 @@ console.log(args);
                 try {
                     // Glob pattern'lerini fast-glob ile genişletiyoruz
                     let filesToWatch = await fg(project.contents);
+                    filesToWatch.push(project.input); // Add the input CSS file to be watched as well
 
                     console.log(`Watching ${project.name} for changes...`);
 
