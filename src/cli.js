@@ -9,10 +9,11 @@ import { pathToFileURL } from 'url';
 import fg from 'fast-glob';
 import fs from 'fs';
 import path from 'path';
+import pc from 'picocolors';
 
 const execAsync = promisify(exec);
 const args = process.argv.slice(2);
-console.log(args);
+console.log(pc.blue('Arguments:'), args);
 
 function getImportedFiles(filePath) {
     const content = fs.readFileSync(filePath, 'utf8');
@@ -24,7 +25,7 @@ function getImportedFiles(filePath) {
         const importPath = match[1];
         const resolvedPath = path.resolve(path.dirname(filePath), importPath);
         importedFiles.push(resolvedPath);
-        // Recursively get imported files
+        // İçeri aktarılan dosyaları özyinelemeli olarak al
         importedFiles.push(...getImportedFiles(resolvedPath));
     }
 
@@ -41,36 +42,36 @@ function getImportedFiles(filePath) {
         try {
             config = await import(configPath);
         } catch (err) {
-            console.error('Error loading eglador.config.js:', err);
+            console.error(pc.red('eglador.config.js yüklenirken hata oluştu:'), err);
             return;
         }
 
         if (config) {
             const projects = config.default.projects;
 
-            // Generate initial CSS output for all projects
+            // Tüm projeler için başlangıçta CSS çıktısını üret
             for (const project of projects) {
                 const startTime = Date.now();
                 try {
                     await execAsync(`npx eglador -i ${project.input} -o ${project.output}`);
                     const duration = Date.now() - startTime;
-                    console.log('\x1b[32m%s\x1b[0m', `${project.name} - Initial CSS generated in ${duration} ms.`);
+                    console.log(pc.green(`\n${project.name} - İlk CSS ${duration} ms içinde oluşturuldu.`));
                 } catch (err) {
-                    console.error(`Error in Project ${project.name}: ${err.stderr || err}`);
+                    console.error(pc.red(`Proje ${project.name} içinde hata:`), err.stderr || err);
                 }
             }
 
-            // Set up file watchers for all projects
+            // Tüm projeler için dosya izleyicilerini ayarla
             for (const project of projects) {
                 try {
-                    // Glob pattern'lerini fast-glob ile genişletiyoruz
+                    // Glob desenlerini fast-glob ile genişletiyoruz
                     let filesToWatch = await fg(project.contents);
-                    filesToWatch.push(project.input); // Add the input CSS file to be watched as well
+                    filesToWatch.push(project.input); // İzlenecek dosyalar listesine giriş CSS dosyasını da ekle
 
-                    // Add imported files from input CSS
+                    // Giriş CSS dosyasından içeri aktarılan dosyaları ekle
                     filesToWatch.push(...getImportedFiles(project.input));
 
-                    console.log(`Watching ${project.name} for changes...`);
+                    console.log(pc.blue(`Proje ${project.name} için değişiklikler izleniyor...`));
 
                     const watcher = chokidar.watch(filesToWatch, {
                         persistent: true,
@@ -85,7 +86,7 @@ function getImportedFiles(filePath) {
                     watcher.on('change', async (filePath) => {
                         const startTime = Date.now();
                         try {
-                            // Update filesToWatch with newly imported files if any
+                            // Yeni içeri aktarılan dosyalar varsa filesToWatch'u güncelle
                             filesToWatch = await fg(project.contents);
                             filesToWatch.push(project.input);
                             filesToWatch.push(...getImportedFiles(project.input));
@@ -93,30 +94,30 @@ function getImportedFiles(filePath) {
 
                             await execAsync(`npx eglador -i ${project.input} -o ${project.output}`);
                             const duration = Date.now() - startTime;
-                            console.log('\x1b[32m%s\x1b[0m', `${project.name} - CSS has been regenerated in ${duration} ms.`);
+                            console.log(pc.green(`\n${project.name} - CSS ${duration} ms içinde yeniden oluşturuldu.`));
                         } catch (err) {
-                            console.error(`Error in Project ${project.name}: ${err.stderr || err}`);
+                            console.error(pc.red(`Proje ${project.name} içinde hata:`), err.stderr || err);
                         }
                     }).on('add', async (filePath) => {
-                        console.log(`File ${filePath} has been added.`);
-                        // Update watcher to include new files matching project.contents
+                        console.log(pc.yellow(`Dosya ${filePath} eklendi.`));
+                        // İzleyiciyi, project.contents ile eşleşen yeni dosyaları içerecek şekilde güncelle
                         filesToWatch = await fg(project.contents);
                         filesToWatch.push(project.input);
                         filesToWatch.push(...getImportedFiles(project.input));
                         watcher.add(filesToWatch);
                     }).on('unlink', (filePath) => {
-                        console.log(`File ${filePath} has been removed.`);
+                        console.log(pc.yellow(`Dosya ${filePath} kaldırıldı.`));
                     }).on('addDir', (filePath) => {
-                        console.log(`Directory ${filePath} has been added`);
+                        console.log(pc.yellow(`Dizin ${filePath} eklendi`));
                     }).on('unlinkDir', (filePath) => {
-                        console.log(`Directory ${filePath} has been removed`);
+                        console.log(pc.yellow(`Dizin ${filePath} kaldırıldı`));
                     }).on('error', (error) => {
-                        console.error(`Watcher error: ${error}`);
+                        console.error(pc.red(`İzleyici hatası:`), error);
                     }).on('ready', () => {
-                        console.log('Initial scan complete. Ready for changes.');
+                        console.log(pc.blue('İlk tarama tamamlandı. Değişiklikler için hazır.'));
                     });
                 } catch (err) {
-                    console.error(`Error setting up watcher for project ${project.name}: ${err}`);
+                    console.error(pc.red(`Proje ${project.name} için izleyici ayarlanırken hata:`), err);
                 }
             }
         }
@@ -125,7 +126,7 @@ function getImportedFiles(filePath) {
             const { writeCssFile } = await import('./write/writeCssFile.js');
             writeCssFile();
         } catch (err) {
-            console.error('Error executing index.js:', err);
+            console.error(pc.red('index.js çalıştırılırken hata:'), err);
         }
     }
 })();

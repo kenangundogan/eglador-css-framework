@@ -25,6 +25,7 @@
         "fast-glob": "^3.3.2",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
+        "picocolors": "^1.1.1",
         "postcss-import": "^16.1.0",
         "postcss-nested": "^6.2.0",
         "postcss-sort-media-queries": "^5.2.0",
