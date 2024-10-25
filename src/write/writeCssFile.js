@@ -1,6 +1,7 @@
 import fs from 'fs';
 import postcss from 'postcss';
 import postcssImport from 'postcss-import';
+import postcssNested from 'postcss-nested';
 import cssnano from 'cssnano';
 import autoprefixer from 'autoprefixer';
 import sortMediaQueries from 'postcss-sort-media-queries';
@@ -27,12 +28,15 @@ export function writeCssFile() {
 
         // Önce inputCssContent üzerinde @import'ları çözmek için işlem yapalım
         postcss([
+            postcssNested(), // Handles nested CSS
             postcssImport() // Handles @import statements first
         ])
             .process(inputCssContent, { from: project.input })
             .then(importProcessedResult => {
                 // @import'ları çözülmüş input CSS'i diğer CSS içerikleri ile birleştirelim
                 const combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${importProcessedResult.css}`;
+
+                // Tümleşik CSS içeriğini işleyelim
                 return postcss([
                     autoprefixer(),
                     sortMediaQueries(),

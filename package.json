@@ -26,6 +26,7 @@
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
         "postcss-import": "^16.1.0",
+        "postcss-nested": "^6.2.0",
         "postcss-sort-media-queries": "^5.2.0",
         "tinycolor2": "^1.6.0"
     },
