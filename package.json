@@ -12,15 +12,17 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "node src/cli.js"
+        "build": "node src/cli.js",
+        "watch": "node src/cli.js --watch"
     },
     "files": [
         "src/*"
     ],
     "dependencies": {
         "autoprefixer": "^10.4.20",
+        "chokidar": "^4.0.1",
         "css.escape": "^1.5.1",
-        "cssesc": "^3.0.0",
+        "fast-glob": "^3.3.2",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
         "postcss-sort-media-queries": "^5.2.0",
@@ -29,9 +31,6 @@
     "type": "module",
     "devDependencies": {
         "cssnano": "^7.0.6",
-        "postcss": "^8.4.47",
-        "postcss-sorting": "^8.0.2",
-        "prettier": "^3.3.3",
-        "prettier-plugin-css-order": "^2.1.2"
+        "postcss": "^8.4.47"
     }
 }
