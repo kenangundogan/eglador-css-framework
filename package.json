@@ -22,7 +22,6 @@
         "autoprefixer": "^10.4.20",
         "chokidar": "^4.0.1",
         "css.escape": "^1.5.1",
-        "cssesc": "^3.0.0",
         "fast-glob": "^3.3.2",
         "fs": "^0.0.1-security",
         "glob": "^11.0.0",
@@ -32,9 +31,6 @@
     "type": "module",
     "devDependencies": {
         "cssnano": "^7.0.6",
-        "postcss": "^8.4.47",
-        "postcss-sorting": "^8.0.2",
-        "prettier": "^3.3.3",
-        "prettier-plugin-css-order": "^2.1.2"
+        "postcss": "^8.4.47"
     }
 }
