@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import pc from 'picocolors';
 
-// Yapılandırma dosyasını oluşturma fonksiyonu
-export function createConfigFile() {
+export function checkConfigFile() {
     const configPath = path.join(process.cwd(), 'eglador.config.js');
 
     if (fs.existsSync(configPath)) {
-        console.log('eglador.config.js already exists.');
-        return false;  // Dosya zaten varsa false döndür
+        console.log(pc.yellow('eglador.config.js dosyası zaten var.'));
+        return false;
     }
 
     const defaultConfig = `
@@ -42,6 +42,6 @@ export default {
   `;
 
     fs.writeFileSync(configPath, defaultConfig);
-    console.log('eglador.config.js file has been created with default structure.');
-    return true;  // Dosya oluşturulduysa true döndür
+    console.log(pc.green('eglador.config.js dosyası oluşturuldu.'));
+    return true;
 }

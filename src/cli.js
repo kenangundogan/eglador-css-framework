@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createConfigFile } from './createConfigFile.js';
+import { checkConfigFile } from './checkConfigFile.js';
 import './checkPackageJson.js';
 import chokidar from 'chokidar';
 import { exec } from 'child_process';
@@ -34,7 +34,7 @@ function getImportedFiles(filePath) {
 
 (async () => {
     if (args[0] === 'init') {
-        await createConfigFile();
+        await checkConfigFile();
     } else if (args[0] === '--watch') {
         const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
         let config;
@@ -123,7 +123,7 @@ function getImportedFiles(filePath) {
         }
     } else {
         try {
-            const { writeCssFile } = await import('./write/writeCssFile.js');
+            const { writeCssFile } = await import('./index.js');
             writeCssFile();
         } catch (err) {
             console.error(pc.red('index.js çalıştırılırken hata:'), err);

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import pc from 'picocolors';
 
 const packageJsonPath = path.join(process.cwd(), 'package.json');
 
@@ -11,11 +12,11 @@ if (fs.existsSync(packageJsonPath)) {
         if (!packageJson.type || packageJson.type !== 'module') {
             packageJson.type = 'module';
             fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-            console.log('"type": "module" package.json dosyasına eklendi.');
+            console.log(pc.green('package.json dosyası modül tipine dönüştürüldü.'));
         }
     } catch (error) {
-        console.error('package.json dosyası okunurken bir hata oluştu:', error.message);
+        console.error(pc.red('package.json dosyası okunurken hata oluştu:'), error);
     }
 } else {
-    console.log('package.json dosyası bulunamadı.');
+    console.error(pc.red('package.json dosyası bulunamadı.'));
 }
