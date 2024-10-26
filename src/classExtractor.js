@@ -1,15 +1,15 @@
 import fs from 'fs';
 import { pathToFileURL } from 'url';
-import { glob } from 'glob';  // glob modülünü import ile kullanıyoruz
+import { glob } from 'glob';
+import pc from 'picocolors';
 
-// Dinamik olarak yapılandırma dosyasını yükle
 const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
 
 let config;
 try {
-    config = await import(configPath);  // Dinamik import ile config dosyasını içe aktar
+    config = await import(configPath);
 } catch (err) {
-    console.error('Error loading eglador.config.js:', err);
+    console.log(pc.red('Hata: ') + 'Config dosyası okunurken hata oluştu. ' + pc.red(configPath));
     process.exit(1);
 }
 
@@ -53,27 +53,26 @@ export function extractClassesFromFiles() {
 
     config.default.projects.forEach(project => {
         const classesFound = new Set();
-        const files = glob.sync(project.contents); // Dosya desenlerini eşleştir ve dosya yollarını al
+        const files = glob.sync(project.contents);
         files.forEach(filePath => {
-            const fileContent = fs.readFileSync(filePath, 'utf8'); // Dosya içeriğini oku
+            const fileContent = fs.readFileSync(filePath, 'utf8');
             let match;
 
-            // class özniteliklerini yakala
             while ((match = classRegex.exec(fileContent)) !== null) {
-                const classString = match[2]; // class özniteliğinin değerini al
-                const classNames = splitClassNames(classString); // Sınıf adlarını ayır
+                const classString = match[2];
+                const classNames = splitClassNames(classString);
                 classNames.forEach(className => {
                     if (className.trim()) {
-                        classesFound.add(className.trim()); // Sınıf adını set'e ekle
+                        classesFound.add(className.trim());
                     }
                 });
             }
         });
 
-        // Bulunan sınıf adlarını alfabetik olarak sırala ve proje sınıflarına ekle
         const sortedClasses = [...classesFound].sort();
+        console.log(pc.blue(project.name) + ' için ' + sortedClasses.length + ' sınıf bulundu ' + pc.blue(project.input));
         projectClasses.push({ project, classes: sortedClasses });
     });
 
-    return projectClasses; // Her proje için bulunan sıralanmış sınıf adlarını döndür
+    return projectClasses;
 }

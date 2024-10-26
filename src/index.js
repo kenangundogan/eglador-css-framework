@@ -1,4 +1,5 @@
 import fs from 'fs';
+import pc from 'picocolors';
 import postcss from 'postcss';
 import postcssImport from 'postcss-import';
 import postcssNested from 'postcss-nested';
@@ -20,22 +21,19 @@ export function writeCssFile() {
     projectClasses.forEach(({ project, classes }) => {
         const rootDefinationCssResult = rootDefinationCss();
         const resetCssResult = resetCss(project);
-        const groupedClasses = groupClasses(classes);
+        const groupedClasses = groupClasses(project, classes);
         const baseCssResult = baseCss(groupedClasses.base, allClasses);
         const customCssResult = customCss(groupedClasses.custom);
         const inputCssContent = readCssFile(project);
 
-        // Önce inputCssContent üzerinde @import'ları çözmek için işlem yapalım
         postcss([
-            postcssNested(), // Handles nested CSS
-            postcssImport() // Handles @import statements first
+            postcssNested(),
+            postcssImport()
         ])
             .process(inputCssContent, { from: project.input })
             .then(importProcessedResult => {
-                // @import'ları çözülmüş input CSS'i diğer CSS içerikleri ile birleştirelim
                 const combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${importProcessedResult.css}`;
 
-                // Tümleşik CSS içeriğini işleyelim
                 return postcss([
                     autoprefixer(),
                     sortMediaQueries(),
@@ -44,10 +42,11 @@ export function writeCssFile() {
             })
             .then(finalResult => {
                 fs.writeFileSync(project.output, finalResult.css);
-                console.log('CSS processing complete.');
+                console.log(pc.green('Success: ') + 'CSS file created at ' + pc.green(project.output));
             })
             .catch(error => {
-                console.error('Error processing CSS:', error);
+                console.log(pc.red('Error: ') + 'Error processing CSS file at ' + pc.red(project.input));
+                console.log(error);
             });
     });
 }
