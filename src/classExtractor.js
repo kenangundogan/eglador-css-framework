@@ -13,7 +13,7 @@ try {
     process.exit(1);
 }
 
-const classRegex = /class=(["'])([\s\S]*?)\1/g;
+const classRegex = /(?:class(?:Name)?\s*=\s*|classList\.add\s*\(|(?:const|let|var)\s+\w+\s*=\s*)(["'`])([\s\S]*?)\1/g;
 
 function splitClassNames(classString) {
     const classNames = [];
@@ -48,31 +48,38 @@ function splitClassNames(classString) {
     return classNames;
 }
 
-export function extractClassesFromFiles() {
+export async function extractClassesFromFiles() {
     const projectClasses = [];
 
-    config.default.projects.forEach(project => {
+    for (const project of config.default.projects) {
         const classesFound = new Set();
         const files = glob.sync(project.contents);
-        files.forEach(filePath => {
-            const fileContent = fs.readFileSync(filePath, 'utf8');
-            let match;
 
-            while ((match = classRegex.exec(fileContent)) !== null) {
-                const classString = match[2];
-                const classNames = splitClassNames(classString);
-                classNames.forEach(className => {
-                    if (className.trim()) {
-                        classesFound.add(className.trim());
+        for (const filePath of files) {
+            try {
+                const fileContent = await fs.promises.readFile(filePath, 'utf8');
+                let match;
+
+                while ((match = classRegex.exec(fileContent)) !== null) {
+                    const classString = match[2];
+                    if (classString) {
+                        const classNames = splitClassNames(classString);
+                        classNames.forEach(className => {
+                            if (className.trim()) {
+                                classesFound.add(className.trim());
+                            }
+                        });
                     }
-                });
+                }
+            } catch (err) {
+                console.log(pc.red('Hata: ') + `Dosya okunurken hata oluştu: ${filePath}`);
             }
-        });
+        }
 
         const sortedClasses = [...classesFound].sort();
-        console.log(pc.blue(project.name) + ' için ' + sortedClasses.length + ' sınıf bulundu ' + pc.blue(project.input));
+        console.log(pc.blue(project.name) + ' için ' + sortedClasses.length + ' sınıf bulundu. ' + pc.blue(project.input));
         projectClasses.push({ project, classes: sortedClasses });
-    });
+    }
 
     return projectClasses;
 }

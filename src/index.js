@@ -15,38 +15,43 @@ import { allClasses } from './generate/allClasses.js';
 import { baseCss } from './generate/baseCss.js';
 import { customCss } from './generate/customCss.js';
 
-export function writeCssFile() {
-    const projectClasses = extractClassesFromFiles();
+export async function writeCssFile() {
 
-    projectClasses.forEach(({ project, classes }) => {
+    const projectClasses = await extractClassesFromFiles();
+
+
+    if (!Array.isArray(projectClasses)) {
+        throw new TypeError('Hata: extractClassesFromFiles bir dizi döndürmedi');
+    }
+
+    for (const { project, classes } of projectClasses) {
         const rootDefinationCssResult = rootDefinationCss();
         const resetCssResult = resetCss(project);
+        const allClassesResult = allClasses();
         const groupedClasses = groupClasses(project, classes);
-        const baseCssResult = baseCss(groupedClasses.base, allClasses);
+        const baseCssResult = baseCss(groupedClasses.base, allClassesResult);
         const customCssResult = customCss(groupedClasses.custom);
         const inputCssContent = readCssFile(project);
 
-        postcss([
-            postcssNested(),
-            postcssImport()
-        ])
-            .process(inputCssContent, { from: project.input })
-            .then(importProcessedResult => {
-                const combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${importProcessedResult.css}`;
+        try {
+            const importProcessedResult = await postcss([
+                postcssNested(),
+                postcssImport()
+            ]).process(inputCssContent, { from: project.input });
 
-                return postcss([
-                    autoprefixer(),
-                    sortMediaQueries(),
-                    cssnano(),
-                ]).process(combinedCss, { from: undefined, to: project.output });
-            })
-            .then(finalResult => {
-                fs.writeFileSync(project.output, finalResult.css);
-                console.log(pc.green('Success: ') + 'CSS file created at ' + pc.green(project.output));
-            })
-            .catch(error => {
-                console.log(pc.red('Error: ') + 'Error processing CSS file at ' + pc.red(project.input));
-                console.log(error);
-            });
-    });
+            const combinedCss = `${rootDefinationCssResult}\n${resetCssResult}\n${baseCssResult}\n${customCssResult}\n${importProcessedResult.css}`;
+
+            const finalResult = await postcss([
+                autoprefixer(),
+                sortMediaQueries(),
+                cssnano(),
+            ]).process(combinedCss, { from: undefined, to: project.output });
+
+            fs.writeFileSync(project.output, finalResult.css);
+            console.log(pc.green('Success: ') + 'CSS file created at ' + pc.green(project.output));
+        } catch (error) {
+            console.log(pc.red('Error: ') + 'Error processing CSS file at ' + pc.red(project.input));
+            console.error(error);
+        }
+    }
 }
