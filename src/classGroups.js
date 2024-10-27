@@ -13,7 +13,7 @@ export function groupClasses(project, classes) {
             groups.base.add(className);
         }
     });
-    console.log(pc.blue(project.name) + ' için ' + pc.blue('Custom / Base ') + pc.black('class bulundu : ') + groups.custom.size + ' / ' + groups.base.size);
+    console.log(pc.blue(project.name) + ' için ' + + groups.base.size + pc.blue(' Base') + ' , ' + groups.custom.size + pc.blue(' Custom ') + pc.black('class bulundu'));
     return {
         custom: [...groups.custom].sort(),
         base: [...groups.base].sort(),
