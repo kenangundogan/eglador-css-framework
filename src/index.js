@@ -48,9 +48,9 @@ export async function writeCssFile() {
             ]).process(combinedCss, { from: undefined, to: project.output });
 
             fs.writeFileSync(project.output, finalResult.css);
-            console.log(pc.green('Success: ') + 'CSS file created at ' + pc.green(project.output));
+            console.log(pc.green('Success: ') + 'CSS dosyası başarıyla oluşturuldu: ' + pc.green(project.output));
         } catch (error) {
-            console.log(pc.red('Error: ') + 'Error processing CSS file at ' + pc.red(project.input));
+            console.log(pc.red('Hata: ') + 'CSS dosyası oluşturulurken bir hata oluştu + ' + pc.red(project.output));
             console.error(error);
         }
     }
