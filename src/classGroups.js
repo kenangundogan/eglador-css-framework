@@ -13,7 +13,7 @@ export function groupClasses(project, classes) {
             groups.base.add(className);
         }
     });
-    console.log(pc.blue(project.name) + ' için ' + + groups.base.size + pc.blue(' Base') + ' , ' + groups.custom.size + pc.blue(' Custom ') + pc.black('class bulundu'));
+    console.log(`${pc.blue(project.name)} ${pc.green('[Başarılı:]')} ${classes.length} sınıf bulundu: ${groups.base.size} temel, ${groups.custom.size} özel. İçerikler: ${project.contents.map(content => pc.blue(content)).join(', ')}`);
     return {
         custom: [...groups.custom].sort(),
         base: [...groups.base].sort(),

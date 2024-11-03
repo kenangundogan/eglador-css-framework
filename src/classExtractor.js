@@ -1,17 +1,6 @@
 import fs from 'fs';
-import { pathToFileURL } from 'url';
 import { glob } from 'glob';
 import pc from 'picocolors';
-
-const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
-
-let config;
-try {
-    config = await import(configPath);
-} catch (err) {
-    console.log(pc.red('Hata: ') + 'Config dosyası okunurken hata oluştu. ' + pc.red(configPath));
-    process.exit(1);
-}
 
 const classRegex = /(?:class(?:Name)?\s*=\s*|classList\.add\s*\(|(?:const|let|var)\s+\w+\s*=\s*)(["'`])([\s\S]*?)\1/g;
 
@@ -48,38 +37,36 @@ function splitClassNames(classString) {
     return classNames;
 }
 
-export async function extractClassesFromFiles() {
+export async function extractClassesFromFiles(project) {
+
     const projectClasses = [];
 
-    for (const project of config.default.projects) {
-        const classesFound = new Set();
-        const files = glob.sync(project.contents);
+    const classesFound = new Set();
+    const files = glob.sync(project.contents);
 
-        for (const filePath of files) {
-            try {
-                const fileContent = await fs.promises.readFile(filePath, 'utf8');
-                let match;
+    for (const filePath of files) {
+        try {
+            const fileContent = await fs.promises.readFile(filePath, 'utf8');
+            let match;
 
-                while ((match = classRegex.exec(fileContent)) !== null) {
-                    const classString = match[2];
-                    if (classString) {
-                        const classNames = splitClassNames(classString);
-                        classNames.forEach(className => {
-                            if (className.trim()) {
-                                classesFound.add(className.trim());
-                            }
-                        });
-                    }
+            while ((match = classRegex.exec(fileContent)) !== null) {
+                const classString = match[2];
+                if (classString) {
+                    const classNames = splitClassNames(classString);
+                    classNames.forEach(className => {
+                        if (className.trim()) {
+                            classesFound.add(className.trim());
+                        }
+                    });
                 }
-            } catch (err) {
-                console.log(pc.red('Hata: ') + `Dosya okunurken hata oluştu: ${filePath}`);
             }
+        } catch (err) {
+            console.log(pc.red('Hata: ') + `Dosya okunurken hata oluştu: ${filePath}`);
         }
-
-        const sortedClasses = [...classesFound].sort();
-        console.log(pc.blue(project.name) + ' için ' + sortedClasses.length + ' sınıf bulundu. ' + pc.blue(project.input));
-        projectClasses.push({ project, classes: sortedClasses });
     }
+
+    const sortedClasses = [...classesFound].sort();
+    projectClasses.push(...sortedClasses);
 
     return projectClasses;
 }
