@@ -1,19 +1,8 @@
 import fs from 'fs';
-import { pathToFileURL } from 'url';
-import { glob } from 'glob';  // glob modülünü import ile kullanıyoruz
+import { glob } from 'glob';
+import pc from 'picocolors';
 
-// Dinamik olarak yapılandırma dosyasını yükle
-const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
-
-let config;
-try {
-    config = await import(configPath);  // Dinamik import ile config dosyasını içe aktar
-} catch (err) {
-    console.error('Error loading eglador.config.js:', err);
-    process.exit(1);
-}
-
-const classRegex = /class=(["'])([\s\S]*?)\1/g;
+const classRegex = /(?:class(?:Name)?\s*=\s*|classList\.add\s*\(|(?:const|let|var)\s+\w+\s*=\s*)(["'`])([\s\S]*?)\1/g;
 
 function splitClassNames(classString) {
     const classNames = [];
@@ -48,32 +37,36 @@ function splitClassNames(classString) {
     return classNames;
 }
 
-export function extractClassesFromFiles() {
+export async function extractClassesFromFiles(project) {
+
     const projectClasses = [];
 
-    config.default.projects.forEach(project => {
-        const classesFound = new Set();
-        const files = glob.sync(project.contents); // Dosya desenlerini eşleştir ve dosya yollarını al
-        files.forEach(filePath => {
-            const fileContent = fs.readFileSync(filePath, 'utf8'); // Dosya içeriğini oku
+    const classesFound = new Set();
+    const files = glob.sync(project.contents);
+
+    for (const filePath of files) {
+        try {
+            const fileContent = await fs.promises.readFile(filePath, 'utf8');
             let match;
 
-            // class özniteliklerini yakala
             while ((match = classRegex.exec(fileContent)) !== null) {
-                const classString = match[2]; // class özniteliğinin değerini al
-                const classNames = splitClassNames(classString); // Sınıf adlarını ayır
-                classNames.forEach(className => {
-                    if (className.trim()) {
-                        classesFound.add(className.trim()); // Sınıf adını set'e ekle
-                    }
-                });
+                const classString = match[2];
+                if (classString) {
+                    const classNames = splitClassNames(classString);
+                    classNames.forEach(className => {
+                        if (className.trim()) {
+                            classesFound.add(className.trim());
+                        }
+                    });
+                }
             }
-        });
+        } catch (err) {
+            console.log(pc.red('Hata: ') + `Dosya okunurken hata oluştu: ${filePath}`);
+        }
+    }
 
-        // Bulunan sınıf adlarını alfabetik olarak sırala ve proje sınıflarına ekle
-        const sortedClasses = [...classesFound].sort();
-        projectClasses.push({ project, classes: sortedClasses });
-    });
+    const sortedClasses = [...classesFound].sort();
+    projectClasses.push(...sortedClasses);
 
-    return projectClasses; // Her proje için bulunan sıralanmış sınıf adlarını döndür
+    return projectClasses;
 }

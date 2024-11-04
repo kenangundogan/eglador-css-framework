@@ -1,5 +1,3 @@
-// src/generate/customCss.js
-
 import { breakpoints } from './../properties/_breakpoints.js'; // Breakpoint'leri içe aktar
 import { pseudoClasses, pseudoElements } from '../properties/_pseudoSelectors.js'; // Pseudo seçicileri içe aktar
 import { propertyMap } from '../properties/_propertyMap.js'; // Özellik haritasını içe aktar
@@ -95,6 +93,7 @@ export function customCss(customClasses) {
         value = sanitizeValue(value);
         value = addSpacesAroundOperators(value);
         value = addSpacesAroundCommas(value);
+        value = removeColonAndPrefix(value);
 
         // 'space-' ve 'divide-' kontrolü
         if (cleanProperty.startsWith('space-') || cleanProperty.startsWith('divide-')) {
@@ -161,6 +160,7 @@ export function customCss(customClasses) {
         }
     }
 
+    // Operatörlerin etrafına boşluk ekle
     function addSpacesAroundOperators(value) {
         return value.replace(/calc\(([^)]+)\)/g, (match, inner) => {
             const spacedInner = inner.replace(/([+\-*/])/g, ' $1 ');
@@ -173,6 +173,12 @@ export function customCss(customClasses) {
         // tüm fr aralarındaki virgülleri boşlukla değiştir
         return value.replace(/(fr),/g, '$1 ').replace(/,(\d)/g, ', $1');
     }
+
+    // : ve öncesini sil
+    function removeColonAndPrefix(value) {
+        return value.replace(/([^:]*):/, '');
+    }
+
 
     function extractPseudo(property) {
         // Pseudo-element kontrolü
