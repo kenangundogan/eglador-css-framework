@@ -23,7 +23,7 @@ async function getConfigFileProjects() {
 }
 
 async function handleDefault() {
-    for (const project of await getConfigFileProjects()) {
+    for (const project of await getConfigFileProjects() || []) {
         const startTime = Date.now();
         await writeCssFile(project);
         const duration = Date.now() - startTime;
@@ -35,7 +35,7 @@ async function handleWatch() {
 
     await handleDefault();
 
-    for (const project of await getConfigFileProjects()) {
+    for (const project of await getConfigFileProjects() || []) {
         try {
             let filesToWatch = await fg(project.contents, {
                 onlyFiles: true,
