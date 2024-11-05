@@ -4,7 +4,10 @@
     "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
     "license": "MIT",
     "main": "src/index.js",
-    "repository": "https://github.com/kenangundogan/egladorcss.git",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kenangundogan/egladorcss.git"
+    },
     "bugs": "https://github.com/kenangundogan/egladorcss/issues",
     "homepage": "",
     "bin": {
