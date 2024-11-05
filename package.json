@@ -1,6 +1,6 @@
 {
     "name": "egladorcss",
-    "version": "1.0.0",
+    "version": "1.0.0-alpha.1",
     "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
     "license": "MIT",
     "main": "src/index.js",
