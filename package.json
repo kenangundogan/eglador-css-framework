@@ -4,6 +4,7 @@
     "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
     "license": "MIT",
     "main": "src/index.js",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kenangundogan/egladorcss.git"
@@ -33,11 +34,8 @@
         "postcss-import": "^16.1.0",
         "postcss-nested": "^6.2.0",
         "postcss-sort-media-queries": "^5.2.0",
-        "tinycolor2": "^1.6.0"
-    },
-    "type": "module",
-    "devDependencies": {
-        "cssnano": "^7.0.6",
-        "postcss": "^8.4.47"
+        "tinycolor2": "^1.6.0",
+        "postcss": "^8.4.47",
+        "cssnano": "^7.0.6"
     }
 }
