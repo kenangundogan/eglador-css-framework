@@ -57,7 +57,7 @@ the necessary CSS file for your project.
 To automatically watch your files during development:
 
 ```bash
-npm run watch
+npx run watch
 ```
 
 Changes made in watch mode will immediately reflect in the CSS output.
