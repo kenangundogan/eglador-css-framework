@@ -1,4 +1,12 @@
 <a href="https://github.com/kenangundogan/egladorcss"><img src="https://raw.githubusercontent.com/kenangundogan/egladorcss/HEAD/.github/egladorcss-logo.svg" width="175"></a>
+<p>
+    <a href="https://github.com/kenangundogan/egladorcss/actions"><img src="https://img.shields.io/github/actions/workflow/status/kenangundogan/egladorcss/ci.yml?branch=main" alt="Build Status"></a>
+    <a href="https://www.npmjs.com/package/egladorcss"><img src="https://img.shields.io/npm/dt/egladorcss.svg" alt="Total Downloads"></a>
+    <a href="https://github.com/kenangundogan/egladorcss/releases"><img src="https://img.shields.io/npm/v/egladorcss.svg" alt="Latest Release"></a>
+    <a href="https://github.com/kenangundogan/egladorcss/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/egladorcss.svg" alt="License"></a>
+</p>
+
+---
 
 # Egladorcss
 
