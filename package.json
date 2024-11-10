@@ -20,6 +20,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "init": "node src/cli.js init",
+        "create-sample-project": "node src/cli.js create-sample-project",
         "build": "node src/cli.js",
         "watch": "node src/cli.js watch"
     },

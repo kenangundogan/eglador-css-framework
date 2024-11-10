@@ -29,6 +29,9 @@ jobs:
       - name: Config Dosyasını Oluştur
         run: npm run init
 
+      - name: Örnek Proje Oluştur
+        run: npm run create-sample-project
+
       - name: Build Komutunu Çalıştır
         run: npm run build
 
