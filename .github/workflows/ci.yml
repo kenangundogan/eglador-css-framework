@@ -34,6 +34,3 @@ jobs:
 
       - name: Build Komutunu Çalıştır
         run: npm run build
-
-      - name: Watch Komutunu Test Et
-        run: npm run watch
