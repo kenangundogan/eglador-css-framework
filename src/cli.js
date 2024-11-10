@@ -7,6 +7,7 @@ import './checkPackageJson.js';
 import { checkConfigFile } from './checkConfigFile.js';
 import { loadConfigFile } from './loadConfigFile.js';
 import { writeCssFile } from './writeCssFile.js';
+import { createSampleProject } from './_createSampleProject.js';
 
 const args = process.argv.slice(2);
 console.log(pc.blue('Arguments:'), args);
@@ -91,6 +92,8 @@ async function handleWatch() {
 (async () => {
     if (args[0] === 'init') {
         await handleInit();
+    } else if (args[0] === 'create-sample-project') {
+        await createSampleProject();
     } else if (args[0] === 'watch') {
         await handleWatch();
     } else if (!args[0]) {
