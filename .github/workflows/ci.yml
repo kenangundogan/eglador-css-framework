@@ -26,6 +26,9 @@ jobs:
       - name: Bağımlılıkları Kur
         run: npm install
 
+      - name: Config Dosyasını Oluştur
+        run: npm run init
+
       - name: Build Komutunu Çalıştır
         run: npm run build
 
