@@ -4,14 +4,14 @@ import pc from 'picocolors';
 import { getImportedFiles } from './getCssImportedFiles.js';
 
 export async function loadConfigFile() {
-    const configPath = pathToFileURL(`${process.cwd()}/eglador.config.js`).href;
+    const configPath = pathToFileURL(`${process.cwd()}/egladorcss.config.js`).href;
     let config;
 
     try {
         config = await import(configPath);
     } catch (err) {
-        console.error(pc.red('eglador.config.js dosyası bulunamadı.'));
-        console.log(pc.yellow('eglador.config.js dosyasını oluşturmak için'), pc.green('npx eglador init'), pc.yellow('komutunu çalıştırın.'));
+        console.error(pc.red('egladorcss.config.js dosyası bulunamadı.'));
+        console.log(pc.yellow('egladorcss.config.js dosyasını oluşturmak için'), pc.green('npx egladorcss init'), pc.yellow('komutunu çalıştırın.'));
         return null;
     }
 
@@ -40,7 +40,7 @@ export async function loadConfigFile() {
     });
 
     if (validProjects.length === 0) {
-        console.error(pc.red('Geçerli proje bulunamadı. Lütfen eglador.config.js dosyasını kontrol edin.'));
+        console.error(pc.red('Geçerli proje bulunamadı. Lütfen egladorcss.config.js dosyasını kontrol edin.'));
         return null;
     }
 

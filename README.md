@@ -1,13 +1,13 @@
-# Eglador CSS Framework
+# Egladorcss
 
-Eglador is a flexible, customizable, and low-level configurable CSS framework
+Egladorcss is a flexible, customizable, and low-level configurable CSS framework
 for modern web projects. It enables you to quickly add CSS properties to your
 projects with high performance and minimal output.
 
 ## Features
 
 - **Flexible Configuration**: Customize classes, media queries, and much more
-  with the `eglador.config.js` file.
+  with the `egladorcss.config.js` file.
 - **Minimalist Approach**: Only the necessary CSS classes are generated,
   preventing clutter in the project.
 - **Dynamic Watch Mode**: Automatically detects changes during development and
@@ -20,24 +20,24 @@ projects with high performance and minimal output.
 
 ### Installation via NPM
 
-Install Eglador in your project by running the following command:
+Install Egladorcss in your project by running the following command:
 
 ```bash
-npm install eglador
+npm install egladorcss
 ```
 
 ## Usage
 
 ### Getting Started
 
-First, create a configuration file. This file will define how Eglador works and
+First, create a configuration file. This file will define how Egladorcss works and
 which classes it will generate.
 
 ```bash
-npx eglador init
+npx egladorcss init
 ```
 
-This command will create a configuration file named `eglador.config.js` in the
+This command will create a configuration file named `egladorcss.config.js` in the
 root directory of your project.
 
 ### Generating CSS
@@ -46,10 +46,10 @@ Once your configuration file is ready, run the following command to generate the
 CSS output:
 
 ```bash
-npx eglador
+npx egladorcss
 ```
 
-This command will use the settings in your `eglador.config.js` file to generate
+This command will use the settings in your `egladorcss.config.js` file to generate
 the necessary CSS file for your project.
 
 ### Watch Mode
@@ -57,14 +57,14 @@ the necessary CSS file for your project.
 To automatically watch your files during development:
 
 ```bash
-npx run watch
+npx egladorcss watch
 ```
 
 Changes made in watch mode will immediately reflect in the CSS output.
 
 ## Configuration
 
-You can customize your project in the `eglador.config.js` file. An example
+You can customize your project in the `egladorcss.config.js` file. An example
 configuration is shown below:
 
 ```javascript
@@ -79,8 +79,8 @@ export default {
         "./dist/**/*.tsx",
       ],
       cssreset: true,
-      input: "./dist/css/input1.css",
-      output: "./dist/css/output1.css",
+      input: "./dist/css/input-primary.css",
+      output: "./dist/css/output-primary.css",
     },
     {
       name: "secondary",
@@ -88,8 +88,8 @@ export default {
         "./dist/**/*.html",
       ],
       cssreset: true,
-      input: "./dist/css/input2.css",
-      output: "./dist/css/output2.css",
+      input: "./dist/css/input-secondary.css",
+      output: "./dist/css/output-secondary.css",
     },
   ],
 };
@@ -103,7 +103,7 @@ export default {
 
 ## Contributing
 
-Eglador CSS Framework is an open-source project. You can contribute by
+Egladorcss is an open-source project. You can contribute by
 suggesting new features or reporting issues on our GitHub page.
 
 ## License

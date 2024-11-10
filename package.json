@@ -1,6 +1,6 @@
 {
     "name": "egladorcss",
-    "version": "1.0.0-alpha.2",
+    "version": "1.0.0-alpha.3",
     "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
     "license": "MIT",
     "main": "src/index.js",
@@ -17,8 +17,9 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "init": "node src/cli.js init",
         "build": "node src/cli.js",
-        "watch": "node src/cli.js --watch"
+        "watch": "node src/cli.js watch"
     },
     "files": [
         "src/*"
