@@ -2,6 +2,7 @@
     "name": "egladorcss",
     "version": "1.0.0-alpha.3",
     "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+    "author": "Kenan Gündoğan",
     "license": "MIT",
     "main": "src/index.js",
     "type": "module",
@@ -9,10 +10,11 @@
         "type": "git",
         "url": "git+https://github.com/kenangundogan/egladorcss.git"
     },
-    "bugs": "https://github.com/kenangundogan/egladorcss/issues",
-    "homepage": "",
+    "bugs": {
+        "url": "https://github.com/kenangundogan/egladorcss/issues"
+    },
+    "homepage": "https://github.com/kenangundogan/egladorcss#readme",
     "bin": {
-        "eglador": "src/cli.js",
         "egladorcss": "src/cli.js"
     },
     "scripts": {
@@ -21,6 +23,15 @@
         "build": "node src/cli.js",
         "watch": "node src/cli.js watch"
     },
+    "keywords": [
+        "eglador",
+        "egladorcss",
+        "css",
+        "framework",
+        "postcss",
+        "css-framework",
+        "css-javascript-framework"
+    ],
     "files": [
         "src/*"
     ],
