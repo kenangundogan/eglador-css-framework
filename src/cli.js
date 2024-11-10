@@ -91,11 +91,14 @@ async function handleWatch() {
 (async () => {
     if (args[0] === 'init') {
         await handleInit();
-    } else if (args[0] === '--watch') {
+    } else if (args[0] === 'watch') {
         await handleWatch();
     } else if (!args[0]) {
         await handleDefault();
     } else {
         console.log(pc.red('Geçersiz komut.'));
+        console.log(pc.yellow(`config dosyasını oluşturmak için ${pc.bold("npx egladorcss init")} komutunu çalıştırın.`));
+        console.log(pc.yellow(`proje için CSS oluşturmak için ${pc.bold("npx egladorcss")} komutunu çalıştırın.`));
+        console.log(pc.yellow(`proje için CSS oluşturmak ve izlemek için ${pc.bold("npx egladorcss watch")} komutunu çalıştırın.`));
     }
 })();
