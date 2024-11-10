@@ -110,6 +110,16 @@ export function baseCss(baseClasses, allClasses) {
     const classIndex = createClassIndex(allClasses);
 
     baseClasses.forEach(className => {
+
+        if (className === 'container') {
+            cssOutput += `.container {\n  width: 100%;\n}\n`;
+            Object.keys(breakpoints).forEach(key => {
+                const value = breakpoints[key];
+                cssOutput += `@media (min-width: ${value}) {\n  .container {\n    max-width: ${value};\n  }\n}\n`;
+            });
+            return;
+        }
+
         if (processedClasses.has(className)) return;
         processedClasses.add(className);
 

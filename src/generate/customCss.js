@@ -90,6 +90,7 @@ export function customCss(customClasses) {
             value = '-' + value;
         }
 
+        value = convertBgUrlToCss(value);
         value = sanitizeValue(value);
         value = addSpacesAroundOperators(value);
         value = addSpacesAroundCommas(value);
@@ -176,7 +177,23 @@ export function customCss(customClasses) {
 
     // : ve öncesini sil
     function removeColonAndPrefix(value) {
-        return value.replace(/([^:]*):/, '');
+        if (!value.startsWith('url(')) {
+            return value.replace(/([^:]*):/, '');
+        }
+        return value;
+    }
+
+    // bg-[url('...')] -> background-image: url('...')
+    function convertBgUrlToCss(value) {
+        const regex = /bg-\[url\(['"](.+?)['"]\)\]/;
+        const match = value.match(regex);
+
+        if (match) {
+            const url = match[1];
+            return `background-image: url('${url}');`;
+        }
+
+        return value;
     }
 
 
